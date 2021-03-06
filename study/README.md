@@ -1,1 +1,13 @@
 
+ # Install Node.js
+
+ # Mac
+1. Install howbrew for mac url: ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+2. Install node Command: brew install node
+3. Update node: brew upgrade node
+
+ # Compile 
+ In console:
+ node FileName.js
+ ![how_to_compile_node](https://github.com/sfsu-csc-667-spring-2021-roberts/team_project_D/blob/main/study/Screen%20Shot%202021-03-05%20at%206.20.34%20PM.png)
+ 
