@@ -1,28 +1,28 @@
-'use stricts'
+'use stricts';
 
 module.exports = {
-  up: {queryInterface, Sequalize) => {
+  up: (queryInterface, Sequelize) => {
     return queryInterface.createTable(
-      'test table',
+      'test_table',
       {
         id: {
-          type: Sequalize.INTEGER,
+          type: Sequelize.INTEGER,
           primaryKey: true,
           autoIncrement: true
-        };
+        },
         createdAt: {
-          type: sequalize.DATE,
-          defaultValue: Sequalize.literal('NOW()'),
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.literal('NOW()'),
           allowNull: false
         },
         testString: {
-          type: Sequalize.STRING,
+          type: Sequelize.STRING,
           allowNull: false
         }
       }
     );
   },
-  down: (queryInterface, Sequalize) => {
+  down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('test_table');
   }
-}:
+};
