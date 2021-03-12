@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
   .then(results => res.json(results))
   .catch(error => {
     console.log(error)
-    response.json({error})
+    res.json({error})
   })
 });
 module.exports = router;
