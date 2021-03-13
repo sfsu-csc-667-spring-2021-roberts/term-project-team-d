@@ -17,11 +17,11 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     return Promise.all([
-			queryInterface.dropTable('card'),
-			queryInterface.dropTable('card_stack'),
-			queryInterface.dropTable('game_room'),
-			queryInterface.dropTable('hand'),
-			queryInterface.dropTable('player')
-		]);
+      queryInterface.dropTable('card'),
+      queryInterface.dropTable('card_stack'),
+      queryInterface.dropTable('player'),
+      queryInterface.dropTable('game_room'),
+      queryInterface.dropTable('hand')
+      ]);
   }
 };
