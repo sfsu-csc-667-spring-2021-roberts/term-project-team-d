@@ -3,3 +3,12 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  p These are the game rooms
+  form(actions="/creatGame" method="POST")
+    input(type="submit" name="somename" placeholder="place")
+  ul
+    if game
+      each game, i in games
+        li= "Game number: " + i + "   Game ID: " + game.game_room_id 
+    else
+      strong No Game rooms! Create a game
