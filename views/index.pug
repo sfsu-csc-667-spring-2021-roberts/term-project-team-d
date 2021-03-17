@@ -18,7 +18,7 @@ block content
     }
   ul
     if games
-      each game, i in games
-        li= "Game: " + i + " | game id: " + game.id
+      each game in games
+        li= "Game id: " + game.game_id + " | Number of players: " + game.count
     else
       strong No Game rooms! Create a game
