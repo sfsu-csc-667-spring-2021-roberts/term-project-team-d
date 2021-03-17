@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+<form id = "register">
+	<label for = "firstname"> First name: </label> <input type = "letter" id = "firstname" pattern = "[w]+" title = "at least 1 letter" required /><p>
+	<label for = "middlename"> Middle name:</label> <input type = "letter" id = "middlename" pattern = "[w]+" title = "at least 1 letter" /><p>
+	<label for = "lastname"> last name: </label> <input type = "letter" id = "lastname" pattern = "[w]+" title = "at least 1 letter" required /><p>
+	<label for = "password"> Password: </label> <input type = "password" id = "password" pattern = "[\x00-\x7F]{8,}" title = "at least 8 length" required /><p>
+	
+	<button type = "submit">register</button>
+
+</form>
+
+</body>
+
+</html>
