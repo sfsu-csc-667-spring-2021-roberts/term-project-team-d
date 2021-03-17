@@ -6,14 +6,15 @@ const db = require('../db/connection');
 router.get('/', async function(req, res, next) {
   let query = `SELECT * FROM game`;
   let games = await db.any(query);
+  console.log(games);
   res.render('index', { 
     title: 'Uno Project!!',
     games: games
   });
 });
 
-router.get('/createGame', async (req, res, next) => {
-  db.none(`INSERT INTO game(id) VALUES(2)`);
+router.post('/createGame', async (req, res, next) => {
+  db.none(`INSERT INTO game DEFAULT VALUES`);
   res.send("Created a game!");
 });
 
