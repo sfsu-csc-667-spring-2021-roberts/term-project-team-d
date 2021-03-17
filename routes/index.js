@@ -8,7 +8,6 @@ router.get('/', async function(req, res, next) {
     JOIN game ON game.id = player.game_id 
     GROUP BY player.game_id
     ORDER BY player.game_id ASC`;
-  console.log(query);
 
   let games = await db.any(query);
   console.log(games);
