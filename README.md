@@ -1,1 +1,1 @@
-This is the readme for uno project!
+This is the readme for uno project
