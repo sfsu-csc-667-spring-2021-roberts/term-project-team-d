@@ -4,8 +4,16 @@ block content
   h1= title
   p Welcome to #{title}
   p These are the game rooms
-  button(type="button") Create Game
+  button(type="button" id="createGame") Create Game
   script.
+    $('getText').on("click", getText)
+
+    function getText() {
+      fetch('createGame')
+      .then(function(res){
+        console.log(res);
+      })
+    }
   ul
     if games
       each game, i in games
