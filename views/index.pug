@@ -6,11 +6,13 @@ block content
   p These are the game rooms
   button(type="button" id="createGame") Create Game
   script.
-    $('getText').on("click", getText)
+    $('#createGame').on("click", createGame);
 
-    function getText() {
-      fetch('createGame')
-      .then(function(res){
+    function createGame() {
+      fetch('createGame', {
+        method: 'POST'
+        }
+      ).then(function(res){
         console.log(res);
       })
     }
