@@ -3,3 +3,22 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  p These are the game rooms
+  button(type="button" id="createGame") Create Game
+  script.
+    $('#createGame').on("click", createGame);
+
+    function createGame() {
+      fetch('createGame', {
+        method: 'POST'
+        }
+      ).then(function(res){
+        console.log(res);
+      })
+    }
+  ul
+    if games
+      each game, i in games
+        li= "Game: " + i + " | game id: " + game.id
+    else
+      strong No Game rooms! Create a game
