@@ -6,16 +6,13 @@ block content
   p These are the game rooms
   button(type="button" id="createGame") Create Game
   script.
-    $('#createGame').on("click", createGame);
-
-    function createGame() {
-      fetch('createGame', {
+    $('#createGame').on("click", async () => {
+      await fetch('createGame', {
         method: 'POST'
         }
-      ).then(function(res){
-        console.log(res);
-      })
-    }
+      )
+      location.reload()
+    });
   ul
     if games
       each game in games
