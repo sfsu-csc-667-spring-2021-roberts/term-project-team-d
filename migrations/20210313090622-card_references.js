@@ -200,23 +200,19 @@ module.exports = {
     {
       number: -1,
       color: 'red',
-      type: 'draw',
-      effect: 'draw 2'
+      type: 'draw 2'
     }, {
       number: -1,
       color: 'yellow',
-      type: 'draw',
-      effect: 'draw 2'
+      type: 'draw 2'
     }, {
       number: -1,
       color: 'blue',
-      type: 'draw',
-      effect: 'draw 2'
+      type: 'draw 2'
     }, {
       number: -1,
       color: 'green',
-      type: 'draw',
-      effect: 'draw 2'
+      type: 'draw 2'
     },
     /* ============================
      * ====== Reverse Card ========
@@ -224,23 +220,19 @@ module.exports = {
       {
       number: -1,
       color: 'red',
-      type: 'reverse',
-      effect: 'reverse'
+      type: 'reverse'
     }, {
       number: -1,
       color: 'yellow',
-      type: 'reverse',
-      effect: 'reverse'
+      type: 'reverse'
     }, {
       number: -1,
       color: 'blue',
-      type: 'reverse',
-      effect: 'reverse'
+      type: 'reverse'
     }, {
       number: -1,
       color: 'green',
-      type: 'reverse',
-      effect: 'reverse'
+      type: 'reverse'
     },
     /* ============================
      * ====== Skip Card ===========
@@ -248,23 +240,19 @@ module.exports = {
       {
       number: -1,
       color: 'red',
-      type: 'skip',
-      effect: 'skip'
+      type: 'skip'
     }, {
       number: -1,
       color: 'yellow',
-      type: 'skip',
-      effect: 'skip'
+      type: 'skip'
     }, {
       number: -1,
       color: 'blue',
-      type: 'skip',
-      effect: 'skip'
+      type: 'skip'
     }, {
       number: -1,
       color: 'green',
-      type: 'skip',
-      effect: 'skip'
+      type: 'skip'
     },
     /* ============================
      * ====== Draw 4 ==============
@@ -272,23 +260,19 @@ module.exports = {
       {
       number: -1,
       color: 'none',
-      type: 'draw',
-      effect: 'draw 4'
+      type: 'draw 4'
     }, {
       number: -1,
       color: 'none',
-      type: 'draw',
-      effect: 'draw 4'
+      type: 'draw 4'
     }, {
       number: -1,
       color: 'none',
-      type: 'draw',
-      effect: 'draw 4'
+      type: 'draw 4'
     }, {
       number: -1,
       color: 'none',
-      type: 'draw',
-      effect: 'draw 4'
+      type: 'draw 4'
     },
     /* ============================
      * == Change Color Card =======
@@ -297,22 +281,18 @@ module.exports = {
       number: -1,
       color: 'none',
       type: 'changeColor',
-      effect: 'changeColor'
     }, {
       number: -1,
       color: 'none',
       type: 'changeColor',
-      effect: 'changeColor'
     }, {
       number: -1,
       color: 'none',
       type: 'changeColor',
-      effect: 'changeColor'
     }, {
       number: -1,
       color: 'none',
       type: 'changeColor',
-      effect: 'changeColor'
     }]);
   },
 
