@@ -161,6 +161,10 @@ module.exports = {
       order: {
         type: DataTypes.INTEGER,
         allowNull: true
+      },
+      order: {
+        type: DataTypes.INTEGER,
+        allowNull: true
       }
     }); // end of game card_table
   }, // end of up
