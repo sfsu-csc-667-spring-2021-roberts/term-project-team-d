@@ -3,18 +3,6 @@
 module.exports = {
   up: async (sequelize, DataTypes) => {
     /* ============================
-     * ==== user table ============
-     * ============================ */
-    await sequelize.createTable('user', {
-      id: {
-        autoIncrement: true,
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true
-      }
-    });
-
-    /* ============================
      * ==== account table =========
      * ============================ */
     sequelize.createTable('account', {
@@ -35,12 +23,36 @@ module.exports = {
       win_count: {
         type: DataTypes.SMALLINT,
         allowNull: true
+      }
+    });
+
+    /* ============================
+     * ==== message table =========
+     * ============================ */
+    sequelize.createTable('message', {
+      id: {
+        autoIncrement: true,
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true
       },
-      user_id: {
-        type: DataTypes.SMALLINT,
-        allowNull: true,
+      account_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
-          model: 'user',
+          model: 'account',
+          key: 'id'
+        }
+      },
+      date: {
+        type: DataTypes.DATEONLY,
+        allowNull: true
+      },
+      loc: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'game',
           key: 'id'
         }
       }
@@ -59,9 +71,28 @@ module.exports = {
       date_created: {
         type: DataTypes.DATEONLY,
         allowNull: true
+      },
+      next_card: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      current_player: {
+        type: DataTypes.SMALLINT,
+        allowNull: false
+      },
+      clockwise: {
+        type: DataTypes.SMALLINT,
+        allowNull: false
+      },
+      num_players: {
+        type: DataTypes.SMALLINT,
+        allowNull: false
+      },
+      started: {
+        type: DataTypes.SMALLINT,
+        allowNull: false
       }
     });
-
     /* ============================
      * ==== player table ==========
      * ============================ */
@@ -74,25 +105,29 @@ module.exports = {
       },
       game_id: {
         type: DataTypes.SMALLINT,
-        allowNull: true,
+        allowNull: false,
         references: {
           model: 'game',
           key: 'id'
         }
       },
-      user_id: {
+      account_id: {
         type: DataTypes.SMALLINT,
-        allowNull: true,
+        allowNull: false,
         references: {
-          model: 'user',
+          model: 'account',
           key: 'id'
         }
+      },
+      player_num: {
+        type: DataTypes.SMALLINT,
+        allowNull: true
       }
     });
     /* ============================
-     * ==== card table ============
+     * ==== game_card table =======
      * ============================ */
-    sequelize.createTable('card', {
+    sequelize.createTable('game_card', {
       id: {
         autoIncrement: true,
         type: DataTypes.INTEGER,
@@ -101,26 +136,34 @@ module.exports = {
       },
       card_status: {
         type: DataTypes.SMALLINT,
-        allowNull: true,
+        allowNull: false,
         references: {
           model: 'player',
           key: 'id'
         }
       },
-      number: {
-        type: DataTypes.SMALLINT,
-        allowNull: true
+      game_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'game',
+          key: 'id'
+        }
       },
-      color: {
-        type: DataTypes.STRING,
-        allowNull: true
+      card_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'card',
+          key: 'id'
+        }
       },
-      type: {
-        type: DataTypes.STRING,
+      order: {
+        type: DataTypes.INTEGER,
         allowNull: true
       }
-    });
-  },
+    }); // end of game card_table
+  }, // end of up
   down: async (queryInterface, Sequelize) => {
       await queryInterface.dropTable('card');
       await queryInterface.dropTable('account');
