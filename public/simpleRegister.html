@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+<form name = "registration" id = "register" method="POST" action="http://localhost:3000/register"> <!-- action takes url -->
+	<label for = "firstname"> First name: </label> 
+  <input name = "firstName" type = "letter" id = "firstname" title = "at least 1 letter" required /><p>
+	<label for = "middlename"> Middle name:</label> 
+  <input name = "middleName" type = "letter" id = "middlename" title = "at least 1 letter" /><p>
+	<label for = "lastname"> last name: </label> 
+  <input name = "lastName" type = "letter" id = "lastname" title = "at least 1 letter" required /><p>
+	<label for = "password"> Password: </label> <input name = "password" type = "password" id = "password" pattern = "[\x00-\x7F]{8,}" title = "at least 8 length" required /><p>
+	
+	<button type = "submit">register</button>
+
+</form>
+
+</body>
+
+</html>
