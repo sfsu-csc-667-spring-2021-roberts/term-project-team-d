@@ -29,7 +29,7 @@ module.exports = {
     /* ============================
      * ==== game table ============
      * ============================ */
-    sequelize.createTable('game', {
+    await sequelize.createTable('game', {
       id: {
         autoIncrement: true,
         type: DataTypes.INTEGER,
@@ -65,7 +65,7 @@ module.exports = {
     /* ============================
      * ==== message table =========
      * ============================ */
-    sequelize.createTable('message', {
+    await sequelize.createTable('message', {
       id: {
         autoIncrement: true,
         type: DataTypes.INTEGER,
@@ -97,7 +97,7 @@ module.exports = {
     /* ============================
      * ==== player table ==========
      * ============================ */
-    sequelize.createTable('player', {
+    await sequelize.createTable('player', {
       id: {
         autoIncrement: true,
         type: DataTypes.INTEGER,
@@ -128,7 +128,7 @@ module.exports = {
     /* ============================
      * ==== game_card table =======
      * ============================ */
-    sequelize.createTable('game_card', {
+    await sequelize.createTable('game_card', {
       id: {
         autoIncrement: true,
         type: DataTypes.INTEGER,
@@ -170,11 +170,11 @@ module.exports = {
     }); // end of game card_table
   }, // end of up
   down: async (queryInterface, Sequelize) => {
-      await queryInterface.dropTable('card');
       await queryInterface.dropTable('game_card');
       await queryInterface.dropTable('player');
       await queryInterface.dropTable('message');
       await queryInterface.dropTable('game');
       await queryInterface.dropTable('account');
+      await queryInterface.dropTable('card');
   }
 };
