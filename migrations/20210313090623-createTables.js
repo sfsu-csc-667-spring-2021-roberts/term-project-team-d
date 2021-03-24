@@ -5,7 +5,7 @@ module.exports = {
     /* ============================
      * ==== account table =========
      * ============================ */
-    sequelize.createTable('account', {
+    await sequelize.createTable('account', {
       id: {
         autoIncrement: true,
         type: DataTypes.INTEGER,
@@ -23,38 +23,6 @@ module.exports = {
       win_count: {
         type: DataTypes.SMALLINT,
         allowNull: true
-      }
-    });
-
-    /* ============================
-     * ==== message table =========
-     * ============================ */
-    sequelize.createTable('message', {
-      id: {
-        autoIncrement: true,
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true
-      },
-      account_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'account',
-          key: 'id'
-        }
-      },
-      date: {
-        type: DataTypes.DATEONLY,
-        allowNull: true
-      },
-      loc: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'game',
-          key: 'id'
-        }
       }
     });
 
@@ -93,6 +61,39 @@ module.exports = {
         allowNull: false
       }
     });
+
+    /* ============================
+     * ==== message table =========
+     * ============================ */
+    sequelize.createTable('message', {
+      id: {
+        autoIncrement: true,
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true
+      },
+      account_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'account',
+          key: 'id'
+        }
+      },
+      date: {
+        type: DataTypes.DATEONLY,
+        allowNull: true
+      },
+      loc: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'game',
+          key: 'id'
+        }
+      }
+    });
+
     /* ============================
      * ==== player table ==========
      * ============================ */
@@ -170,9 +171,10 @@ module.exports = {
   }, // end of up
   down: async (queryInterface, Sequelize) => {
       await queryInterface.dropTable('card');
-      await queryInterface.dropTable('account');
+      await queryInterface.dropTable('game_card');
       await queryInterface.dropTable('player');
+      await queryInterface.dropTable('message');
       await queryInterface.dropTable('game');
-      await queryInterface.dropTable('user');
+      await queryInterface.dropTable('account');
   }
 };
