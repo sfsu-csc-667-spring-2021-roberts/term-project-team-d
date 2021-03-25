@@ -4,6 +4,8 @@ block content
   h1= title
   p Welcome to #{title}
   p These are the game rooms
+  a(href='/simpleRegister.html')
+    button(type="button" id="registration") Create Account
   button(type="button" id="createGame") Create Game
   script.
     $('#createGame').on("click", async () => {
