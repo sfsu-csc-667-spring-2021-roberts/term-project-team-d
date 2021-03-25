@@ -13,7 +13,7 @@ class Account extends ActiveRecord {
     
 
     //Create a game
-    const createGame = async (accountId) => {
+    createGame = async (accountId) => {
         let gameId = await db.one(`INSERT INTO game DEFAULT VALUES RETURNING id`);
     
         db.none(`INSERT INTO player(game_id,player_num) VALUES(${gameId},1)`);

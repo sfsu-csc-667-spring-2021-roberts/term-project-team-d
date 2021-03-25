@@ -2,9 +2,9 @@ let db = require('./connection');
 let ActiveRecord = require('./ActiveRecord');
 
 class Game extends ActiveRecord {
-  const GAME_ENDED = -1;
-  const GAME_STARTED = 0;
-  const GAME_PENDING = 1;
+  GAME_ENDED = -1;
+  GAME_STARTED = 0;
+  GAME_PENDING = 1;
 
   id = -1;
   game = -1;
