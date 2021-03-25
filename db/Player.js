@@ -5,9 +5,6 @@ class Player extends ActiveRecord {
   game = -1;
   username = '';
 
-  createGame() {
-  }
-
   // convert to player cards status change
   drawFirstNCards(player, n) {
   }

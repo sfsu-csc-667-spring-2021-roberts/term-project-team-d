@@ -2,10 +2,16 @@ let db = require('./connection');
 let ActiveRecord = require('./ActiveRecord');
 
 class Game extends ActiveRecord {
+  const GAME_ENDED = -1;
+  const GAME_STARTED = 0;
+  const GAME_PENDING = 1;
+
   id = -1;
   game = -1;
   username = '';
+  currentPlayer = 1;
 
+  // TODO Make sure game has not ended
   static getGameList() {
     let query = `SELECT player.game_id, COUNT(player.id) FROM player
       JOIN game ON game.id = player.game_id 
@@ -14,17 +20,11 @@ class Game extends ActiveRecord {
     return db.any(query);
   }
  
-  // possibly dangerous way of linking game to player
-  static async createGame() {
-    await db.none(`INSERT INTO game DEFAULT VALUES`);
-    let temp = await db.one(`SELECT id FROM game ORDER BY id DESC LIMIT 1`);
-    db.none(`INSERT INTO player(game_id) VALUES(${temp.id})`);
-  }
+
+
 
   endGame() {
-    initializeCards();
-    // deal out cards
-    dealCards();
+    
   }
 
   initializeCards() {
