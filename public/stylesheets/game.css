@@ -44,9 +44,7 @@ body {
   background: #88aa88;
 }
 
-/*.centered { 
+.card{
+    padding: 30px 20px;
+  margin: 10px;
 }
-
-.grid-item{
-    background: #aaaaaa;
-}*/
