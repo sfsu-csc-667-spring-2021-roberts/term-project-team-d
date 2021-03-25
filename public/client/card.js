@@ -13,7 +13,7 @@ export class Card {
     }
 
     createElement() {
-        var btn = document.createElement("button");
+        var btn = document.createElement("div");
 
         btn.innerText = String(this.number);
         btn.style.backgroundColor = String(this.color);
@@ -28,6 +28,8 @@ export class Card {
             btn.style.backgroundColor = "black";
             btn.style.color = "white";
         }
+        
+        btn.classList.add('card');
 
         return btn;
     }
