@@ -35,6 +35,13 @@ class Game extends ActiveRecord {
 
   playerLeave() {
   }
+
+  shuffleDeck(){
+
+  }
+  reShuffleDeck(){
+
+  }
 }
 
 module.exports = Game;
