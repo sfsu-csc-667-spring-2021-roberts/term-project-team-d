@@ -5,7 +5,7 @@ module.exports = {
     /* ============================
      * == card reference table ====
      * ============================ */
-    await queryInterface.createTable('card', {
+    await queryInterface.createTable('cards', {
       id: {
         autoIncrement: true,
         type: Sequelize.INTEGER,
@@ -29,7 +29,7 @@ module.exports = {
         allowNull: true
       }
     });
-    queryInterface.bulkInsert('card', [{
+    queryInterface.bulkInsert('cards', [{
       number: 0,
       color: 'red',
       type: 'normal'

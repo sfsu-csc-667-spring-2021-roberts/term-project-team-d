@@ -3,9 +3,9 @@
 module.exports = {
   up: async (sequelize, DataTypes) => {
     /* ============================
-     * ==== account table =========
+     * ==== users table ===========
      * ============================ */
-    await sequelize.createTable('account', {
+    await sequelize.createTable('users', {
       id: {
         autoIncrement: true,
         type: DataTypes.INTEGER,
@@ -20,16 +20,17 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: true
       },
-      win_count: {
-        type: DataTypes.SMALLINT,
-        allowNull: true
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
       }
     });
 
     /* ============================
-     * ==== game table ============
+     * ==== games table ===========
      * ============================ */
-    await sequelize.createTable('game', {
+    await sequelize.createTable('games', {
       id: {
         autoIncrement: true,
         type: DataTypes.INTEGER,
@@ -40,7 +41,7 @@ module.exports = {
         type: DataTypes.DATEONLY,
         allowNull: true
       },
-      next_card: {
+      last_card: {
         type: DataTypes.INTEGER,
         allowNull: true
       },
@@ -52,10 +53,6 @@ module.exports = {
         type: DataTypes.SMALLINT,
         allowNull: false
       },
-      num_players: {
-        type: DataTypes.SMALLINT,
-        allowNull: false
-      },
       started: {
         type: DataTypes.SMALLINT,
         allowNull: false
@@ -63,20 +60,20 @@ module.exports = {
     });
 
     /* ============================
-     * ==== message table =========
+     * ==== messages table =========
      * ============================ */
-    await sequelize.createTable('message', {
+    await sequelize.createTable('messages', {
       id: {
         autoIncrement: true,
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true
       },
-      account_id: {
+      user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'account',
+          model: 'users',
           key: 'id'
         }
       },
@@ -84,20 +81,20 @@ module.exports = {
         type: DataTypes.DATEONLY,
         allowNull: true
       },
-      loc: {
+      game_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'game',
+          model: 'games',
           key: 'id'
         }
       }
     });
 
     /* ============================
-     * ==== player table ==========
+     * ==== game_users table ======
      * ============================ */
-    await sequelize.createTable('player', {
+    await sequelize.createTable('game_users', {
       id: {
         autoIncrement: true,
         type: DataTypes.INTEGER,
@@ -108,27 +105,31 @@ module.exports = {
         type: DataTypes.SMALLINT,
         allowNull: false,
         references: {
-          model: 'game',
+          model: 'games',
           key: 'id'
         }
       },
-      account_id: {
+      user_id: {
         type: DataTypes.SMALLINT,
         allowNull: false,
         references: {
-          model: 'account',
+          model: 'users',
           key: 'id'
         }
       },
       player_num: {
         type: DataTypes.SMALLINT,
         allowNull: true
+      },
+      winner: {
+        type: DataTypes.SMALLINT,
+        allowNull: true
       }
     });
     /* ============================
-     * ==== game_card table =======
+     * ==== game_cards table ======
      * ============================ */
-    await sequelize.createTable('game_card', {
+    await sequelize.createTable('game_cards', {
       id: {
         autoIncrement: true,
         type: DataTypes.INTEGER,
@@ -139,7 +140,7 @@ module.exports = {
         type: DataTypes.SMALLINT,
         allowNull: false,
         references: {
-          model: 'player',
+          model: 'game_users',
           key: 'id'
         }
       },
@@ -147,7 +148,7 @@ module.exports = {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'game',
+          model: 'games',
           key: 'id'
         }
       },
@@ -155,13 +156,9 @@ module.exports = {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'card',
+          model: 'cards',
           key: 'id'
         }
-      },
-      order: {
-        type: DataTypes.INTEGER,
-        allowNull: true
       },
       order: {
         type: DataTypes.INTEGER,
@@ -170,11 +167,11 @@ module.exports = {
     }); // end of game card_table
   }, // end of up
   down: async (queryInterface, Sequelize) => {
-      await queryInterface.dropTable('game_card');
-      await queryInterface.dropTable('player');
-      await queryInterface.dropTable('message');
-      await queryInterface.dropTable('game');
-      await queryInterface.dropTable('account');
-      await queryInterface.dropTable('card');
+      await queryInterface.dropTable('game_cards');
+      await queryInterface.dropTable('game_users');
+      await queryInterface.dropTable('messages');
+      await queryInterface.dropTable('games');
+      await queryInterface.dropTable('users');
+      await queryInterface.dropTable('cards');
   }
 };
