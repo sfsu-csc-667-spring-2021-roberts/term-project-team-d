@@ -1,7 +1,7 @@
 let db = require('./connection');
 let ActiveRecord = require('./ActiveRecord');
 
-class Game extends ActiveRecord {
+class Games extends ActiveRecord {
   GAME_ENDED = -1;
   GAME_STARTED = 0;
   GAME_PENDING = 1;
@@ -13,16 +13,14 @@ class Game extends ActiveRecord {
 
   // TODO Make sure game has not ended
   static getGameList() {
-    let query = `SELECT player.game_id, COUNT(player.id) FROM player
-      JOIN game ON game.id = player.game_id 
-      GROUP BY player.game_id
-      ORDER BY player.game_id ASC`;
+    let query = `SELECT game_users.game_id, COUNT(game_users.id) FROM game_users
+      JOIN games ON games.id = game_users.game_id 
+      GROUP BY game_users.game_id
+      ORDER BY game_users.game_id ASC`;
+    //let query = `SELECT id FROM games`
     return db.any(query);
   }
  
-
-
-
   endGame() {
     
   }
@@ -44,4 +42,4 @@ class Game extends ActiveRecord {
   }
 }
 
-module.exports = Game;
+module.exports = Games;
