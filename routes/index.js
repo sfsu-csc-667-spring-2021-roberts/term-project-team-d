@@ -5,8 +5,8 @@ let Users = require('../db/Users');
 let Games = require('../db/Games');
 const db = require('../db/connection');
 
-/* GET home pae. */
-router.get('/', async function(req, res, next) {
+/* GET home page. */
+router.get('/', async (req, res, next) => {
   let games = await Games.getGameList();
   console.log(games);
   res.render('index', { 
