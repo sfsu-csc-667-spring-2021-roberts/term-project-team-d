@@ -4,12 +4,18 @@ let game = require('./Games')
 
 class Users extends ActiveRecord {
     // register
-    static register(user) {
+    static async register(user) {
       let query = `INSERT INTO users(username, password, email)
-              VALUES('${user.firstName}', '${user.password}', '${user.email}')`;
+                  VALUES('${user.firstName}', 
+                  '${user.password}', 
+                  '${user.email}')`;
       console.log(query);
-      db.none(query);
-    
+
+      let error = null;
+        await db.none(query).catch( err => {
+          error = err
+        });
+      return error;
     }
     //Login
     login() {

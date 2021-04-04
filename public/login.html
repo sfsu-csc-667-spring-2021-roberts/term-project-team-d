@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title></title>
+	</head>
+	<body>
+		<form
+			name="login"
+			id="login"
+			method="POST"
+			action="http://localhost:3000/users/login"
+		>
+			<p>
+				<label for="email"> Email:</label>
+				<input
+					name="email"
+					type="letter"
+					id="email"
+					title="at least 1 letter"
+				/>
+			</p>
+
+			<p>
+				<label for="password"> Password: </label>
+				<input
+					name="password"
+					type="password"
+					id="password"
+					pattern="[\x00-\x7F]{8,}"
+					title="at least 8 length"
+					required
+				/>
+			</p>
+			<p>
+				<button type="submit">Login</button>
+			</p>
+		</form>
+	</body>
+</html>
