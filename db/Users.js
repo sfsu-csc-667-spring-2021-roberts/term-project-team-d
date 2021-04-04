@@ -4,6 +4,12 @@ let game = require('./Games')
 
 class Users extends ActiveRecord {
 
+  static joinedGames(userId) {
+    let query = `SELECT game_id FROM game_users WHERE user_id = ${user_id} AND;`
+
+    return db.all(query);
+  }
+
   static getAccountId(email) {
     let query = `SELECT id FROM users WHERE email = '${email}'`;
     return db.one(query);

@@ -17,14 +17,20 @@ block content
       )
       location.reload()
     });
+    $('#joinGame').on("click", async () => {
+      await fetch('/users/joinGame', {
+        method: 'POST'
+        }
+      )
+      location.reload()
+    });
   ul
     if games
       each game in games
         li= "Game id: " + game.game_id + " | Number of players: " + game.count +" |  "
-          a(href='/login.html')
+          a(href='/startGame')
             button(type="button" id="login") start game
-          a(href='/login.html')
-            button(type="button" id="login") join game
+          button(type="button" id="joinGame") join game
 
 
     else
