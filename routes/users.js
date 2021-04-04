@@ -14,6 +14,15 @@ router.get('/:name', (req, res, next) => {
   });
 });
 
+/* create game */
+router.post('/createGame', async (req, res, next) => {
+  console.log(req.cookies.email);
+  let accountId;
+  accountId = await Users.getAccountId(req.cookies.email);
+  Users.createGame(accountId);
+  res.send();
+});
+
 /* Register */
 router.post('/register', async (req, res, next) => {
   console.log("registering user");
@@ -49,19 +58,17 @@ function validateCredentials(req, res, next) {
 router.post('/login', async (req, res) => {
   let {email, password} = req.body
   let valid = await Users.validateLogin(email, password);
-  console.log('-----VALID?---------->',valid.count);
   if (valid.count == 0) {
     res.render('error', { 
       message: 'oh no an error!!',
-      error: 'incorrect logging credentials'
+      error: 'incorrect login credentials'
     });
   }
   else {
     res.cookie('session_id', 'testsession123');
+    res.cookie('email', email);
     res.redirect('/');
   }
-  //res.cookie('session_id', 'testsession123');
-  
 });
 
 module.exports = router;

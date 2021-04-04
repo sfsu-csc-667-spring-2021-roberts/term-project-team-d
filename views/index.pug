@@ -11,7 +11,7 @@ block content
   button(type="button" id="createGame") Create Game
   script.
     $('#createGame').on("click", async () => {
-      await fetch('createGame', {
+      await fetch('/users/createGame', {
         method: 'POST'
         }
       )
@@ -20,6 +20,9 @@ block content
   ul
     if games
       each game in games
-        li= "Game id: " + game.game_id + " | Number of players: " + game.count
+        li= "Game id: " + game.game_id + " | Number of players: " + game.count +" |  "
+          a(href='/login.html')
+            button(type="button" id="login") start game
+
     else
       strong No Game rooms! Create a game
