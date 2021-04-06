@@ -71,4 +71,12 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.get('/joinGame', (req, res) => {
+  res.send("<h1> you joined a game!</h1>");
+});
+
+router.get('/startGame', (req, res) => {
+  res.send("<h1> you joined a game!</h1>");
+});
+
 module.exports = router;

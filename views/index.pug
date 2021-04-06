@@ -19,7 +19,14 @@ block content
     });
     $('#joinGame').on("click", async () => {
       await fetch('/users/joinGame', {
-        method: 'POST'
+        method: 'GET'
+        }
+      )
+      location.reload()
+    });
+    $('#startGame').on("click", async () => {
+      await fetch('/users/joinGame', {
+        method: 'GET'
         }
       )
       location.reload()
@@ -28,8 +35,7 @@ block content
     if games
       each game in games
         li= "Game id: " + game.game_id + " | Number of players: " + game.count +" |  "
-          a(href='/startGame')
-            button(type="button" id="login") start game
+          button(type="button" id="startGame") start game
           button(type="button" id="joinGame") join game
 
 
