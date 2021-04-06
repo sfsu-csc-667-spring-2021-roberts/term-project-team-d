@@ -46,11 +46,22 @@ function validateCredentials(req, res, next) {
 }
 
 /* Login */
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
   let {email, password} = req.body
-  validateLogin(email, password);
-  res.cookie('session_id', 'testsession123');
-  res.redirect('/');
+  let valid = await Users.validateLogin(email, password);
+  console.log('-----VALID?---------->',valid.count);
+  if (valid.count == 0) {
+    res.render('error', { 
+      message: 'oh no an error!!',
+      error: 'incorrect logging credentials'
+    });
+  }
+  else {
+    res.cookie('session_id', 'testsession123');
+    res.redirect('/');
+  }
+  //res.cookie('session_id', 'testsession123');
+  
 });
 
 module.exports = router;

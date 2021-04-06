@@ -18,7 +18,17 @@ class Users extends ActiveRecord {
       return error;
     }
     //Login
-    login() {
+    static validateLogin(email,password) {
+      //first check if the email exists: counting 
+      //counting the number of rows when 
+      //we do a select email
+      
+      //then, do the same thing for the password.
+      let query = `SELECT COUNT(*) FROM users
+                   WHERE email = '${email}' AND
+                   password = '${password}'`;
+      return db.one(query)
+
     }
 
     //Create a game
