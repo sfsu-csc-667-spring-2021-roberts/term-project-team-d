@@ -8,11 +8,6 @@ router.get('/', (req, res, next) => {
   res.send('respond with a resource');
 });
 
-router.get('/:name', (req, res, next) => {
-  res.json({
-    name: req.params.name,
-  });
-});
 
 /* create game */
 router.post('/createGame', async (req, res, next) => {
@@ -77,6 +72,12 @@ router.get('/joinGame', (req, res) => {
 
 router.get('/startGame', (req, res) => {
   res.send("<h1> you joined a game!</h1>");
+});
+
+router.get('/:name', (req, res, next) => {
+  res.json({
+    name: req.params.name,
+  });
 });
 
 module.exports = router;

@@ -17,26 +17,14 @@ block content
       )
       location.reload()
     });
-    $('#joinGame').on("click", async () => {
-      await fetch('/users/joinGame', {
-        method: 'GET'
-        }
-      )
-      location.reload()
-    });
-    $('#startGame').on("click", async () => {
-      await fetch('/users/joinGame', {
-        method: 'GET'
-        }
-      )
-      location.reload()
-    });
   ul
     if games
       each game in games
         li= "Game id: " + game.game_id + " | Number of players: " + game.count +" |  "
-          button(type="button" id="startGame") start game
-          button(type="button" id="joinGame") join game
+          a(href='/startGame')
+            button(type="button" class="startGame") start game
+          a(href='/users/joinGame')
+            button(type="button" class="joinGame") join game
 
 
     else
