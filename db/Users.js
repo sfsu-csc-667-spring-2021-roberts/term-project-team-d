@@ -14,6 +14,17 @@ class Users extends ActiveRecord {
     let query = `SELECT id FROM users WHERE email = '${email}'`;
     return db.one(query);
   }
+
+  static getPassword(email) {
+    let query = `SELECT password FROM users WHERE email = '${email}'`;
+    return db.one(query);
+  }
+
+  static getUser(email) {
+    let query = `SELECT * FROM users WHERE email = '${email}'`;
+    return db.any(query);
+  }
+
     // register
   static async register(user) {
     let query = `INSERT INTO users(username, password, email)
@@ -56,7 +67,7 @@ class Users extends ActiveRecord {
   }
 
     //Start a game
-    startGame(){
+    startGame() {
         game.initializeCards();
         // deal out cards
         game.dealCards();

@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1= message
+  h2= error
+  h1  =======================
+  h2= error.status
+  pre #{error.stack}
+  a(href='/')
+    button(type="button" id="lobby") Back to Lobby

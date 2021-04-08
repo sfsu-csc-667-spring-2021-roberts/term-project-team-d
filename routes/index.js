@@ -4,13 +4,18 @@ let router = express.Router();
 let Games = require('../db/Games');
 const db = require('../db/connection');
 
-/* GET home page. */
-router.get('/', async (req, res, next) => {
-  let games = await Games.getGameList();
-  res.render('index', { 
-    title: 'Uno Project!!',
-    games: games
-  });
+/* GET home page. 
+  check if authenticated or unathenticated
+  */
+router.get('/', (req, res, next) => {
+  let authenticated = true;
+  // if authenticated send to lobby
+  if (authenticated) {
+    res.redirect('/lobby');
+  } else {
+  // else send to register/login
+  res.send('work in progress..');
+  }
 });
 
 
