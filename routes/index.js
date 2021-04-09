@@ -13,7 +13,6 @@ const db    = require('../db/connection');
   check if authenticated or unathenticated */
 router.get('/', (req, res) => {
   const { authorization } = req.headers;
-  console.log(authorization);
   if (authorization && authorization === '123') {
     res.render('unauthenticated/index');
   } else {

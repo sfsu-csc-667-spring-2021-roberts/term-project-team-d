@@ -1,6 +1,8 @@
 extends layout
 
 block content
+  if messages.error
+    p(style={color: 'red'})= messages.error
   form(action='/auth/login', method='POST')
     label(for='email') Email:
     input(name='email', type='email', id='email', title='at least 1 letter')

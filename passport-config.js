@@ -4,15 +4,16 @@ let Users = require('./db/Users');
 
 function initialize(passport) {
   const authenticateUser = async (email, password, done) => {
-    const user = await Users.getUser(email);
+    let user = await Users.getUser(email);
+    user = user[0];
     console.log('user inside passport config: ', user);
-    if (user == null) {
+    if (user == null || user == undefined) {
       return done(null, false, { message: 'No user with email'});
     }
     try {
-      if (await bcrypt.compare(password, user[0].password)) {
+      if (await bcrypt.compare(password, user.password)) {
         console.log('passwords match!');
-        return done(null, user[0]);
+        return done(null, user);
       } else {
         return done(null, false, { message: 'Password incorrect' });
       } 
