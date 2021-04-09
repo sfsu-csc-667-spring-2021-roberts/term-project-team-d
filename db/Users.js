@@ -25,6 +25,11 @@ class Users extends ActiveRecord {
     return db.any(query);
   }
 
+  static getUserById(id) {
+    let query = `SELECT * FROM users WHERE id = ${id}`;
+    return db.any(query);
+  }
+
     // register
   static async register(user) {
     let query = `INSERT INTO users(username, password, email)

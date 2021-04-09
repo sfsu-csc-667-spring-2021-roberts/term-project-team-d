@@ -2,19 +2,19 @@ if (process.env.NODE_ENV === 'development') {
   require('dotenv').config();
 }
 
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
+var createError  = require('http-errors');
+var express      = require('express');
+var path         = require('path');
 var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const passport = require('passport');
-const flash = require('express-flash');
-const session =  require('express-session');
+var logger       = require('morgan');
+const passport   = require('passport');
+const flash      = require('express-flash');
+const session    = require('express-session');
 
 const initializePassport = require('./passport-config');
-initializePassport(passport, 'email@email.com'); 
+initializePassport(passport); 
 
-var authRouter = require('./routes/authentication');
+var authRouter  = require('./routes/authentication');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var testsRouter = require('./routes/tests');

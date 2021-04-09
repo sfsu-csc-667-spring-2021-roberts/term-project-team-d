@@ -10,7 +10,6 @@ router.post('/register', async (req, res, next) => {
   let credentials = req.body;
   const hashedPassword = await bcrypt.hash(credentials.password, 10)
   credentials.password = hashedPassword;
-  console.log(credentials);
 
   let err = await Users.register(credentials);
   if (err) {
@@ -24,10 +23,9 @@ router.post('/register', async (req, res, next) => {
   }
 });
 
-
 router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/users/login',
+  successRedirect: '/lobby',
+  failureRedirect: '/login.html',
   failureFlash: true
 }));
 
