@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  form(action='/auth/login', method='POST')
+    label(for='email') Email:
+    input(name='email', type='email', id='email', title='at least 1 letter')
+    br
+    label(for='password') Password:
+    input(name='password', type='password', id='password')
+    br
+    input(type='submit', value='Login')
+  br
+  br
+  br
+  p or register for an account
+  form(action='/simpleRegister.html', methods='POST')
+    input(type='submit', value='Register')

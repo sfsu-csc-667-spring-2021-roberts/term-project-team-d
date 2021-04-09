@@ -21,7 +21,7 @@ router.get('/joinGame', (req, res) => {
 });
 
 router.get('/startGame', (req, res) => {
-  res.send("<h1> you joined a game!</h1>");
+  res.send("<h1> you started a game!</h1>");
 });
 
 router.get('/:name', (req, res, next) => {

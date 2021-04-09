@@ -1,7 +1,9 @@
+/* File: app.js */
 if (process.env.NODE_ENV === 'development') {
   require('dotenv').config();
 }
 
+/* Libraries */
 var createError  = require('http-errors');
 var express      = require('express');
 var path         = require('path');
@@ -11,17 +13,19 @@ const passport   = require('passport');
 const flash      = require('express-flash');
 const session    = require('express-session');
 
-const initializePassport = require('./passport-config');
-initializePassport(passport); 
-
+/* Routes */
 var authRouter  = require('./routes/authentication');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var testsRouter = require('./routes/tests');
 var gamesRouter = require('./routes/game');
 var lobbyRouter = require('./routes/lobby');
+var testsRouter = require('./routes/tests');
 
 var app = express();
+
+/* Passport */
+const initializePassport = require('./passport-config');
+initializePassport(passport); 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

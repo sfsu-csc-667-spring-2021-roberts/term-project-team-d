@@ -4,6 +4,10 @@ const passport = require('passport');
 let Users = require('../db/Users');
 const bcrypt = require('bcrypt');
 
+router.get('/', (req, res, next) => {
+  res.render('unauthenticated/index');
+});
+
 /* Register */
 router.post('/register', async (req, res, next) => {
   console.log(req.body);
