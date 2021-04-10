@@ -3,7 +3,8 @@ extends layout
 block content
   h3 Welcome to Team D, Uno
   if messages.error
-    p(style={color: 'red'})= messages.error
+    //p(style={color: 'red'})= messages.error
+    p(style={color: 'red'}) Incorrect credentials
   form(action='/auth/login', method='POST')
     label(for='email') Email:
     input(name='email&nbsp&nbsp&nbsp&nbsp', type='email', id='email', placeholder='email', pattern="[\x00-\x7f]+",  title='at least 1 letter')
