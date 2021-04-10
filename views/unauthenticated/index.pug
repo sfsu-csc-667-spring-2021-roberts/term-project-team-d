@@ -6,10 +6,10 @@ block content
     p(style={color: 'red'})= messages.error
   form(action='/auth/login', method='POST')
     label(for='email') Email:
-    input(name='email', type='email', id='email', title='at least 1 letter')
+    input(name='email&nbsp&nbsp&nbsp&nbsp', type='email', id='email', placeholder='email', pattern="[\x00-\x7f]+",  title='at least 1 letter')
     br
     label(for='password') Password:
-    input(name='password', type='password', id='password')
+    input(name='password&nbsp', type='password', placeholder='password', pattern= '[\x00-\x7f}\]{8,}', id='password', title='at least 8 letters')
     br
     input(type='submit', value='Login')
   br
