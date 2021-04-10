@@ -5,21 +5,15 @@
  */
 var express = require('express');
 let router  = express.Router();
-var path    = require('path');
-let Games   = require('../db/Games');
-const db    = require('../db/connection');
 
 /* GET home page. 
   check if authenticated or unathenticated */
-router.get('/', (req, res) => {
-  const { authorization } = req.headers;
-  if (authorization && authorization === '123') {
-    res.render('unauthenticated/index');
+router.get('/', (req, res, next) => {
+  if (req.user) {
+    res.redirect('/lobby');
   } else {
-    res.render('unauthenticated/index');
+    next()
   }
 });
-
-
 
 module.exports = router;

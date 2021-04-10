@@ -23,10 +23,6 @@ var testsRouter = require('./routes/tests');
 
 var app = express();
 
-/* Passport */
-const initializePassport = require('./passport-config');
-initializePassport(passport); 
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -44,13 +40,27 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+/* Passport */
+const initializePassport = require('./passport-config');
+initializePassport(passport); 
+
+function loggedIn(req, res, next) {
+  console.log(req.user);
+  if (req.user) {
+    next()
+  } else {
+    res.render('unauthenticated/index');
+  }
+}
 
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
+app.use(loggedIn);
 app.use('/lobby', lobbyRouter);
 app.use('/users', usersRouter);
 app.use('/game', gamesRouter);
 app.use('/tests', testsRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

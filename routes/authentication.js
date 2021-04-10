@@ -1,16 +1,12 @@
-var express = require('express');
-var router = express.Router();
+var express    = require('express');
+var router     = express.Router();
+let Users      = require('../db/Users');
 const passport = require('passport');
-let Users = require('../db/Users');
-const bcrypt = require('bcrypt');
-
-router.get('/', (req, res, next) => {
-  res.render('unauthenticated/index');
-});
+const bcrypt   = require('bcrypt');
 
 /* Register */
 router.post('/register', async (req, res, next) => {
-  console.log(req.body);
+  //console.log(req.body);
   let credentials = req.body;
   const hashedPassword = await bcrypt.hash(credentials.password, 10)
   credentials.password = hashedPassword;
@@ -27,11 +23,18 @@ router.post('/register', async (req, res, next) => {
   }
 });
 
+/* Login */
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/lobby',
   failureRedirect: '/',
   failureFlash: true
 }));
+
+/* Logout */
+router.post('/logout', (req, res) => {
+  req.logout()
+  res.redirect('/');
+});
 
 /* OLD Login 
 router.post('/login', async (req, res) => {

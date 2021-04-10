@@ -14,6 +14,13 @@ block content
       )
       location.reload()
     });
+    $('#logout').on("click", async () => {
+      await fetch('/auth/logout', {
+        method: 'POST'
+        }
+      )
+      location.reload()
+    });
   ul
     if games
       each game in games
