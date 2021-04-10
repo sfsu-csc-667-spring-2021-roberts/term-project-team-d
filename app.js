@@ -17,7 +17,6 @@ const session    = require('express-session');
 var authRouter  = require('./routes/authentication');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var gamesRouter = require('./routes/game');
 var lobbyRouter = require('./routes/lobby');
 var testsRouter = require('./routes/tests');
 

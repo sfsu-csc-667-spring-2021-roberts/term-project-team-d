@@ -21,14 +21,19 @@ block content
       )
       location.reload()
     });
+
   ul
     if games
       each game in games
         li= "Game id: " + game.game_id + " | Number of players: " + game.count +" |  "
-          a(href='/startGame')
+          a(href='/users/startGame')
             button(type="button" class="startGame") start game
           a(href='/users/joinGame')
             button(type="button" class="joinGame") join game
+        if game.joinedAndNotStarted
+          a(href='/users/leaveGame')
+            button(type="button" class="leaveGame") leave game
+  
 
 
     else

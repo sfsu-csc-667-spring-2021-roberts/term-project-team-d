@@ -8,12 +8,9 @@ router.get('/', (req, res, next) => {
 });
 
 /* create game */
-router.post('/createGame', async (req, res, next) => {
-  console.log(req.cookies.email);
-  let accountId;
-  accountId = await Users.getAccountId(req.cookies.email);
-
-  Users.createGame(accountId);
+router.post('/createGame', async (req, res) => {
+  console.log(req.user.id);
+  Users.createGame(req.user.id);
   res.send();
 });
 
