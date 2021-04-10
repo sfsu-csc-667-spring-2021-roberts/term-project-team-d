@@ -1,6 +1,7 @@
 extends layout
 
 block content
+  h3 Welcome to Team D, Uno
   if messages.error
     p(style={color: 'red'})= messages.error
   form(action='/auth/login', method='POST')
