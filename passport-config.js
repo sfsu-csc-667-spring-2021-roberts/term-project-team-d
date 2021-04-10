@@ -6,13 +6,13 @@ function initialize(passport) {
   const authenticateUser = async (email, password, done) => {
     let user = await Users.getUser(email);
     user = user[0];
-    console.log('user inside passport config: ', user);
+    //console.log('user inside passport config: ', user);
     if (user == null || user == undefined) {
       return done(null, false, { message: 'No user with email'});
     }
     try {
       if (await bcrypt.compare(password, user.password)) {
-        console.log('passwords match!');
+        //console.log('passwords match!');
         return done(null, user);
       } else {
         return done(null, false, { message: 'Password incorrect' });
@@ -26,7 +26,7 @@ function initialize(passport) {
   passport.serializeUser((user, done) => done(null, user.id));
   passport.deserializeUser(async (id, done) => { 
     newId = await Users.getUserById(id);
-    console.log('newId = ', newId);
+    //console.log('newId = ', newId);
     return done(null, newId[0]);
   });
 }
