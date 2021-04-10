@@ -45,7 +45,6 @@ const initializePassport = require('./passport-config');
 initializePassport(passport); 
 
 function loggedIn(req, res, next) {
-  console.log(req.user);
   if (req.user) {
     next()
   } else {
@@ -58,7 +57,6 @@ app.use('/auth', authRouter);
 app.use(loggedIn);
 app.use('/lobby', lobbyRouter);
 app.use('/users', usersRouter);
-app.use('/game', gamesRouter);
 app.use('/tests', testsRouter);
 
 
