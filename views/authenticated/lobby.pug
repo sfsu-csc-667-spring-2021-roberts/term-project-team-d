@@ -33,8 +33,9 @@ block content
         if game.joinedAndNotStarted
           a(href='/users/leaveGame')
             button(type="button" class="leaveGame") leave game
-  
-
-
     else
       strong No Game rooms! Create a game
+  
+  // imports
+  script(src='/socket.io/socket.io.js')
+  script(src='js/main.js')

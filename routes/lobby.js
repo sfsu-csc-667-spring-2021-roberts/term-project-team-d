@@ -8,10 +8,8 @@ const db = require('../db/connection');
 /* GET home page. */
 router.get('/', async (req, res, next) => {
   let games = await Games.getGameList();
-  console.log(req.user);
   for (let game of games) {
     game.joinedAndNotStarted = await GU.joinedAndNotStarted(req.user.id, game.game_id);
-    console.log(game);
   }
   res.render('authenticated/lobby', { 
     title: 'Uno Project!!',

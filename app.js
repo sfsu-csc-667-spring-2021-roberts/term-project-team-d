@@ -20,12 +20,14 @@ var usersRouter = require('./routes/users');
 var lobbyRouter = require('./routes/lobby');
 var testsRouter = require('./routes/tests');
 
-var app = express();
+// create express server
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+// Global Middleware
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
