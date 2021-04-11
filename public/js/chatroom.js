@@ -19,8 +19,8 @@ chatForm.submit( e => {
   socket.emit('chatMessage', msg);
 
   // Clear Inputs
-  e.target.element.msg.value = '';
-  e.target.element.msg.focus();
+  e.target.elements.msg.value = '';
+  e.target.elements.msg.focus();
 });
 
 // output message to DOM
