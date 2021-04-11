@@ -1,14 +1,16 @@
 const socketio = require('socket.io');
 const io = socketio();
+const formatMessage = require('./utils/messages');
 
 let socketAPI = { };
 // socket logic here
 socketAPI.io = io;
 
+
 // runs when client connects
 io.on('connection', socket => {
   // Welcome current user
-  socket.emit('message', 'System: Welcome to Uno Chat!');
+  socket.emit('message', formatMessage('System', 'Welcome to Uno Chat!'));
   // Broadcasts when client connects
   socket.broadcast.emit('message', 'System: a user has joined the chat');
   // runs when a client disconnects
