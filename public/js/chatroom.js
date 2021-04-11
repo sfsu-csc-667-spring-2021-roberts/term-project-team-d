@@ -1,4 +1,5 @@
 const chatForm = $('#chat-form');
+const chatBox = $('#chat-box');
 
 const socket = io();
 
@@ -6,6 +7,8 @@ const socket = io();
 socket.on('message', message => {
   console.log(message);
   outputMessage(message);
+  // scrolldown automatically
+  chatBox.scrollTop(chatBox[0].scrollHeight);
 });
 
 chatForm.submit( e => {
@@ -14,6 +17,10 @@ chatForm.submit( e => {
   const msg = e.target.elements.msg.value;
   // emitting a message to the server
   socket.emit('chatMessage', msg);
+
+  // Clear Inputs
+  e.target.element.msg.value = '';
+  e.target.element.msg.focus();
 });
 
 // output message to DOM
