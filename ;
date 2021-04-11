@@ -38,16 +38,15 @@ block content
 
   // CHAT ROOM
   // chat box
-  div(id='chat-box')
 
   // user input field
-  form(id='chat-form')
+  form(action='/sendChatMessage', method='POST')
     label(for='chatTextInput') Message:
-    input(type='text' name='chatTextInput' id='msg' 
+    input(type='text' name='chatTextInput' id='chatTextInput' 
     placeholder='type message')
     input(type='submit' style='display: none')
   
   
   // imports
   script(src='/socket.io/socket.io.js')
-  script(src='js/chatroom.js')
+  script(src='js/main.js')
