@@ -14,12 +14,13 @@ for (let cookie of cookiesArr) {
     break;
   }
 }
-console.log(cookieKeyValue);
-console.log(cookieValue);
+//console.log(cookieKeyValue);
+//console.log(cookieValue);
 
 //const socket = io('http://localhost:3000/', {
 //  query: 'session_id=' + cookieValue
 //});
+
 
 const socket = io();
 
@@ -29,12 +30,6 @@ socket.on('message', message => {
   outputMessage(message);
   // scrolldown automatically
   chatBox.scrollTop(chatBox[0].scrollHeight);
-});
-
-socket.on("connect_error", err => {
-  console.log(err instanceof Error); // true
-  console.log(err.message); // not authorized
-  console.log(err.data); // { content: "Please retry later" }
 });
 
 chatForm.submit( e => {
