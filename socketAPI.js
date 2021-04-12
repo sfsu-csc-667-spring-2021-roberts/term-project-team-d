@@ -1,7 +1,5 @@
 const socketio         = require('socket.io');
 const io               = socketio();
-const passportSocketIo = require('passport.socketio');
-const sessionStore     = require('./app');
 const moment           = require('moment');
 
 
