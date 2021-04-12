@@ -1,6 +1,26 @@
 const chatForm = $('#chat-form');
 const chatBox = $('#chat-box');
 
+/* Parsing cookies to get connect.sid for passport.sockio */
+let cookies = document.cookie;
+let cookiesArr = cookies.split(',');
+let cookieKeyValue = "";
+let cookieValue = "";
+for (let cookie of cookiesArr) {
+  cookieKeyValue = cookie
+  cookie = cookie.split('=');
+  if (cookie[0] == 'connect.sid') {
+    cookieValue = cookie[1];
+    break;
+  }
+}
+console.log(cookieKeyValue);
+console.log(cookieValue);
+
+//const socket = io('http://localhost:3000/', {
+//  query: 'session_id=' + cookieValue
+//});
+
 const socket = io();
 
 // Message from server
@@ -9,6 +29,12 @@ socket.on('message', message => {
   outputMessage(message);
   // scrolldown automatically
   chatBox.scrollTop(chatBox[0].scrollHeight);
+});
+
+socket.on("connect_error", err => {
+  console.log(err instanceof Error); // true
+  console.log(err.message); // not authorized
+  console.log(err.data); // { content: "Please retry later" }
 });
 
 chatForm.submit( e => {

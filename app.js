@@ -12,6 +12,7 @@ var logger       = require('morgan');
 const passport   = require('passport');
 const flash      = require('express-flash');
 const session    = require('express-session');
+const sessionStore = new session.MemoryStore();
 
 /* Routes */
 var authRouter  = require('./routes/authentication');
@@ -35,7 +36,9 @@ app.use(flash());
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  store: sessionStore,
+  cookie: { httpOnly: false }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -79,4 +82,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
+module.exports = sessionStore;
+module.exports = passport;
 module.exports = app;

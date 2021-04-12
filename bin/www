@@ -8,6 +8,9 @@ var app = require('../app');
 var debug = require('debug')('uno-project:server');
 var http = require('http');
 var socketAPI = require('../socketAPI');
+const sessionStore     = require('../app');
+const cookieParser     = require('cookie-parser')
+const passportSocketIo = require('passport.socketio');
 
 /**
  * Get port from environment and store in Express.
@@ -22,8 +25,39 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+console.log("before authorization");
+/* socketio config */
+socketAPI.io.use(passportSocketIo.authorize({
+     cookieParser:   cookieParser,
+     key:            'connect.sid',
+     secret:         process.env.SESSION_SECRET,
+     store:          sessionStore,
+     fail:           onAuthorizeFail,
+     success:        onAuthorizeSuccess
+}));
+console.log("after authorization");
+
+function onAuthorizeFail(data, message, error, accept){
+  console.log('FAILED TO AUTHORIZE');
+  console.log(message);
+  // error indicates whether the fail is due to an error or just a unauthorized client
+  if(error)  throw new Error(message);
+  // send the (not-fatal) error-message to the client and deny the connection
+  return accept(new Error(message));
+}
+
+function onAuthorizeSuccess(data, accept) {
+  console.log("Successful IO connection");
+  // accept connection
+  accept();
+
+  // reject connection (for whatever reason)
+  //accept(new Error('optional reason'));
+}
+
 /* attach socketio */
 socketAPI.io.attach(server);
+console.log("attached socketio to express");
 
 /**
  * Listen on provided port, on all network interfaces.
