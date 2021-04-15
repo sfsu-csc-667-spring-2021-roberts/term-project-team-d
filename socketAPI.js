@@ -1,16 +1,54 @@
 const socketio         = require('socket.io');
 const io               = socketio();
 const moment           = require('moment');
-
+const passportSocketIo = require('passport.socketio')
+const { sessionStore } = require('./app.js');
+console.log(sessionStore);
 
 /* middleware */
+// Get session cookie then deserialize
 io.use((socket, next) => {
-  console.log('im a io middleware!');
-  next()
+  let data = socket.handshake;
+  let cookieString = socket.handshake.headers.cookie;
+  let cookie = cookieString.split('=');
+  // got the connect.sid
+  //console.log(cookie);
+  // get length of sessions
+  //console.log(cookie[1]);
+  //try {
+  //  sessionStore.length(( err, length ) => {
+  //    if (err) return next(err);
+  //    console.log(length);
+  //  });
+  //} catch (e) {
+  //  console.log(e);
+  //}
+  //try {
+  //  sessionStore.get(cookie[1], (err, session) => {
+  //    console.log('test2');
+  //    //if (err) return next(err);
+  //    //if (!session) return next(new Error('Session Not Found'));
+  //    //socket.handshake.session = session;
+  //    //next();
+  //  });
+  //} catch (e) {
+  //  console.log(e);
+  //}
+  next();
 });
 
-// runs when client connects
+io.use(passportSocketIo.authorize({
+  key:          'connect.sid',     
+  secret:       process.env.SESSION_SECRET,    
+  store:        sessionStore
+}));
+
+// runs when client connects, need to get user here
 io.on('connection', socket => {
+  console.log('SOCKET.IO ON CONNECTION');
+  console.log(socket.request.user);
+
+
   // create the auth token
   // Welcome current user
   message = formatMessage('System', 'Welcome to Uno Chat!')

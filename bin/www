@@ -4,9 +4,9 @@
  * Module dependencies.
  */
 
-var app = require('../app');
-var debug = require('debug')('uno-project:server');
-var http = require('http');
+var { app }       = require('../app');
+var debug     = require('debug')('uno-project:server');
+var http      = require('http');
 var socketAPI = require('../socketAPI');
 
 /**
