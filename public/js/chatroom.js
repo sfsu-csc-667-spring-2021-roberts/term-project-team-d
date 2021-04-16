@@ -17,10 +17,10 @@ for (let cookie of cookiesArr) {
 //console.log(cookieKeyValue);
 //console.log(cookieValue);
 
+/* for passport.socketio */
 //const socket = io('http://localhost:3000/', {
 //  query: 'session_id=' + cookieValue
 //});
-
 
 const socket = io();
 
@@ -34,9 +34,7 @@ socket.on('message', message => {
 
 chatForm.submit( e => {
   e.preventDefault();
-  // get message text
   const msg = e.target.elements.msg.value;
-  // emitting a message to the server
   socket.emit('chatMessage', msg);
 
   // Clear Inputs
@@ -44,10 +42,10 @@ chatForm.submit( e => {
   e.target.elements.msg.focus();
 });
 
-// output message to DOM
 function outputMessage(message) {
   const div = document.createElement('div');
   div.classList.add('message');
-  div.innerHTML = `${message}`;
+  div.innerHTML = `<p class="chat-messages"><span> [${message.timestamp}]</span>
+    <strong>${message.user}:</strong> ${message.text}</p>`;
   $('#chat-box').append(div);
 }
