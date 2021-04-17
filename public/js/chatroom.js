@@ -75,15 +75,15 @@ $('#logout').on('click', async () => {
   await fetch('/auth/logout', {
     method: 'POST'
   })
+  location.reload();
 });
 
-$('.joinGame').on('click', (event) => {
-  let gameId = $(event.target).attr("id");
-  fetch('/users/joinGame', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ 'gameId': gameId })
-  });
-});
+//$('.joinGame').on('click', (event) => {
+//  let gameId = $(event.target).attr("id");
+//  fetch(`/users/joinGame/${gameId}`, {
+//    method: 'GET',
+//    headers: {
+//      'Content-Type': 'text/html'
+//    },
+//  });
+//});

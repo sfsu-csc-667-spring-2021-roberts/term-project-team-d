@@ -6,23 +6,11 @@ block content
   p This is the game room for game #{gameId}
   button(type="button" id="logout") logout
   li
-    = "Game id: " + game_id + " | Number of players: " 
+    = "Game id: " + gameId + " | Number of players: " 
   a(href='/users/startGame')
     button(type="button" class="startGame") start game
   a(href='/users/leaveGame')
     button(type="button" class="leaveGame") leave game
-  else
-    strong No Game rooms! Create a game
-
-  // CHAT ROOM
-  div(id='chat-box')
-
-  // user text input field
-  form(id='chat-form')
-    label(for='chatTextInput') Message:
-    input(type='text' name='chatTextInput' id='msg' 
-    placeholder='type message')
-    input(type='submit' style='display: none')
   
   // ======== Imported Libraries ==========
   script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js')

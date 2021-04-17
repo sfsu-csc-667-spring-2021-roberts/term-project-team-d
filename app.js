@@ -40,7 +40,7 @@ app.use(session({
   store: sessionStore,
   resave: false,
   saveUninitialized: false,
-  cookie: { httpOnly: false } // careful here
+  cookie: { httpOnly: true } // careful here
 }));
 app.use(passport.initialize());
 app.use(passport.session());

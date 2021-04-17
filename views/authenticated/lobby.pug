@@ -10,7 +10,11 @@ block content
     if games
       each game in games
         li= "Game id: " + game.game_id
-          button(type="button" class="joinGame" id=game.game_id) join game
+          - let url = '/users/joinGame/' + game.game_id
+          form(class='joinGameForm' action=url method='GET')
+            label join game
+            input(type='submit' class='joinGameButton' id=game.game_id
+            name='joinGame', value='join game')
         if game.joinedAndNotStarted
           a(href='/users/leaveGame')
             button(type="button" class="leaveGame") leave game

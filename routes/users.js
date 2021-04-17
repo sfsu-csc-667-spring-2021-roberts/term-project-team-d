@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 let Users = require('../db/Users');
+let Games = require('../db/Games');
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
@@ -13,9 +14,11 @@ router.post('/createGame', async (req, res) => {
   res.send({gameId: gameId.id});
 });
 
-router.post('/joinGame', (req, res) => {
+router.get('/joinGame/:gameId', (req, res) => {
   // TODO call ORM join game
-  let gameId = req.body.gameId;
+  let gameId = req.params.gameId;
+  let numPlayers = Game.getNumPlayers(gameId);
+  console.log(numPlayers);
   console.log(gameId);
   res.render('authenticated/gameLobby', {
     title: 'Game Room',
