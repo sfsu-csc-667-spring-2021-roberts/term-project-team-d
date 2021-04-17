@@ -20,6 +20,12 @@ class Games extends ActiveRecord {
     //let query = `SELECT id FROM games`
     return db.any(query);
   }
+
+  static getNumPlayers(gameId) {
+    let query = `SELECT COUNT(user_id)
+    FROM game_users WHERE game_id = ${gameId}`
+    return db.one(query);
+  }
  
   endGame() {
     

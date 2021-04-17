@@ -9,13 +9,18 @@ router.get('/', (req, res, next) => {
 
 /* create game */
 router.post('/createGame', async (req, res) => {
-  console.log(req.user.id);
-  Users.createGame(req.user.id);
-  res.send();
+  let gameId = await Users.createGame(req.user.id);
+  res.send({gameId: gameId.id});
 });
 
-router.get('/joinGame', (req, res) => {
-  res.send("<h1> you joined a game!</h1>");
+router.post('/joinGame', (req, res) => {
+  // TODO call ORM join game
+  let gameId = req.body.gameId;
+  console.log(gameId);
+  res.render('authenticated/gameLobby', {
+    title: 'Game Room',
+    gameId: gameId
+  });
 });
 
 router.get('/startGame', (req, res) => {

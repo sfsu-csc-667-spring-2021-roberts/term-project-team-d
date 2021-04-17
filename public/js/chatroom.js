@@ -1,51 +1,89 @@
-const chatForm = $('#chat-form');
-const chatBox = $('#chat-box');
-
+/* ====== Getting Cookie for User Object (Perhaps unecessary) ========*/
 /* Parsing cookies to get connect.sid for passport.sockio */
-let cookies = document.cookie;
-let cookiesArr = cookies.split(',');
-let cookieKeyValue = "";
-let cookieValue = "";
-for (let cookie of cookiesArr) {
-  cookieKeyValue = cookie
-  cookie = cookie.split('=');
-  if (cookie[0] == 'connect.sid') {
-    cookieValue = cookie[1];
-    break;
-  }
-}
-//console.log(cookieKeyValue);
+//let cookies = document.cookie;
+//let cookiesArr = cookies.split(',');
+//let cookieKeyValue = "";
+//let cookieValue = "";
+//for (let cookie of cookiesArr) {
+//  cookieKeyValue = cookie
+//  cookie = cookie.split('=');
+//  if (cookie[0] == 'connect.sid') {
+//    cookieValue = cookie[1];
+//    break;
+//  }
+//}
+////console.log(cookieKeyValue);
 //console.log(cookieValue);
+//console.log(window.location.host);
 
-/* for passport.socketio */
-//const socket = io('http://localhost:3000/', {
-//  query: 'session_id=' + cookieValue
+//const socket = io.connect('//' + window.location.host, {
+//  query: 'connect.sid=' + cookieValue
 //});
 
+/* ======== Socketio ============*/
 const socket = io();
 
 socket.on('message', message => {
+  const chatBox = $('#chat-box');
   const div = document.createElement('div');
+
   div.classList.add('message');
   div.innerHTML = `<p class="chat-messages"><span> [${message.timestamp}]</span>
     <strong>${message.user}:</strong> ${message.text}</p>`;
-  $('#chat-box').append(div);
+  chatBox.append(div);
 
   // scrolldown automatically
   chatBox.scrollTop(chatBox[0].scrollHeight);
 });
 
-socket.on('createGame', () => {
-  div.classList.add('gameList');
-  div.innerHTML = 'new game created';
+socket.on('createGame', (gameId) => {
+  const gameList = $('#gameList');
+  const div = document.createElement('div');
+
+  div.classList.add('gameli');
+  div.innerHTML = '<li>Game id: ' + gameId + '| Players: 1 </div>';
+  gameList.append(div);
 });
+
+
+/* ========= Event Listeners ========== */
+const chatForm = $('#chat-form');
 
 chatForm.submit( e => {
   e.preventDefault();
   const msg = e.target.elements.msg.value;
   socket.emit('chatMessage', msg);
 
-  // Clear Inputs
+  // Clear text input field for user
   e.target.elements.msg.value = '';
   e.target.elements.msg.focus();
+});
+
+$('#createGame').on("click", async () => {
+  // returns gameId
+  let response = await fetch('/users/createGame', {
+    method: 'POST',
+  });
+  let { gameId } = await response.json();
+
+  // send gameId to socket
+  socket.emit('createGame', gameId);
+
+  });
+
+$('#logout').on('click', async () => {
+  await fetch('/auth/logout', {
+    method: 'POST'
+  })
+});
+
+$('.joinGame').on('click', (event) => {
+  let gameId = $(event.target).attr("id");
+  fetch('/users/joinGame', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ 'gameId': gameId })
+  });
 });

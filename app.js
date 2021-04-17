@@ -4,23 +4,24 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 /* Libraries */
-var createError  = require('http-errors');
-var express      = require('express');
-var path         = require('path');
-var cookieParser = require('cookie-parser');
-var logger       = require('morgan');
-const passport   = require('passport');
-const flash      = require('express-flash');
-const session    = require('express-session');
+var createError    = require('http-errors');
+var express        = require('express');
+var path           = require('path');
+var cookieParser   = require('cookie-parser');
+var logger         = require('morgan');
+const passport     = require('passport');
+const flash        = require('express-flash');
+const session      = require('express-session');
 const sessionStore = new session.MemoryStore();
 //console.log(sessionStore);
 
 /* Routes */
-var authRouter  = require('./routes/authentication');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var lobbyRouter = require('./routes/lobby');
-var testsRouter = require('./routes/tests');
+var authRouter      = require('./routes/authentication');
+var indexRouter     = require('./routes/index');
+var usersRouter     = require('./routes/users');
+var lobbyRouter     = require('./routes/lobby');
+var gameLobbyRouter = require('./routes/gameLobby');
+var testsRouter     = require('./routes/tests');
 
 // create express server
 const app = express();
@@ -57,13 +58,14 @@ function loggedIn(req, res, next) {
   }
 }
 
+/* ============= ROUTES ============= */
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use(loggedIn);
 app.use('/lobby', lobbyRouter);
 app.use('/users', usersRouter);
+app.use('/gameLobby', gameLobbyRouter);
 app.use('/tests', testsRouter);
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -3,6 +3,7 @@ const io               = socketio();
 const moment           = require('moment');
 const passportSocketIo = require('passport.socketio')
 const { sessionStore } = require('./app.js');
+const Game             = require('./db/Games');
 
 /* ============ MIDDLEWARE =====================*/
 io.use(passportSocketIo.authorize({
@@ -11,7 +12,7 @@ io.use(passportSocketIo.authorize({
   store:        sessionStore
 }));
 
-/* ============ CONNECTION =====================*/
+/* ============ ON CONNECTION =====================*/
 io.on('connection', socket => {
   console.log(socket.request.user);
 
@@ -26,8 +27,8 @@ io.on('connection', socket => {
     io.emit('message', formatMessage(socket.request.user.username, msg));
   });
 
-  socket.on('createGame', () => {
-    io.emit('createGame');
+  socket.on('createGame', (gameId) => {
+    io.emit('createGame', gameId);
   });
 
   socket.on('disconnect', () => {
@@ -37,6 +38,7 @@ io.on('connection', socket => {
 });
 
 
+/* =========== Helper Functions ================ */
 function formatMessage(user, text) {
   return { 
     user, 
