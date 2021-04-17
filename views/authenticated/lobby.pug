@@ -10,19 +10,15 @@ block content
     $('#createGame').on("click", async () => {
       await fetch('/users/createGame', {
         method: 'POST'
-        }
-      )
-      location.reload()
+      })
     });
     $('#logout').on("click", async () => {
       await fetch('/auth/logout', {
         method: 'POST'
-        }
-      )
-      location.reload()
+      })
     });
 
-  ul
+  ul.gameList
     if games
       each game in games
         li= "Game id: " + game.game_id + " | Number of players: " + game.count +" |  "
@@ -37,16 +33,14 @@ block content
       strong No Game rooms! Create a game
 
   // CHAT ROOM
-  // chat box
   div(id='chat-box')
 
-  // user input field
+  // user text input field
   form(id='chat-form')
     label(for='chatTextInput') Message:
     input(type='text' name='chatTextInput' id='msg' 
     placeholder='type message')
     input(type='submit' style='display: none')
-  
   
   // imports
   script(src='/socket.io/socket.io.js')

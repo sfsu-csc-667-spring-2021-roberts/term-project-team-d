@@ -21,14 +21,19 @@ io.on('connection', socket => {
   socket.broadcast.emit('message', 
     formatMessage('System', 'a user has joined the chat'));
 
+    // listen for chat message
+  socket.on('chatMessage', (msg) => {
+    io.emit('message', formatMessage(socket.request.user.username, msg));
+  });
+
+  socket.on('createGame', () => {
+    io.emit('createGame');
+  });
+
   socket.on('disconnect', () => {
     io.emit('message', 'System: A user has left the chat');
   });
 
-  // listen for chat message
-  socket.on('chatMessage', (msg) => {
-    io.emit('message', formatMessage(socket.request.user.username, msg));
-  });
 });
 
 

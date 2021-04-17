@@ -24,12 +24,20 @@ for (let cookie of cookiesArr) {
 
 const socket = io();
 
-// Message from server
 socket.on('message', message => {
-  console.log(message);
-  outputMessage(message);
+  const div = document.createElement('div');
+  div.classList.add('message');
+  div.innerHTML = `<p class="chat-messages"><span> [${message.timestamp}]</span>
+    <strong>${message.user}:</strong> ${message.text}</p>`;
+  $('#chat-box').append(div);
+
   // scrolldown automatically
   chatBox.scrollTop(chatBox[0].scrollHeight);
+});
+
+socket.on('createGame', () => {
+  div.classList.add('gameList');
+  div.innerHTML = 'new game created';
 });
 
 chatForm.submit( e => {
@@ -41,11 +49,3 @@ chatForm.submit( e => {
   e.target.elements.msg.value = '';
   e.target.elements.msg.focus();
 });
-
-function outputMessage(message) {
-  const div = document.createElement('div');
-  div.classList.add('message');
-  div.innerHTML = `<p class="chat-messages"><span> [${message.timestamp}]</span>
-    <strong>${message.user}:</strong> ${message.text}</p>`;
-  $('#chat-box').append(div);
-}
