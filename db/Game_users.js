@@ -1,5 +1,6 @@
-let db = require('./connection');
-let ActiveRecord = require('./ActiveRecord');
+const db = require('./connection');
+const ActiveRecord = require('./ActiveRecord');
+const Games = require('./Games');
 
 class Game_users extends ActiveRecord {
   id = -1;
@@ -27,7 +28,23 @@ class Game_users extends ActiveRecord {
   drawFirstNCards(player, n) {
   }
 
-  joinGame() {
+  // userId, gameId -> void
+  static async joinGame(gameId, userId) {
+    //get current players and increment for player_num
+    let { count: numPlayers } = await Games.getNumPlayers(gameId);
+    console.log(numPlayers);
+
+    let query = `INSERT INTO game_users(game_id, user_id, player_num, winner)
+      VALUES(${gameId}, ${userId}, ${++numPlayers}, 0)`;
+
+    db.none(query);
+  }
+
+  // userId, gameId -> void
+  static leaveGame(gameId, userId) {
+    query = `DELETE FROM game_users
+      WHERE user_id = ${userId} AND game_id = ${gameId}`
+    db.none(query);
   }
 
   drawCard() {

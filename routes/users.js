@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 let Users = require('../db/Users');
 let Games = require('../db/Games');
+let GU = require('../db/Game_users');
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
@@ -14,15 +15,31 @@ router.post('/createGame', async (req, res) => {
   res.send({gameId: gameId.id});
 });
 
-router.get('/joinGame/:gameId', (req, res) => {
-  // TODO call ORM join game
-  let gameId = req.params.gameId;
-  let numPlayers = Game.getNumPlayers(gameId);
-  console.log(numPlayers);
-  console.log(gameId);
+router.get('/joinGame/:gameId', async (req, res) => {
+  let gameId  = req.params.gameId;
+  let userId = req.user.id;
+
+  // Insert into DB
+  GU.joinGame(gameId, userId);
+
+  // Render page
+  let { count: numPlayers } = await Games.getNumPlayers(gameId);
   res.render('authenticated/gameLobby', {
     title: 'Game Room',
-    gameId: gameId
+    gameId: gameId,
+    numPlayers: numPlayers
+  });
+});
+
+router.get('/leaveGame/:gameId', async (req, res) => {
+  // TODO update game_users to leave the game
+  let games = await Games.getGameList();
+  for (let game of games) {
+    game.joinedAndNotStarted = await GU.joinedAndNotStarted(req.user.id, game.game_id);
+  }
+  res.render('authenticated/lobby', { 
+    title: 'Uno Project!!',
+    games: games
   });
 });
 
