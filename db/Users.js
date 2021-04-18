@@ -60,12 +60,12 @@ class Users extends ActiveRecord {
 
   //Create a game
   static async createGame(id) {
-      let gameId = await db.one(`
+      let { id: gameId } = await db.one(`
         INSERT INTO games(current_player, clockwise, started) 
         VALUES(1, 1, 0) RETURNING id`
       );
       let query = `INSERT INTO game_users(game_id, user_id, player_num)
-        VALUES(${gameId.id}, ${id}, 1)`;
+        VALUES(${gameId}, ${id}, 1)`;
 
       db.none(query);
       return gameId;

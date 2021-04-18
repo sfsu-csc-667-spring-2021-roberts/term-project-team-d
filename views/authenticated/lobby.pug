@@ -12,7 +12,6 @@ block content
         li= "Game id: " + game.game_id
         // ===== isJoined RESUME BUTTON ============
         if game.isJoined
-          // TODO THIS RESUME BUTTON
           - let resumeUrl = '/users/resume/' + game.game_id
           form(class='resumeGameForm' action=resumeUrl method='GET')
             label resume game
@@ -41,4 +40,4 @@ block content
   // ======== Imported Libraries ==========
   script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js')
   script(src='/socket.io/socket.io.js')
-  script(src='/js/chatroom.js')
+  script(src='/js/lobby.js')

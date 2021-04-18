@@ -13,7 +13,11 @@ router.get('/', (req, res, next) => {
 /* ======= create game ========= */
 router.post('/createGame', async (req, res) => {
   let gameId = await Users.createGame(req.user.id);
-  res.send({gameId: gameId.id});
+  let numPlayers = await Games.getNumPlayers(gameId);
+  res.send({
+    gameId: gameId,
+    numPlayers: numPlayers
+  });
 });
 
 /* ======= join game ========= */

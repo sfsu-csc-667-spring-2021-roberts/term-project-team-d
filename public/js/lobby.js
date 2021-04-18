@@ -20,9 +20,13 @@
 //  query: 'connect.sid=' + cookieValue
 //});
 
-/* ======== Socketio ============*/
+/* ====================================*/
+/* ============  socketio =============*/
+/* ====================================*/
+
 const socket = io();
 
+/* ======= Chat Room ======== */
 socket.on('message', message => {
   const chatBox = $('#chat-box');
   const div = document.createElement('div');
@@ -36,19 +40,36 @@ socket.on('message', message => {
   chatBox.scrollTop(chatBox[0].scrollHeight);
 });
 
-socket.on('createGame', (gameId) => {
+/* ======== Create Game Button =========*/
+socket.on('createGame', (gameId, numPlayers) => {
   const gameList = $('#gameList');
   const div = document.createElement('div');
 
   div.classList.add('gameli');
-  div.innerHTML = '<li>Game id: ' + gameId + '| Players: 1 </div>';
+  div.innerHTML = '<li>Game id: ' + gameId;
+
+  // Create Form
+  let url = '/users/joinGame/' + gameId;
+  let form = document.createElement('form');
+  form.setAttribute("method", "get");
+  form.setAttribute("action", url);
+
+  // submit button
+  let submit = document.createElement('input');
+  submit.setAttribute('type', 'submit');
+  submit.setAttribute('value', 'join game');
+
+  form.append(submit);
+  div.append(form);
   gameList.append(div);
 });
 
-
+/* ====================================*/
 /* ========= Event Listeners ========== */
-const chatForm = $('#chat-form');
+/* ====================================*/
 
+/* ========= Chat Room ==============*/
+const chatForm = $('#chat-form');
 chatForm.submit( e => {
   e.preventDefault();
   const msg = e.target.elements.msg.value;
@@ -69,7 +90,7 @@ $('#createGame').on("click", async () => {
   // send gameId to socket
   socket.emit('createGame', gameId);
 
-  });
+});
 
 $('#logout').on('click', async () => {
   await fetch('/auth/logout', {
@@ -77,13 +98,3 @@ $('#logout').on('click', async () => {
   })
   location.reload();
 });
-
-//$('.joinGame').on('click', (event) => {
-//  let gameId = $(event.target).attr("id");
-//  fetch(`/users/joinGame/${gameId}`, {
-//    method: 'GET',
-//    headers: {
-//      'Content-Type': 'text/html'
-//    },
-//  });
-//});

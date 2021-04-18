@@ -21,10 +21,12 @@ class Games extends ActiveRecord {
     return db.any(query);
   }
 
-  static getNumPlayers(gameId) {
+  // int gameId -> int
+  static async getNumPlayers(gameId) {
     let query = `SELECT COUNT(user_id)
-    FROM game_users WHERE game_id = ${gameId}`
-    return db.one(query);
+    FROM game_users WHERE game_id = ${gameId}`;
+    let  { count } = await db.one(query);
+    return parseInt(count);
   }
   
   // gameId -> int
