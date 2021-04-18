@@ -7,8 +7,6 @@ const db = require('../db/connection');
 
 router.get('/gameLobby/:gameId', async (req, res) => {
   let numPlayers = await Games.getNumPlayers(gameId);
-
-  console.log(numPlayers);
 });
 
 

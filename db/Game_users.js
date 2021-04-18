@@ -29,7 +29,7 @@ class Game_users extends ActiveRecord {
     if (isJoined)
       return 
     //get current players and increment for player_num
-    let { count: numPlayers } = await Games.getNumPlayers(gameId);
+    let numPlayers = await Games.getNumPlayers(gameId);
 
     let query = `INSERT INTO game_users(game_id, user_id, player_num, winner)
       VALUES(${gameId}, ${userId}, ${++numPlayers}, 0)`;

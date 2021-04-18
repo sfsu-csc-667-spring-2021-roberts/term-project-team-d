@@ -21,6 +21,14 @@ class Games extends ActiveRecord {
     return db.any(query);
   }
 
+  // int gameId -> { username }
+  static async getUsernames(gameId) {
+    let query = `SELECT username FROM game_users
+      JOIN users ON game_users.user_id = users.id
+      WHERE game_id = ${gameId}`
+    return db.any(query);
+  }
+
   // int gameId -> int
   static async getNumPlayers(gameId) {
     let query = `SELECT COUNT(user_id)

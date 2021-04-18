@@ -16,6 +16,10 @@ io.use(passportSocketIo.authorize({
 io.on('connection', socket => {
   console.log(socket.request.user);
 
+  /* ===============================*/
+  /* ========== lobby.js ===========*/
+  /* ===============================*/
+
   /* ======== Chat Room =========== */
   message = formatMessage('System', 'Welcome to Uno Chat!')
   socket.emit('message', message);
@@ -31,6 +35,12 @@ io.on('connection', socket => {
   /* ========= Create Game ========= */
   socket.on('createGame', (gameId) => {
     io.emit('createGame', gameId);
+  });
+
+  /* ===============================*/
+  /* ========== gameLobby.js =======*/
+  /* ===============================*/
+  socket.on('joinGame', () => {
   });
 
   /* =========  On Disconnect ========= */

@@ -3,6 +3,7 @@ var router = express.Router();
 let Users = require('../db/Users');
 let Games = require('../db/Games');
 let GU = require('../db/Game_users');
+//let { io } = require('../socketAPI');
 const {renderLobby} = require('../routes/lobby');
 
 /* GET users listing. */
@@ -30,7 +31,7 @@ router.get('/joinGame/:gameId', async (req, res) => {
 
   // Render page
   renderGameLobby(req, res, gameId);
-  });
+});
 
 /* ======= resume game ========= */
 router.get('/resume/:gameId', async (req, res) => {
@@ -39,7 +40,6 @@ router.get('/resume/:gameId', async (req, res) => {
 
   // CHECK IF GAME STARTED
   let started = await Games.isStarted(gameId);
-  console.log(started);
   // IF GAME STARTED JOIN GAME ROOM
   if (started) {
     console.log('join fake game room');
@@ -69,11 +69,14 @@ router.get('/:name', (req, res, next) => {
 
 /* ======= Helper functions ======== */
 async function renderGameLobby(req, res, gameId) {
-  let { count: numPlayers } = await Games.getNumPlayers(gameId);
+  let numPlayers = await Games.getNumPlayers(gameId);
+  let usernames = await Games.getUsernames(gameId);
+  console.log(usernames);
   res.render('authenticated/gameLobby', {
     title: 'Game Room',
     gameId: gameId,
-    numPlayers: numPlayers
+    numPlayers: numPlayers,
+    usernames: usernames
   });
 }
 

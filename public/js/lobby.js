@@ -56,6 +56,7 @@ socket.on('createGame', (gameId, numPlayers) => {
 
   // submit button
   let submit = document.createElement('input');
+  submit.setAttribute('data-gameId', gameId);
   submit.setAttribute('type', 'submit');
   submit.setAttribute('value', 'join game');
 
@@ -91,6 +92,11 @@ $('#createGame').on("click", async () => {
   socket.emit('createGame', gameId);
 
 });
+
+//$('#joinGame').on('click', function(e) {
+//  let gameId = $(this).attr('data-gameId');
+//  console.log(gameId);
+//});
 
 $('#logout').on('click', async () => {
   await fetch('/auth/logout', {

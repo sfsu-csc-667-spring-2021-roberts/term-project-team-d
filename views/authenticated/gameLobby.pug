@@ -4,8 +4,15 @@ block content
   h1= title
   p Welcome to #{title} 
   p This is the game room for game #{gameId}
+  // Heading
   h1
     = "Game id: " + gameId + " | Number of players: " + numPlayers
+
+  // list all users
+  each username in usernames
+    h3= "User: " + username.username
+
+  // Buttons
   a(href='/users/startGame')
     button(type="button" class="startGame") start game
 
@@ -14,7 +21,8 @@ block content
     input(type='submit' value='leave game')
   a(href='/lobby')
     button(type="button" class="lobby") lobby
+
   // ======== Imported Libraries ==========
-  script(src='/js/gameLobby.js')
   script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js')
   script(src='/socket.io/socket.io.js')
+  script(src='/js/gameLobby.js')
