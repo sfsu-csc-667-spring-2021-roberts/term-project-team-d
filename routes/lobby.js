@@ -7,14 +7,18 @@ const db = require('../db/connection');
 
 /* GET home page. */
 router.get('/', async (req, res, next) => {
+  renderLobby(req, res);
+});
+
+async function renderLobby(req, res) {
   let games = await Games.getGameList();
   for (let game of games) {
-    game.joinedAndNotStarted = await GU.joinedAndNotStarted(req.user.id, game.game_id);
+    game.isJoined = await GU.isJoined(req.user.id, game.game_id);
   }
   res.render('authenticated/lobby', { 
     title: 'Uno Project!!',
     games: games
   });
-});
+}
 
-module.exports = router;
+module.exports = {router, renderLobby};

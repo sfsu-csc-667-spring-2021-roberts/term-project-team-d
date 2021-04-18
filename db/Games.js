@@ -26,6 +26,16 @@ class Games extends ActiveRecord {
     FROM game_users WHERE game_id = ${gameId}`
     return db.one(query);
   }
+  
+  // gameId -> int
+  static async isStarted(gameId) {
+    let query = `SELECT started FROM games
+      WHERE id = ${gameId}`
+
+    let startedObj = await db.one(query);
+    let started = startedObj.started;
+    return started
+  }
  
   endGame() {
     

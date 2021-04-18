@@ -8,7 +8,9 @@ block content
     = "Game id: " + gameId + " | Number of players: " + numPlayers
   a(href='/users/startGame')
     button(type="button" class="startGame") start game
-  form(id='leaveGameForm' action='/users/leaveGame/gameId' method='PUT')
+
+  - let url = '/users/leaveGame/' + gameId
+  form(id='leaveGameForm' action=url method='POST')
     input(type='submit' value='leave game')
 
   // ======== Imported Libraries ==========

@@ -19,7 +19,7 @@ const sessionStore = new session.MemoryStore();
 var authRouter      = require('./routes/authentication');
 var indexRouter     = require('./routes/index');
 var usersRouter     = require('./routes/users');
-var lobbyRouter     = require('./routes/lobby');
+var {router: lobbyRouter}     = require('./routes/lobby');
 var gameLobbyRouter = require('./routes/gameLobby');
 var testsRouter     = require('./routes/tests');
 

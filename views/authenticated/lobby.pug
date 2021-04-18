@@ -10,14 +10,21 @@ block content
     if games
       each game in games
         li= "Game id: " + game.game_id
+        // ===== isJoined RESUME BUTTON ============
+        if game.isJoined
+          // TODO THIS RESUME BUTTON
+          - let resumeUrl = '/users/resume/' + game.game_id
+          form(class='resumeGameForm' action=resumeUrl method='GET')
+            label resume game
+            input(type='submit' class='resumeGameButton' name='resumeGame'
+            value='resume')
+          // ====== JOIN GAME BUTTON ==========
+        else
           - let url = '/users/joinGame/' + game.game_id
           form(class='joinGameForm' action=url method='GET')
             label join game
             input(type='submit' class='joinGameButton' id=game.game_id
             name='joinGame', value='join game')
-        if game.joinedAndNotStarted
-          a(href='/users/leaveGame')
-            button(type="button" class="leaveGame") leave game
     else
       strong No Game rooms! Create a game
 
