@@ -61,6 +61,8 @@ class Games extends ActiveRecord {
       }
     }
     shuffleCardArr(cardArr);
+    //TODO: save back shuffled cards to db
+    
   }
 
   // I dont understand reShuffle, so I let it be
