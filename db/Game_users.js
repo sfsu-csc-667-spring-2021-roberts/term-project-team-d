@@ -43,12 +43,31 @@ class Game_users extends ActiveRecord {
     let started = await Games.isStarted(gameId);
 
     if (!started) {
+      let {count } = await Games.getNumPlayers(gameId)
+      //console.log("===========>",count)
       let query = `DELETE FROM game_users
         WHERE user_id = ${userId} AND game_id = ${gameId}
         RETURNING player_num`;
       let playerNum = await db.one(query);
+
+      //console.log("playerNum Object ===>",playerNum)
       // DECREMENT game_users that are > user we deleted
-      //query = `UPDATE game_users SET
+      // query = `UPDATE game_users SET
+
+      for (let i = playerNum.player_num + 1; i <= count; i++) {
+        let query2 = await `UPDATE game_users 
+                 SET player_num = ${i-1}
+                 WHERE 
+                      game_id = ${gameId} AND
+                      player_num = ${i}`
+        console.log(query2)
+        await db.none(query2)
+        console.log("=========> inside the loop ");
+        
+      }
+      //console.log("Number of players =======>", await Games.getNumPlayers(gameId))
+      
+
     } else {
       console.log('ERROR leaveGame: cant leave game already started');
     }
