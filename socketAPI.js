@@ -5,6 +5,8 @@ const passportSocketIo = require('passport.socketio')
 const { sessionStore } = require('./app.js');
 const Game             = require('./db/Games');
 
+let socketArr = [];
+
 /* ============ MIDDLEWARE =====================*/
 io.use(passportSocketIo.authorize({
   key:          'connect.sid',     
@@ -14,7 +16,12 @@ io.use(passportSocketIo.authorize({
 
 /* ============ ON CONNECTION =====================*/
 io.on('connection', socket => {
+  console.log(socket);
   //console.log(socket.request.user);
+  // add socket to socket array
+  socketArr.push(socket);
+  console.log('Number of sockets:', socketArr.length);
+  console.log(socket.request.user);
 
   /* ===============================*/
   /* ========== lobby.js ===========*/
@@ -34,30 +41,43 @@ io.on('connection', socket => {
 
   /* ========= Create Game ========= */
   socket.on('createGame', (gameId) => {
+    socket.gameId = gameId;
+    console.log(socket);
     io.emit('createGame', gameId);
   });
 
   /* ===============================*/
   /* ========== gameLobby.js =======*/
   /* ===============================*/
+
+  // TODO currently creating separate sockets so the rooms
+  // are also separate, need to converge them
   socket.on('joinGame', (gameId) => {
     let user = socket.request.user;
     let room = 'game' + gameId;
     console.log(user.username, 'joined room:', room);
 
+    // need to find socket with our gameId
+    //for (let gameSocket of socketArr) {
+    //  if ( gameSocket.gameId == gameId) {
+    //    console.log(gameSocket);
+    //    gameSocket.join(room);
+    //    gameSocket.to(room).emit('gameUserJoin', user.id);
+    //    break;
+    //  }
+    //}
+
     //io.to(room).emit('gameUserJoin', user.id);
-    io.to(room).emit('gameUserJoin', user.id);
     //io.emit('gameUserJoin', user.id);
-    socket.join(room);
-    const rooms = io.of("/").adapter.rooms;
-    const sids = io.of("/").adapter.sids;
-    console.log('here are the rooms', rooms);
-    console.log('here are the sids', sids);
+    //const rooms = io.of("/").adapter.rooms;
+    //const sids = io.of("/").adapter.sids;
+    // need to find socket with gameId and user
   });
 
   /* =========  On Disconnect ========= */
   socket.on('disconnect', () => {
     io.emit('message', 'System: A user has left the chat');
+    console.log('WE LOST A SOCKET');
   });
 
 });

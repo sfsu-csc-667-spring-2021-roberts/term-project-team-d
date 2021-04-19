@@ -7,8 +7,10 @@
 /* ============= socketio =============*/
 /* ====================================*/
 
-console.log(window.location.origin);
-const socket = io(window.location.origin);
+/* instead of create new socket here 
+  * maybe we can use the one we made in the lobby */
+
+//const socket = io();
 
 /* ======== ON gameLobby Join ======== */
 socket.on('gameUserJoin', (userId) => {

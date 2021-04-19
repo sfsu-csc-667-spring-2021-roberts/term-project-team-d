@@ -24,8 +24,10 @@
 /* ============  socketio =============*/
 /* ====================================*/
 
-console.log(window.location.origin);
-const socket = io(window.location.origin);
+//console.log(window.location.origin);
+const socket = io();
+console.log(socket);// is this the same as back end socket?
+
 
 /* ======= Chat Room ======== */
 socket.on('message', message => {
@@ -103,6 +105,6 @@ $('.joinGameButton').on('click', function(e) {
 $('#logout').on('click', async () => {
   await fetch('/auth/logout', {
     method: 'POST'
-  })
+  });
   location.reload();
 });
