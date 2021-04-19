@@ -50,11 +50,22 @@ class Games extends ActiveRecord {
   playerLeave() {
   }
 
-  shuffleDeck(){
-
+  static async shuffleDeck(){
+    let queryCards =`SELECT * FROM cards`
+    let cardArr = await db.one(queryCards);
+    
+    function shuffleCardArr(arr){
+      for (let i = 0; i < arr.length; i++) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];        
+      }
+    }
+    shuffleCardArr(cardArr);
   }
-  reShuffleDeck(){
 
+  // I dont understand reShuffle, so I let it be
+  static async reShuffleDeck(){
+    
   }
 }
 
