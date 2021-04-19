@@ -72,12 +72,6 @@ class Users extends ActiveRecord {
       return gameId;
   }
 
-  //get number of players already in a lobby
-  static async getPlayerCounter(id) {
-    let getPlayerCounter = `SELECT player_num FROM game_users WHERE id= ${id}`
-    return await db.one(getPlayerCounter)
-  }
-
     //Start a game
     startGame() {
         game.initializeCards();
