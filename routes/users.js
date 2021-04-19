@@ -24,13 +24,20 @@ router.post('/createGame', async (req, res) => {
 /* ======= join game ========= */
 router.get('/joinGame/:gameId', async (req, res) => {
   let gameId  = req.params.gameId;
-  let userId = req.user.id;
-
-  // Insert into DB
-  GU.joinGame(gameId, userId);
+//  let userId = req.user.id;
+//
+//  // Insert into DB
+//  GU.joinGame(gameId, userId);
 
   // Render page
   renderGameLobby(req, res, gameId);
+});
+
+router.post('/joinGame/:gameId', async (req, res) => {
+  let gameId  = req.params.gameId;
+  let userId = req.user.id;
+  GU.joinGame(gameId, userId);
+  res.send();
 });
 
 /* ======= resume game ========= */
@@ -78,6 +85,4 @@ async function renderGameLobby(req, res, gameId) {
     usernames: usernames
   });
 }
-
-
 module.exports = router;

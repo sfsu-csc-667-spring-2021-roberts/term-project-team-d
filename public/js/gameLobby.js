@@ -3,20 +3,34 @@
  *  Client side javascript for the game lobby.
 */
 
+// get gameId from URL
+let url = new URL(window.location.href);
+let urlArr = url.pathname.split('/');
+let gameId = parseInt(urlArr[3]);
+
+// join game
+fetch('/users/joinGame/' + gameId, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ msg: 'joining a game' })
+});
+
 /* ====================================*/
 /* ============= socketio =============*/
 /* ====================================*/
 
-/* instead of create new socket here 
-  * maybe we can use the one we made in the lobby */
+const socket = io(window.location.origin);
 
-//const socket = io();
+// executed once always
+socket.emit('joinGame', gameId);
 
 /* ======== ON gameLobby Join ======== */
-socket.on('gameUserJoin', (userId) => {
+socket.on('gameUserJoin', userId => {
   console.log('a user joined a game!', userId);
   let div = document.createElement('div');
-  div.innterHTML = '<h3>user with userId: ' + userId + ' joined!</h3>'
+  div.innerHTML = '<h3>user with userId: ' + userId + ' joined!</h3>';
   $('#gameUsers').append(div);
 });
 

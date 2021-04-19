@@ -6,6 +6,7 @@ const { sessionStore } = require('./app.js');
 const Game             = require('./db/Games');
 
 let socketArr = [];
+let rooms = []; // [{ name, userId[] }]
 
 /* ============ MIDDLEWARE =====================*/
 io.use(passportSocketIo.authorize({
@@ -16,12 +17,23 @@ io.use(passportSocketIo.authorize({
 
 /* ============ ON CONNECTION =====================*/
 io.on('connection', socket => {
-  console.log(socket);
-  //console.log(socket.request.user);
-  // add socket to socket array
+  /* variables */
+  let userId = socket.request.user.id;
+  console.log(rooms);
   socketArr.push(socket);
   console.log('Number of sockets:', socketArr.length);
-  console.log(socket.request.user);
+  console.log('rooms:', io.sockets.adapter.rooms);
+
+  // TODO Here we need to re-add peoeple to their rooms
+  // how do we know which room someone is in?
+  for (room of rooms) {
+    for (id of room.userIds) {
+      if (userId == id) {
+        console.log('we joined the room');
+        socket.join(room.name);
+      }
+    }
+  }
 
   /* ===============================*/
   /* ========== lobby.js ===========*/
@@ -41,8 +53,12 @@ io.on('connection', socket => {
 
   /* ========= Create Game ========= */
   socket.on('createGame', (gameId) => {
-    socket.gameId = gameId;
-    console.log(socket);
+    rooms.push({ 
+      name: 'game' + gameId, 
+      userIds: [userId] 
+    });
+    console.log(rooms);
+    console.log('rooms:', io.sockets.adapter.rooms);
     io.emit('createGame', gameId);
   });
 
@@ -53,31 +69,26 @@ io.on('connection', socket => {
   // TODO currently creating separate sockets so the rooms
   // are also separate, need to converge them
   socket.on('joinGame', (gameId) => {
-    let user = socket.request.user;
-    let room = 'game' + gameId;
-    console.log(user.username, 'joined room:', room);
+    let roomName = 'game' + gameId;
 
-    // need to find socket with our gameId
-    //for (let gameSocket of socketArr) {
-    //  if ( gameSocket.gameId == gameId) {
-    //    console.log(gameSocket);
-    //    gameSocket.join(room);
-    //    gameSocket.to(room).emit('gameUserJoin', user.id);
-    //    break;
-    //  }
-    //}
-
-    //io.to(room).emit('gameUserJoin', user.id);
-    //io.emit('gameUserJoin', user.id);
-    //const rooms = io.of("/").adapter.rooms;
-    //const sids = io.of("/").adapter.sids;
-    // need to find socket with gameId and user
+    // update rooms with new user
+    for (room of rooms) {
+      console.log('inside rooms loop in joinGame:');
+      console.log(room);
+      if (room.name == roomName) {
+        console.log('we found the room to join');
+        room.userIds.push(userId);
+      }
+    }
+    socket.join(roomName);
+    io.to(roomName).emit('gameUserJoin', userId);
+    console.log('rooms:', io.sockets.adapter.rooms);
   });
 
   /* =========  On Disconnect ========= */
   socket.on('disconnect', () => {
     io.emit('message', 'System: A user has left the chat');
-    console.log('WE LOST A SOCKET');
+    console.log('WE LOST A SOCKET USERID: ', userId);
   });
 
 });
