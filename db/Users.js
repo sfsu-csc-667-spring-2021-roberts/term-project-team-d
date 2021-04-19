@@ -35,7 +35,8 @@ class Users extends ActiveRecord {
     let query = `INSERT INTO users(username, password, email)
                 VALUES('${user.firstName}', 
                 '${user.password}', 
-                '${user.email}')`;
+                '${user.email},
+                ON CONFLICT DO NOTHING')`;
     console.log(query);
 
     let error = null;
@@ -71,11 +72,18 @@ class Users extends ActiveRecord {
       return gameId;
   }
 
+  //get number of players already in a lobby
+  static async getPlayerCounter(id) {
+    let getPlayerCounter = `SELECT player_num FROM game_users WHERE id= ${id}`
+    return await db.one(getPlayerCounter)
+  }
+
     //Start a game
     startGame() {
         game.initializeCards();
         // deal out cards
         game.dealCards();
+        //should send players to a new gaming page
     }
 
     //Join a game
