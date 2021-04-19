@@ -24,7 +24,8 @@
 /* ============  socketio =============*/
 /* ====================================*/
 
-const socket = io();
+console.log(window.location.origin);
+const socket = io(window.location.origin);
 
 /* ======= Chat Room ======== */
 socket.on('message', message => {
@@ -59,6 +60,7 @@ socket.on('createGame', (gameId, numPlayers) => {
   submit.setAttribute('data-gameId', gameId);
   submit.setAttribute('type', 'submit');
   submit.setAttribute('value', 'join game');
+  submit.setAttribute('class', 'joinGameButton');
 
   form.append(submit);
   div.append(form);
@@ -93,10 +95,10 @@ $('#createGame').on("click", async () => {
 
 });
 
-//$('#joinGame').on('click', function(e) {
-//  let gameId = $(this).attr('data-gameId');
-//  console.log(gameId);
-//});
+$('.joinGameButton').on('click', function(e) {
+  let gameId = $(e.target).data('gameid');
+  socket.emit('joinGame', gameId);
+});
 
 $('#logout').on('click', async () => {
   await fetch('/auth/logout', {

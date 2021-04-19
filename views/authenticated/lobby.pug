@@ -23,7 +23,7 @@ block content
           form(class='joinGameForm' action=url method='GET')
             label join game
             input(type='submit' class='joinGameButton' id=game.game_id
-            name='joinGame', value='join game')
+            name='joinGame' value='join game' data-gameid=game.game_id)
     else
       strong No Game rooms! Create a game
 

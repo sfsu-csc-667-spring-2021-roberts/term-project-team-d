@@ -8,9 +8,10 @@ block content
   h1
     = "Game id: " + gameId + " | Number of players: " + numPlayers
 
-  // list all users
-  each username in usernames
-    h3= "User: " + username.username
+  div#gameUsers
+    // list all users
+    each username in usernames
+      h3= "User: " + username.username
 
   // Buttons
   a(href='/users/startGame')

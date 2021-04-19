@@ -55,7 +55,7 @@ router.post('/leaveGame/:gameId', async (req, res) => {
   await GU.leaveGame(gameId, userId);
   
   renderLobby(req, res);
-  });
+});
 
 router.get('/startGame', (req, res) => {
   res.send("<h1> you started a game!</h1>");
@@ -71,7 +71,6 @@ router.get('/:name', (req, res, next) => {
 async function renderGameLobby(req, res, gameId) {
   let numPlayers = await Games.getNumPlayers(gameId);
   let usernames = await Games.getUsernames(gameId);
-  console.log(usernames);
   res.render('authenticated/gameLobby', {
     title: 'Game Room',
     gameId: gameId,

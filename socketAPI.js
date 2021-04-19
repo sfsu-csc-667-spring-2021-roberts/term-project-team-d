@@ -14,7 +14,7 @@ io.use(passportSocketIo.authorize({
 
 /* ============ ON CONNECTION =====================*/
 io.on('connection', socket => {
-  console.log(socket.request.user);
+  //console.log(socket.request.user);
 
   /* ===============================*/
   /* ========== lobby.js ===========*/
@@ -40,7 +40,19 @@ io.on('connection', socket => {
   /* ===============================*/
   /* ========== gameLobby.js =======*/
   /* ===============================*/
-  socket.on('joinGame', () => {
+  socket.on('joinGame', (gameId) => {
+    let user = socket.request.user;
+    let room = 'game' + gameId;
+    console.log(user.username, 'joined room:', room);
+
+    //io.to(room).emit('gameUserJoin', user.id);
+    io.to(room).emit('gameUserJoin', user.id);
+    //io.emit('gameUserJoin', user.id);
+    socket.join(room);
+    const rooms = io.of("/").adapter.rooms;
+    const sids = io.of("/").adapter.sids;
+    console.log('here are the rooms', rooms);
+    console.log('here are the sids', sids);
   });
 
   /* =========  On Disconnect ========= */
