@@ -1,6 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db/connection');
+const Game = require('../db/Games');
+
+
+router.post('/:gameId/startGame', (req, res) => {
+  let gameId = req.params.gameId;
+  Game.startGame(gameId);
+  res.status(200).json({ msg: 'successfully inserted cards' });
+});
 
 router.get('/', (req, res) => {
   db.any(`INSERT INTO test_table ("testString") VALUES ('Hello at`
@@ -12,4 +20,5 @@ router.get('/', (req, res) => {
     res.json({error})
   })
 });
+
 module.exports = router;

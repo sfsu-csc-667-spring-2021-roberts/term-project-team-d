@@ -71,26 +71,14 @@ class Users extends ActiveRecord {
       return gameId;
   }
 
-    //Start a game
-    startGame() {
-        game.initializeCards();
-        // deal out cards
-        game.dealCards();
-    }
+  //change password
+  changePassword(){
 
-    //Join a game
-    joinGame(){
+  }
 
-    }
-
-    //change password
-    changePassword(){
-
-    }
-
-    //change username
-    changeUsername(){
-        
-    }
+  //change username
+  changeUsername(){
+      
+  }
 }
 module.exports = Users;

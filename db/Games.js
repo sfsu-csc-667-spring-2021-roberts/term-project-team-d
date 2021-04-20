@@ -51,8 +51,27 @@ class Games extends ActiveRecord {
     
   }
 
-  initializeCards() {
+  static insertDealers(gameId) {
+    let query
   }
+
+  static startGame(gameId) {
+      Games.initializeCards(gameId);
+      // deal out cards
+      //game.dealCards();
+  }
+
+  static async initializeCards(gameId) {
+      let selectQuery = `SELECT id FROM cards`;
+      let cards = await db.any(selectQuery);
+      console.log(cards);
+      for (let i = 0; i < cards.length; i++) {
+        let insertQuery = `INSERT INTO game_cards(card_status, game_id, card_id) 
+          VALUES(0, ${gameId}, ${cards[i].id})`;
+        console.log(insertQuery);
+        db.none(insertQuery);
+      }
+    }
 
   dealCards() {
   }
