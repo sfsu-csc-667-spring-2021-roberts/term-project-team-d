@@ -82,6 +82,8 @@ chatForm.submit( e => {
   e.target.elements.msg.focus();
 });
 
+/* ============ Buttons ================ */
+
 $('#createGame').on("click", async () => {
   // returns gameId
   let response = await fetch('/users/createGame', {
@@ -93,11 +95,6 @@ $('#createGame').on("click", async () => {
   socket.emit('createGame', gameId);
 
 });
-
-//$('.joinGameButton').on('click', function(e) {
-//  let gameId = $(e.target).data('gameid');
-//  socket.emit('joinGame', gameId);
-//});
 
 $('#logout').on('click', async () => {
   await fetch('/auth/logout', {
