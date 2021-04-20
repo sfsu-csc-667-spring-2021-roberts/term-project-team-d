@@ -34,12 +34,14 @@ router.post('/joinGame/:gameId', async (req, res) => {
   let userId = req.user.id;
   GU.joinGame(gameId, userId);
 
-  if (Games.numPlayers() == 4) {
-    // start game
-    Games.startGame(gameId);
-  } else {
-    res.send();
-  }
+ // if (Games.getNumPlayers() == 4) {
+ //   // start game
+ //   Games.startGame(gameId);
+ // } else {
+ //   res.send();
+ // }
+
+  res.send();
 });
 
 /* ======= resume game ========= */
