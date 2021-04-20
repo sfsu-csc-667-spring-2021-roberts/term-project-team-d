@@ -53,11 +53,11 @@ class Games extends ActiveRecord {
 
 
 
-  static startGame(gameId) {
-      Games.initializeCards(gameId);
+  static async startGame(gameId) {
+      await Games.initializeCards(gameId);
 
       //shuffle cards:
-      Games.shuffleDeck();
+      await Games.shuffleDeck(gameId);
       // deal out cards
 
       //game.dealCards();
@@ -71,7 +71,7 @@ class Games extends ActiveRecord {
       for (let i = 0; i < cards.length; i++) {
         let insertQuery = `INSERT INTO game_cards(card_status, game_id, card_id) 
           VALUES(0, ${gameId}, ${cards[i].id})`;
-        db.none(insertQuery);
+        await db.none(insertQuery);
       }
     }
 
@@ -81,7 +81,7 @@ class Games extends ActiveRecord {
   playerLeave() {
   }
 
-  static shuffleDeck(gameId){
+  static async shuffleDeck(gameId){
     // create the array cardsOrder in order from 1 to 60:
     let array = [];
     for (let i = 1; i <= 60; i++){
@@ -95,18 +95,17 @@ class Games extends ActiveRecord {
         array[i] = array[j];
         array[j] = temp;
     }
-    console.log (array)
+    //console.log (array)
     
     let SelectQuery = `SELECT id FROM game_cards WHERE game_id = ${gameId}`
-    let GameCardsIds = db.any(SelectQuery)
-    console.log(GameCardsIds)
+    let GameCardsIds = await db.any(SelectQuery)
+    //console.log('gamecardsids', GameCardsIds)
 
     for (let i = 0; i <= 59; i++){
-      gameCardId = GameCardsIds[i].id
-      let updateQuery = `UPDATE game_Cards
-                         SET  order = ${array[i]}
-                         WHERE id = ${gameCardId}`
-      db.none(updateQuery)
+      let gameCardId = GameCardsIds[i].id
+      let updateQuery = `UPDATE game_cards 
+      SET card_order = ${array[i]} WHERE id = ${gameCardId}`;
+      await db.none(updateQuery)
     }
      
     

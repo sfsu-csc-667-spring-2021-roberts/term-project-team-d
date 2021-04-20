@@ -156,7 +156,7 @@ module.exports = {
           key: 'id'
         }
       },
-      order: {
+      card_order: {
         type: DataTypes.INTEGER,
         allowNull: true
       }
