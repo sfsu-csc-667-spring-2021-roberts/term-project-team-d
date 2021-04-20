@@ -57,7 +57,7 @@ class Games extends ActiveRecord {
       Games.initializeCards(gameId);
 
       //shuffle cards:
-      shuffleDeck();
+      Games.shuffleDeck();
       // deal out cards
 
       //game.dealCards();
@@ -68,11 +68,9 @@ class Games extends ActiveRecord {
   static async initializeCards(gameId) {
       let selectQuery = `SELECT id FROM cards`;
       let cards = await db.any(selectQuery);
-      console.log(cards);
       for (let i = 0; i < cards.length; i++) {
         let insertQuery = `INSERT INTO game_cards(card_status, game_id, card_id) 
           VALUES(0, ${gameId}, ${cards[i].id})`;
-        console.log(insertQuery);
         db.none(insertQuery);
       }
     }
@@ -85,7 +83,7 @@ class Games extends ActiveRecord {
 
   static shuffleDeck(){
     // create the array cardsOrder in order from 1 to 60:
-    let array;
+    let array = [];
     for (let i = 1; i <= 60; i++){
       array.push(i)
     }
@@ -96,11 +94,8 @@ class Games extends ActiveRecord {
         var temp = array[i];
         array[i] = array[j];
         array[j] = temp;
-      }
+    }
     console.log (array)  
-      
-}
-
   }
   reShuffleDeck(){
 
