@@ -26,6 +26,13 @@
 
 const socket = io(window.location.origin);
 
+/*
+socket.on('connection', user => {
+  socket.user = user;
+}
+*/
+
+
 /* ======= Chat Room ======== */
 socket.on('message', message => {
   const chatBox = $('#chat-box');

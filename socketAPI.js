@@ -20,6 +20,7 @@ io.on('connection', socket => {
   /* variables */
   let userId = socket.request.user.id;
   let username = socket.request.user.username;
+  console.log(socket.request.user);
   socketArr.push(socket);
 
   /* logging if needed */
@@ -84,7 +85,7 @@ io.on('connection', socket => {
    //   }
    // }
 
-    // TODO gets all sockets in room
+    // gets all sockets in room
     let roomSockets = io.sockets.adapter.rooms.get(roomName)
     console.log('roomSockets', roomSockets);
     let alreadyJoined = false;
@@ -92,7 +93,9 @@ io.on('connection', socket => {
       for (let socketId of roomSockets) {
         let curSocket = io.of('/').sockets.get(socketId)
         let joinedUser = curSocket.request.user.id;
+        let joinedUsername = curSocket.request.user.username;
         console.log('joinedUser:', joinedUser);
+        console.log('joinedUser:', joinedUsername);
         if ( joinedUser == userId) {
           alreadyJoined = true;
           break;
