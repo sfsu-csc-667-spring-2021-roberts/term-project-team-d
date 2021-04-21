@@ -8,15 +8,6 @@ let url = new URL(window.location.href);
 let urlArr = url.pathname.split('/');
 let gameId = parseInt(urlArr[3]);
 
-// join game
-fetch('/users/joinGame/' + gameId, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({ msg: 'joining a game' })
-});
-
 /* ====================================*/
 /* ============= socketio =============*/
 /* ====================================*/

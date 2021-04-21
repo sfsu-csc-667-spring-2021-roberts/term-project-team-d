@@ -69,6 +69,8 @@ io.on('connection', socket => {
   /* ========== gameLobby.js =======*/
   /* ===============================*/
 
+  // TODO not emit if user is already in the room
+  // ( namely, when the user refreshes the page)
   socket.on('joinGame', (gameId) => {
     let roomName = 'game' + gameId;
 
@@ -82,9 +84,25 @@ io.on('connection', socket => {
    //   }
    // }
 
-    socket.join(roomName);
-    socket.to(roomName).emit('gameUserJoin', username);
-    console.log('rooms:', io.sockets.adapter.rooms);
+    // TODO gets all sockets in room
+    let roomSockets = io.sockets.adapter.rooms.get(roomName)
+    console.log('roomSockets', roomSockets);
+    let alreadyJoined = false;
+    if (roomSockets) {
+      for (let socketId of roomSockets) {
+        let curSocket = io.of('/').sockets.get(socketId)
+        let joinedUser = curSocket.request.user.id;
+        console.log('joinedUser:', joinedUser);
+        if ( joinedUser == userId) {
+          alreadyJoined = true;
+          break;
+        }
+      }
+    }
+    if (!alreadyJoined) {
+      socket.to(roomName).emit('gameUserJoin', username);
+      socket.join(roomName);
+    }
   });
 
   /* ===============================*/

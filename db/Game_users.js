@@ -24,7 +24,7 @@ class Game_users extends ActiveRecord {
 
   // userId, gameId -> void
   static async joinGame(gameId, userId) {
-    // DOUBLE CHECK if already joined
+    // CHECK if already joined
     let isJoined = await Game_users.isJoined(userId, gameId);
     if (isJoined)
       return 
@@ -34,7 +34,7 @@ class Game_users extends ActiveRecord {
     let query = `INSERT INTO game_users(game_id, user_id, player_num, winner)
       VALUES(${gameId}, ${userId}, ${++numPlayers}, 0)`;
 
-    db.none(query);
+    await db.none(query);
   }
 
   // userId, gameId -> void

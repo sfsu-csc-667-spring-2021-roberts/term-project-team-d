@@ -51,14 +51,14 @@ socket.on('createGame', (gameId, numPlayers) => {
   // Create Form
   let url = '/users/joinGame/' + gameId;
   let form = document.createElement('form');
-  form.setAttribute("method", "get");
+  form.setAttribute("method", "POST");
   form.setAttribute("action", url);
 
   // submit button
   let submit = document.createElement('input');
   submit.setAttribute('data-gameId', gameId);
   submit.setAttribute('type', 'submit');
-  submit.setAttribute('value', 'join game');
+  submit.setAttribute('value', 'join just Created');
   submit.setAttribute('class', 'joinGameButton');
 
   form.append(submit);
