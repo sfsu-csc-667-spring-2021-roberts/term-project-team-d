@@ -71,6 +71,9 @@ class Game_users extends ActiveRecord {
       console.log('ERROR leaveGame: cant leave game already started');
     }
   }
+  
+  static getCardsInHand(gameId, userId) {
+  }
 
   drawCard() {
   }
