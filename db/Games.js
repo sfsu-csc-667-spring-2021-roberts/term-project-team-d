@@ -134,6 +134,37 @@ class Games extends ActiveRecord {
   reShuffleDeck(){
 
   }
+
+  static async isValidCard(gameCardId, gameId) {
+    // need color and number
+    let sql = `SELECT number, color FROM game_cards
+    JOIN cards ON game_cards.card_id = cards.id 
+    WHERE game_cards.id = ${gameCardId}`;
+
+    const { number, color } = await db.any(sql);
+
+    //get last played card
+    sql = `SELECT last_card FROM games 
+      WHERE id = ${gameId}`;
+
+    let lastCard = await db.one(sql);
+
+    sql = `SELECT number, color FROM game_cards
+      JOIN cards ON game_cards.card_id = cards.id
+      WHERE id = ${lastCard}`;
+
+    // TODO did i reverse these?
+    const { pileNumber: number, pileColor: color } = await db.any(sql);
+
+    if (pileNumber == number || pileColor == color) {
+      return true;
+  } else {
+    return false;
+  }
+
+    static async nextPlayer(gameId) {
+      // TODO go to next player
+    }
 }
 
 module.exports = Games;

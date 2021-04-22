@@ -103,9 +103,44 @@ class Game_users extends ActiveRecord {
   drawCard() {
   }
 
-  playCard() {
+  static async playCard(gameCardId) {
+    // First check if card is able to be played (color, number)
+    let isValidCard = Games.isValidCard(gameCardId, gameId);
+
+    if (isValidCard) {
+      await Game_users.activateCardEffect(gameCardId, gameId);
+      await Games.nextPlayer(gameId); // TODO go to next player
+    } else {
+      return
+    }
+
+    // check if there is a special card effect - if so - activate effect
+    // put card in discard pile
+    // Update the current player
   }
 
+  // helper function to do card effect
+  static async activateCardEffect(gameCardId, gameId) {
+    // get card effect if any
+    let sql = `SELECT type FROM game_cards
+      JOIN cards ON game_cards.card_id = cards.id
+      WHERE game_cards.id = ${gameCardId}`;
+    const { type } = await db.one(sql);
+
+    if ( type == 'normal' ) {
+      // TODO simply play the card
+    } else if (type == 'draw 2') {
+      // TODO do draw 2 effect
+    } else if (type == 'reverse') {
+      //TODO reverse the turn rotation 
+    } else if (type == 'skip') {
+      // TODO skip next player
+    } else if (type == 'draw 4') {
+      // TODO draw four
+    } else if (type == 'changeColor') {
+      // TODO changeColor
+    }
+  }
 }
 
 module.exports = Game_users;

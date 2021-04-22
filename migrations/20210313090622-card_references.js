@@ -23,10 +23,6 @@ module.exports = {
       type: {
         type: Sequelize.STRING,
         allowNull: true
-      }, 
-      effect: {
-        type: Sequelize.STRING,
-        allowNull: true
       }
     });
     queryInterface.bulkInsert('cards', [{
