@@ -100,23 +100,21 @@ class Game_users extends ActiveRecord {
     return playerNum
   }
 
-  drawCard() {
+  static async drawCard() {
   }
 
   static async playCard(gameCardId) {
     // First check if card is able to be played (color, number)
-    let isValidCard = Games.isValidCard(gameCardId, gameId);
+    let isValidCard = Games.isValidCard(gameCardId);
 
     if (isValidCard) {
-      await Game_users.activateCardEffect(gameCardId, gameId);
+      await Game_users.activateCardEffect(gameCardId);
+      await Game.updateCardStatus(gameCardId);
       await Games.nextPlayer(gameId); // TODO go to next player
     } else {
+      // not valid, do nothing
       return
     }
-
-    // check if there is a special card effect - if so - activate effect
-    // put card in discard pile
-    // Update the current player
   }
 
   // helper function to do card effect
@@ -128,9 +126,9 @@ class Game_users extends ActiveRecord {
     const { type } = await db.one(sql);
 
     if ( type == 'normal' ) {
-      // TODO simply play the card
+      // Nothing
     } else if (type == 'draw 2') {
-      // TODO do draw 2 effect
+      // TODO put two cards in next players hand
     } else if (type == 'reverse') {
       //TODO reverse the turn rotation 
     } else if (type == 'skip') {

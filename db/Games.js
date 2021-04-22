@@ -153,17 +153,33 @@ class Games extends ActiveRecord {
       JOIN cards ON game_cards.card_id = cards.id
       WHERE id = ${lastCard}`;
 
-    // TODO did i reverse these?
-    const { pileNumber: number, pileColor: color } = await db.any(sql);
+    // TODO play any cards need to get through
+    const { number: pileNumber, color: pileColor } = await db.any(sql);
 
+    /* Special Cards */
+    if ( number == -1 ) {
+      if ( color == 'none' ) return true;
+
+      return pileColor == color;
+    }
+
+    /* Normal Cards */
     if (pileNumber == number || pileColor == color) {
       return true;
-  } else {
+    } else {
     return false;
   }
 
     static async nextPlayer(gameId) {
       // TODO go to next player
+    }
+
+    static async updateCardStatus(gameCardId) {
+      sql = `UPDATE game_cards
+        SET card_status = -1 
+        WHERE gameCardId = ${gameCardId}`;
+
+      await db.none(sql);
     }
 }
 
