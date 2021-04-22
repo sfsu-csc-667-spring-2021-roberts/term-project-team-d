@@ -60,11 +60,9 @@ class Games extends ActiveRecord {
       await Games.shuffleDeck(gameId);
       // deal out cards
 
-      //game.dealCards();
+      Games.dealCards(gameId);
   }
- static dealCards() {
 
- }
   static async initializeCards(gameId) {
       let selectQuery = `SELECT id FROM cards`;
       let cards = await db.any(selectQuery);
@@ -75,7 +73,28 @@ class Games extends ActiveRecord {
       }
     }
 
-  dealCards() {
+  static async dealCards(gameId) {
+    //let's say we give each player 8 cards:
+    let player = 1
+    for (let i = 1; i <=8*4; i++){
+      let cardId = `SELECT id from game_cards 
+      WHERE card_status = 0
+      AND game_id = ${gameId}
+      ORDER BY card_order
+      LIMIT 1`
+      cardToAssign = await db.one(selectCard)
+      
+      let updateCard = `UPDATE game_cards
+      SET card_status = ${player}
+      WHERE id = ${cardId}
+      AND game_id = ${gameId}`
+
+      await db.none(updateCard)
+      player = (player+1)% 5
+      if (player == 0) {
+        player = player + 1
+      }
+    }
   }
 
   playerLeave() {
@@ -107,7 +126,7 @@ class Games extends ActiveRecord {
       SET card_order = ${array[i]} WHERE id = ${gameCardId}`;
       await db.none(updateQuery)
     }
-     
+
     
   }
   reShuffleDeck(){
