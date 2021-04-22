@@ -81,7 +81,7 @@ class Games extends ActiveRecord {
   playerLeave() {
   }
 
-  static shuffleDeck(){
+  static shuffleDeck(gameId){
     // create the array cardsOrder in order from 1 to 60:
     let array = [];
     for (let i = 1; i <= 60; i++){
@@ -95,7 +95,21 @@ class Games extends ActiveRecord {
         array[i] = array[j];
         array[j] = temp;
     }
-    console.log (array)  
+    console.log (array)
+    
+    let SelectQuery = `SELECT id FROM game_cards WHERE game_id = ${gameId}`
+    let GameCardsIds = db.any(SelectQuery)
+    console.log(GameCardsIds)
+
+    for (let i = 0; i <= 59; i++){
+      gameCardId = GameCardsIds[i].id
+      let updateQuery = `UPDATE game_Cards
+                         SET  order = ${array[i]}
+                         WHERE id = ${gameCardId}`
+      db.none(updateQuery)
+    }
+     
+    
   }
   reShuffleDeck(){
 
