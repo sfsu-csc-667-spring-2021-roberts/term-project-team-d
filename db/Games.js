@@ -51,16 +51,14 @@ class Games extends ActiveRecord {
     
   }
 
-
-
   static async startGame(gameId) {
-      await Games.initializeCards(gameId);
+    await Games.initializeCards(gameId);
 
-      //shuffle cards:
-      await Games.shuffleDeck(gameId);
-      // deal out cards
+    //shuffle cards:
+    await Games.shuffleDeck(gameId);
+    // deal out cards
 
-      Games.dealCards(gameId);
+    Games.dealCards(gameId);
   }
 
   static async initializeCards(gameId) {
@@ -76,13 +74,15 @@ class Games extends ActiveRecord {
   static async dealCards(gameId) {
     //let's say we give each player 8 cards:
     let player = 1
-    for (let i = 1; i <=8*4; i++){
-      let cardId = `SELECT id FROM game_cards 
+
+    let cardId = `SELECT id FROM game_cards 
         WHERE card_status = 0
         AND game_id = ${gameId}
         ORDER BY card_order
-        LIMIT 1`
+        LIMIT 1`;
 
+    for (let i = 1; i <=8*4; i++){
+      
       let { id: cardToAssign } = await db.one(cardId)
       
       let updateCard = `UPDATE game_cards
@@ -97,6 +97,18 @@ class Games extends ActiveRecord {
         player = player + 1
       }
     }
+
+    // TODO put card in pile
+    let { id: cardToPile } = await db.one(cardId)
+
+    let updateCard = `UPDATE game_cards
+      SET card_status = -1
+      WHERE id = ${cardToAssign}
+      AND game_id = ${gameId}`;
+
+    await db.none(updateCard);
+    let setLastCard = `UPDATE games
+      SET last_card = cardToPile`;
   }
 
   playerLeave() {

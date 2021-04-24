@@ -165,7 +165,7 @@ class Game_users extends ActiveRecord {
 
   }
 
-  static async playCard(gameCardId,gameId) {
+  static async playCard(gameCardId, gameId) {
     // First check if card is able to be played (color, number)
     let isValidCard = Games.isValidCard(gameCardId);
 

@@ -43,7 +43,11 @@ module.exports = {
       },
       last_card: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: true,
+        references: {
+          model: 'users',
+          key: 'id'
+        }
       },
       current_player: {
         type: DataTypes.SMALLINT,
