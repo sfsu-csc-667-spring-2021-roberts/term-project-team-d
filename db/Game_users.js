@@ -72,7 +72,32 @@ class Game_users extends ActiveRecord {
     }
   }
   
-  static getCardsInHand(gameId, userId) {
+  static async getCardsInHand(gameId, userId) {
+
+    let playerNum = Game_users.getPlayerNumber(gameId, userId);
+
+    let query = `SELECT * FROM game_cards
+    JOIN cards ON game_cards.card_id = cards.id
+    WHERE game_cards.card_status = ${player_num} AND
+    game_cards.game_id = ${game_id}`;
+
+
+
+    let card_ids = await db.any(query)
+
+    console.log(card_ids);
+  }
+
+  static async getPlayerNumber(gameId,userId) {
+    let query = `SELECT player_num FROM game_users
+    WHERE game_id = ${gameId}
+    AND user_id = ${userId}`
+
+    let { player_num : playerNum } = await db.one(query);
+
+    console.log(playerNum)
+
+    return playerNum
   }
 
   drawCard() {
