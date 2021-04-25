@@ -1,13 +1,23 @@
 const express = require('express');
-const router = express.Router();
-const db = require('../db/connection');
-const Game = require('../db/Games');
+const router  = express.Router();
+const db      = require('../db/connection');
+const Game    = require('../db/Games');
+const GU      = require('../db/Game_users');
 
 
-router.post('/:gameId/startGame', (req, res) => {
+router.post('/:gameId/startGame', async (req, res) => {
   let gameId = req.params.gameId;
-  Game.startGame(gameId);
-  res.status(200).json({ msg: 'successfully inserted cards' });
+  await Game.startGame(gameId);
+  res.status(200).json({ msg: 'Starting game' });
+});
+
+router.post('/:gameId/playCard', async (req, res) => {
+  let gameId = req.params.gameId;
+  let { gameCardId } = req.body;
+  console.log('BEFORE PLAYCARD');
+  await GU.playCard(gameCardId, gameId);
+  console.log('AFTER PLAYCARD');
+  res.status(200).json({ msg: 'Playing a card' });
 });
 
 router.get('/', (req, res) => {

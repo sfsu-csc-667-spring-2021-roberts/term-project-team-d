@@ -7,6 +7,32 @@ class Game_users extends ActiveRecord {
   game = -1;
   username = '';
 
+  static async playCard(gameCardId, gameId) {
+    // First check if card is able to be played (color, number)
+    let isValidCard;
+    if (await Games.getNumPileCards(gameId) == 0) {
+      isValidCard = true;
+    } else {
+      isValidCard = await Games.isValidCard(gameCardId, gameId);
+    }
+
+    console.log('AFTER CARD VALIDATION', isValidCard);
+
+    if (isValidCard) {
+      await Game_users.activateCardEffect(gameCardId, gameId);
+      console.log('AFTER activate card effect');
+      await Games.updateCardStatus(gameCardId);
+      console.log('AFTER update card status');
+      await Games.nextPlayer(gameId);
+      console.log('AFTER next player');
+      await Games.updateLastCard(gameCardId, gameId)
+      console.log('AFTER update last card');
+    } else {
+      // not valid, do nothing
+      return
+    }
+  }
+
   // userId, gameId -> boolean
   static async isJoined(userId, gameId) {
     let query = `SELECT COUNT(*) FROM game_users 
@@ -59,9 +85,9 @@ class Game_users extends ActiveRecord {
                  WHERE 
                       game_id = ${gameId} AND
                       player_num = ${i}`
-        console.log(query2)
+        //console.log(query2)
         await db.none(query2)
-        console.log("=========> inside the loop ");
+        //console.log("=========> inside the loop ");
         
       }
       //console.log("Number of players =======>", await Games.getNumPlayers(gameId))
@@ -85,7 +111,7 @@ class Game_users extends ActiveRecord {
 
     let card_ids = await db.any(query)
 
-    console.log(card_ids);
+    //console.log(card_ids);
   }
 
   static async getPlayerNumber(gameId,userId) {
@@ -95,7 +121,7 @@ class Game_users extends ActiveRecord {
 
     let { player_num : playerNum } = await db.one(query);
 
-    console.log(playerNum)
+    //console.log(playerNum)
 
     return playerNum
   }
@@ -139,8 +165,6 @@ class Game_users extends ActiveRecord {
 
     let {id : topDeckCard} = await db.one(sql)
 
-
-
     // Grabs the next player
     
     sql = `SELECT clockwise FROM games
@@ -150,6 +174,7 @@ class Game_users extends ActiveRecord {
 
     sql = `SELECT current_player FROM games
            WHERE id = ${gameId};`
+
     let {current_player : currPlayer} = await db.one(sql)
 
 
@@ -161,26 +186,8 @@ class Game_users extends ActiveRecord {
                           id = ${topDeckCard}`
     
     await db.none(sql)
-    
-
   }
 
-  static async playCard(gameCardId, gameId) {
-    // First check if card is able to be played (color, number)
-    let isValidCard = Games.isValidCard(gameCardId);
-
-    if (isValidCard) {
-      await Game_users.activateCardEffect(gameCardId);
-      await Games.updateCardStatus(gameCardId);
-      await Games.nextPlayer(gameId); // TODO go to next player
-      
-      //TODO: update last card (update last color too just when changecolor is player)
-      await Games.updateLastCard(gameCardId,gameId)
-    } else {
-      // not valid, do nothing
-      return
-    }
-  }
 
 
 
@@ -195,13 +202,10 @@ class Game_users extends ActiveRecord {
     if ( type == 'normal' ) {
       // Nothing
     } else if (type == 'draw 2') {
-      // TODO put two cards in next players hand
-      Game_users.drawCardNextPlayer(gameId)
-      Game_users.drawCardNextPlayer(gameId)
-
+      await Game_users.drawCardNextPlayer(gameId)
+      await Game_users.drawCardNextPlayer(gameId)
 
     } else if (type == 'reverse') {
-      //TODO reverse the turn rotation
       let reverseSQL = `UPDATE games
             SET clockwise = clockwise * (-1)
             WHERE gameId =${gameId}`
@@ -210,23 +214,32 @@ class Game_users extends ActiveRecord {
 
 
     } else if (type == 'skip') {
-      // TODO skip next player
+      // skip next player
       await Games.nextPlayer(gameId)
 
 
 
     } else if (type == 'draw 4') {
-      // TODO draw four
-      Game_users.drawCardNextPlayer(gameId)
-      Game_users.drawCardNextPlayer(gameId)
-      Game_users.drawCardNextPlayer(gameId)
-      Game_users.drawCardNextPlayer(gameId)
-    } else if (type == 'changeColor') {
-      // TODO changeColor
-      //let color = pusher.getColorFromUser()
+      // draw four
+      await Game_users.drawCardNextPlayer(gameId)
+      await Game_users.drawCardNextPlayer(gameId)
+      await Game_users.drawCardNextPlayer(gameId)
+      await Game_users.drawCardNextPlayer(gameId)
+
+      // TODO let color = pusher.getColorFromUser()
       let color = 'yellow'
       let updateSQL = `UPDATE GAMES
-                       SET last_card = ${color}
+                       SET last_color = '${color}'
+                       WHERE id = ${gameId}`
+      
+      await db.none(updateSQL)
+      await Games.nextPlayer(gameId);
+
+    } else if (type == 'changeColor') {
+      // TODO let color = pusher.getColorFromUser()
+      let color = 'yellow'
+      let updateSQL = `UPDATE GAMES
+                       SET last_color = ${color}
                        WHERE id = ${gameId}`
       
       await db.none(updateSQL)
