@@ -139,10 +139,6 @@ module.exports = {
       card_status: {
         type: DataTypes.SMALLINT,
         allowNull: false,
-        references: {
-          model: 'game_users',
-          key: 'id'
-        }
       },
       game_id: {
         type: DataTypes.INTEGER,
@@ -160,7 +156,7 @@ module.exports = {
           key: 'id'
         }
       },
-      order: {
+      card_order: {
         type: DataTypes.INTEGER,
         allowNull: true
       }

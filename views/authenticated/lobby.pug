@@ -20,7 +20,7 @@ block content
           // ====== JOIN GAME BUTTON ==========
         else
           - let url = '/users/joinGame/' + game.game_id
-          form(class='joinGameForm' action=url method='GET')
+          form(class='joinGameForm' action=url method='POST')
             label join game
             input(type='submit' class='joinGameButton' id=game.game_id
             name='joinGame' value='join game' data-gameid=game.game_id)

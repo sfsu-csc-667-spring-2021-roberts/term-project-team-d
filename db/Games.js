@@ -51,36 +51,85 @@ class Games extends ActiveRecord {
     
   }
 
-  static insertDealers(gameId) {
-    let query
-  }
 
-  static startGame(gameId) {
-      Games.initializeCards(gameId);
+
+  static async startGame(gameId) {
+      await Games.initializeCards(gameId);
+
+      //shuffle cards:
+      await Games.shuffleDeck(gameId);
       // deal out cards
-      //game.dealCards();
+
+      Games.dealCards(gameId);
   }
 
   static async initializeCards(gameId) {
       let selectQuery = `SELECT id FROM cards`;
       let cards = await db.any(selectQuery);
-      console.log(cards);
       for (let i = 0; i < cards.length; i++) {
         let insertQuery = `INSERT INTO game_cards(card_status, game_id, card_id) 
           VALUES(0, ${gameId}, ${cards[i].id})`;
-        console.log(insertQuery);
-        db.none(insertQuery);
+        await db.none(insertQuery);
       }
     }
 
-  dealCards() {
+  static async dealCards(gameId) {
+    //let's say we give each player 8 cards:
+    let player = 1
+    for (let i = 1; i <=8*4; i++){
+      let cardId = `SELECT id FROM game_cards 
+        WHERE card_status = 0
+        AND game_id = ${gameId}
+        ORDER BY card_order
+        LIMIT 1`
+
+      let { id: cardToAssign } = await db.one(cardId)
+      
+      let updateCard = `UPDATE game_cards
+      SET card_status = ${player}
+      WHERE id = ${cardToAssign}
+      AND game_id = ${gameId}`
+
+      await db.none(updateCard);
+
+      player = (player+1)% 5
+      if (player == 0) {
+        player = player + 1
+      }
+    }
   }
 
   playerLeave() {
   }
 
-  shuffleDeck(){
+  static async shuffleDeck(gameId){
+    // create the array cardsOrder in order from 1 to 60:
+    let array = [];
+    for (let i = 1; i <= 60; i++){
+      array.push(i)
+    }
+    
+     /* Randomize array in-place using Durstenfeld shuffle algorithm */
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    //console.log (array)
+    
+    let SelectQuery = `SELECT id FROM game_cards WHERE game_id = ${gameId}`
+    let GameCardsIds = await db.any(SelectQuery)
+    //console.log('gamecardsids', GameCardsIds)
 
+    for (let i = 0; i <= 59; i++){
+      let gameCardId = GameCardsIds[i].id
+      let updateQuery = `UPDATE game_cards 
+      SET card_order = ${array[i]} WHERE id = ${gameCardId}`;
+      await db.none(updateQuery)
+    }
+
+    
   }
   reShuffleDeck(){
 

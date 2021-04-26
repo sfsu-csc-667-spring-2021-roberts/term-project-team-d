@@ -26,6 +26,13 @@
 
 const socket = io(window.location.origin);
 
+/*
+socket.on('connection', user => {
+  socket.user = user;
+}
+*/
+
+
 /* ======= Chat Room ======== */
 socket.on('message', message => {
   const chatBox = $('#chat-box');
@@ -51,14 +58,14 @@ socket.on('createGame', (gameId, numPlayers) => {
   // Create Form
   let url = '/users/joinGame/' + gameId;
   let form = document.createElement('form');
-  form.setAttribute("method", "get");
+  form.setAttribute("method", "POST");
   form.setAttribute("action", url);
 
   // submit button
   let submit = document.createElement('input');
   submit.setAttribute('data-gameId', gameId);
   submit.setAttribute('type', 'submit');
-  submit.setAttribute('value', 'join game');
+  submit.setAttribute('value', 'join just Created');
   submit.setAttribute('class', 'joinGameButton');
 
   form.append(submit);
@@ -82,6 +89,8 @@ chatForm.submit( e => {
   e.target.elements.msg.focus();
 });
 
+/* ============ Buttons ================ */
+
 $('#createGame').on("click", async () => {
   // returns gameId
   let response = await fetch('/users/createGame', {
@@ -93,11 +102,6 @@ $('#createGame').on("click", async () => {
   socket.emit('createGame', gameId);
 
 });
-
-//$('.joinGameButton').on('click', function(e) {
-//  let gameId = $(e.target).data('gameid');
-//  socket.emit('joinGame', gameId);
-//});
 
 $('#logout').on('click', async () => {
   await fetch('/auth/logout', {
