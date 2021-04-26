@@ -24,3 +24,25 @@ block content
   script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js')
   script(src='/socket.io/socket.io.js')
   script(type='module' src='/js/gameLobby.js')
+
+  // ======= find peter for questions ======
+  script( 
+    var socket_id = -1; 
+    var socket = io();
+    socket.on("connect", ()=>{
+      socket_id = socket.id;
+    });
+  )
+  script ()
+
+//if question find peter
+//======  game socket ======//
+//please user this to get user id 
+// mine is just a demo, please tweak.
+
+
+// you can have button to send request to serve like this 
+// first para is event name, and the rest you can custom 
+//socket.emit('gameEvent', {userID: my_id, gameEvent: shuffleCards})
+//our server will send back data after your call.
+
