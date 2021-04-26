@@ -100,12 +100,24 @@ class Game_users extends ActiveRecord {
     return playerNum
   }
 
+  //I assume, getting the 1st card from deck.
   drawCard() {
-  }
+    let selectQuery = `SELECT id FROM cards`;
+    let cards = [];
+    cards = await db.any(selectQuery);
 
-  playCard() {
+    return cards.pop();
   }
-
+  
+  /**
+   * 
+   * @param userID the id that needs to deal
+   * @param {*} card a card send from client
+   */
+  playCard(userID, card) {
+    //TODO: delete this card from a user, you may need to go through cards[]
+    
+  }
 }
 
 module.exports = Game_users;
