@@ -105,7 +105,7 @@ class Game_users extends ActiveRecord {
     let selectQuery = `SELECT id FROM cards`;
     let cards = [];
     cards = await db.any(selectQuery);
-
+    //TODO write the deck back to db.
     return cards.pop();
   }
   
@@ -116,7 +116,7 @@ class Game_users extends ActiveRecord {
    */
   playCard(userID, card) {
     //TODO: delete this card from a user, you may need to go through cards[]
-    
+
   }
 }
 
