@@ -56,6 +56,10 @@ module.exports = {
       started: {
         type: DataTypes.SMALLINT,
         allowNull: false
+      },
+      last_color: {
+        type: DataTypes.STRING,
+        allowNull: true
       }
     });
 

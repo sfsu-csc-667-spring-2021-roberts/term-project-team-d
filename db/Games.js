@@ -136,51 +136,84 @@ class Games extends ActiveRecord {
   }
 
   static async isValidCard(gameCardId, gameId) {
+    //TODO: ADD case where last_Card is changeCOLOR.
+
     // need color and number
     let sql = `SELECT number, color FROM game_cards
     JOIN cards ON game_cards.card_id = cards.id 
     WHERE game_cards.id = ${gameCardId}`;
 
     const { number, color } = await db.any(sql);
+    
 
     //get last played card
-    sql = `SELECT last_card FROM games 
+    sql = `SELECT last_card,last_color FROM games 
       WHERE id = ${gameId}`;
 
-    let lastCard = await db.one(sql);
+    let {last_card: lastCard, last_color: lastColor} = await db.any(sql);
 
-    sql = `SELECT number, color FROM game_cards
+    sql = `SELECT number, color,type FROM game_cards
       JOIN cards ON game_cards.card_id = cards.id
       WHERE id = ${lastCard}`;
 
     // TODO play any cards need to get through
-    const { number: pileNumber, color: pileColor } = await db.any(sql);
+    const { number: pileNumber, color: pileColor, type: pileType } = await db.any(sql);
 
-    /* Special Cards */
-    if ( number == -1 ) {
-      if ( color == 'none' ) return true;
-
-      return pileColor == color;
+    // this means the player chose a special card that can be played anyway
+    if (color == 'none') {
+      return true;
     }
 
-    /* Normal Cards */
-    if (pileNumber == number || pileColor == color) {
-      return true;
-    } else {
-    return false;
+    // this checks if last player card was a changeColor card.
+    if (pileType == 'changeColor') {
+      if (color == lastColor) return true;
+      else return false;
+    }
+
+    // this means that the last played card is a color special card
+    if (number == -1) {
+      return color == pileColor
+    }
+
+    // this means that card player is a regular card.
+    return (pileNumber == number || pileColor == color)
+
   }
 
     static async nextPlayer(gameId) {
       // TODO go to next player
+      // grabbing clockwise
+      let clockwiseSQL = `SELECT clockwise FROM games
+                          WHERE id = ${gameId};`
+              
+      let {clockwise : rotation} = await db.one(clockwiseSQL)
+
+      // udpating current player
+      let updateCurrentPlayer = `UPDATE games
+                                 SET current_player = current_player + ${rotation} 
+                                 WHERE id = ${gameId}`
+      
+      await db.none(updateCurrentPlayer)
+
     }
 
     static async updateCardStatus(gameCardId) {
-      sql = `UPDATE game_cards
+      let sql = `UPDATE game_cards
         SET card_status = -1 
         WHERE gameCardId = ${gameCardId}`;
+      
 
       await db.none(sql);
     }
+    static async updateLastCard(gameCardId,gameId) {
+      let sql = `UPDATE games
+                 SET last_card = ${gameCardId}
+                 WHERE id = ${gameId}`
+      await db.none(sql)
+    }
+
+
+
 }
 
 module.exports = Games;
