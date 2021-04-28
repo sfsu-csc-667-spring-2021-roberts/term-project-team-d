@@ -1,11 +1,14 @@
 var express = require('express');
-var router = express.Router();
 var path = require('path');
+var router = express.Router();
 
-/* GET game page. */
+/* GET home page. */
 router.get('/', function(req, res, next) {
-  console.log(__dirname);
-  res.sendFile(path.join(__dirname, '../game/index.html'));
+  var dummy_data = { 
+    id: 0
+  };
+
+  res.render('game', dummy_data);
 });
 
 module.exports = router;
