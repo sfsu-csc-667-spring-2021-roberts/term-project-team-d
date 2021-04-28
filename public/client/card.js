@@ -1,82 +1,55 @@
-export const specialTypes = {
-    SKIP:      101,
-    REVERSE:   102,
-    PLUS2:     103,
-    CHOOSE1:   104,
-    CHOOSE4:   105,
+// Special symbols used in non-number cards
+const Type = {
+    normal : {rank : "", symbol : ""},
+    skip : {rank : "🚫", symbol : "🚫"},
+    reverse : {rank : "⇄", symbol : "⇄"},
+    draw2 : {rank : "+2", symbol : "⧉"},
+    draw4 : {rank : "+4", symbol : "⧉"},
+    chooseColor : {rank : "⨁", symbol : "⨁"}
 }
 
-export class Card {
-    constructor(color, number) {
-        this.color = color;
-        this.number = number;
+/* 
+ * Process card message json {} into Card object
+ * generate HTML elements from Card Objects
+ * style HTML elements based on Object properties
+ *
+ * PARAM - cardData - card json to be converted into graphics
+ * PARAM - selectable - whether or not card will hilight on hover
+ */
+export function createCardElement(cardData, selectable=true){
+    // Create base card element
+    var card = document.createElement("div");
+    card.classList.add("card");
+    card.classList.add("card-" + cardData.color);
+
+    if(selectable){
+        card.classList.add("grow");
+        card.setAttribute("style", "cursor:pointer");
     }
 
-    createElement() {
-        var btn = document.createElement("div");
+    // Create rank and symbol subelements
+    var rank = document.createElement("div");
+    var symbol = document.createElement("div");
+    rank.classList.add("card-txt");
+    symbol.classList.add("card-symbol");
 
-        btn.innerText = String(this.number);
-        btn.style.backgroundColor = String(this.color);
+    card.append(rank);
+    card.append(symbol);
 
-        for (var key in specialTypes) {
-            if(specialTypes[key] != this.number) continue;
+    // Set rank & symbol text
+    var type = Type[cardData.type];
 
-            btn.innerText = key;
-        }
-
-        if(this.color == null){
-            btn.style.backgroundColor = "black";
-            btn.style.color = "white";
-        }
-        
-        btn.classList.add('card');
-
-        return btn;
+    if(type == null){
+        return card;
     }
+
+    rank.innerText = type.rank;
+    symbol.innerText = type.symbol;
+
+    if(cardData.type == 'normal'){
+        rank.innerText = cardData.number;
+        symbol.innerText = cardData.number;
+    }
+
+    return card;
 }
-
-// Return array containing all UNO cards
-export function getStartingDeck() {
-    deck = [];
-
-    ["red", "green", "blue", "yellow"].forEach(handleColor);
-
-    function handleColor(value, index, array) {
-        // x1 zero
-        deck.push(new Card(value, 0));
-
-        // x2 numbers 1-9
-        // x2 reverse, skip, and plus2
-        for (var i = 0; i < 2; i++) {
-            for (var n = 1; n <= 9; n++) {
-                deck.push(new Card(value, n));
-            }
-
-            deck.push(new Card(value, specialTypes.SKIP));
-            deck.push(new Card(value, specialTypes.REVERSE));
-            deck.push(new Card(value, specialTypes.PLUS2));
-        }
-
-        // x1 of choose 1, choose 4
-        deck.push(new Card(null, specialTypes.CHOOSE1));
-        deck.push(new Card(null, specialTypes.CHOOSE4));
-    }
-
-    shuffle(deck);
-    return deck;
-}
-
-// Fisher–Yates shuffle algorithm, implemented in JS
-// Algo taken from: stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
-export function shuffle(a) {
-    var j, x, i;
-    for (i = a.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1));
-        x = a[i];
-        a[i] = a[j];
-        a[j] = x;
-    }
-    return a;
-}
-
-export default Card;
