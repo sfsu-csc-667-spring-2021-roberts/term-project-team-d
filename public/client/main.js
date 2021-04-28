@@ -7,6 +7,28 @@ var pileDiv = null;
 
 var handRef = {}
 
+/*
+ * Create default Deck and Pile cards, start event listeners 
+ */
+function initBoard(){
+    deckDiv = createCardElement({"color":"black"});
+    pileDiv = createCardElement({"color":"black"});
+
+    boardDiv.append(deckDiv);
+    boardDiv.append(pileDiv);
+
+    deckDiv.addEventListener("click", drawCard);
+}
+
+/*
+ * Set pile card (graphic) based on card data
+ */
+function setPile(cardData){
+    var cardElem = createCardElement(cardData, false);
+    pileDiv.replaceWith(cardElem);
+}
+
+
 /* 
  * Add a new card to your hand
  * PARAM cardData - A card json received from server
@@ -19,7 +41,7 @@ function addCard(cardData){
     // generate link between visual element and cardData
     handRef[cardData.id] = cardElem;
 
-    // TODO: add event listener here
+    cardElem.addEventListener("click", playCard);
 }
 
 /*
@@ -49,7 +71,9 @@ function removeCard(cardData){
  * If fail or no response, display failed msg
  * PARAM - cardElem - Element on page which refers to card being played
  */
-function playCard(cardElem){
+function playCard(event){
+    //var cardElem = event.srcElement.parentElement;
+    var cardElem = event.target;
     var cardData = Object.keys(handRef).find(key => handRef[key] === cardElem);
     
     if(cardData == null){
@@ -57,58 +81,74 @@ function playCard(cardElem){
         return;
     }
 
+    console.log("Playing " + cardData);
+
+    var request = {
+        "card" : cardData,
+        "player" : null
+    }
+
     // TODO: send server request here
 }
 
-function initBoard(){
-    deckDiv = createCardElement({"color":"black"});
-    pileDiv = createCardElement({"color":"black"});
+/*
+ * Request the server for a new card.
+ * If OK response, add new card to hand.
+ * If fail or no response, display failed msg
+ */
+function drawCard(event){
+    console.log("Drawing x1 card");
 
-    boardDiv.append(deckDiv);
-    boardDiv.append(pileDiv);
+    var request = {
+        "player" : null
+    }
+
+    // TODO: send server request here
 }
 
-function setPile(cardData){
-    var cardElem = createCardElement(cardData, false);
-    pileDiv.replaceWith(cardElem);
-}
+initBoard();
 
+// TODO: replace with server init pile card
+setPile({
+    number: 2,
+    color: 'blue',
+    type: 'skip'
+});
+
+// TODO: replace with server draw 7 cards
 addCard({
+    id: 1,
     number: 1,
     color: 'red',
     type: 'normal'
 });
 
 addCard({
+    id: 3,
     number: -1,
     color: 'black',
     type: 'draw4'
 });
 
 addCard({
+    id: 4,
     number: 8,
     color: 'yellow',
     type: 'skip'
 });
 
 addCard({
+    id: 5,
     number: 2,
     color: 'green',
     type: 'normal'
 });
 
 addCard({
+    id: 6,
     number: 2,
     color: 'blue',
     type: 'normal'
-});
-
-initBoard();
-
-setPile({
-    number: 2,
-    color: 'blue',
-    type: 'skip'
 });
 
 // TODO: establish socket connection
