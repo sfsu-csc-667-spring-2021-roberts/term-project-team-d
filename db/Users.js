@@ -59,6 +59,9 @@ class Users extends ActiveRecord {
   }
 
   //Create a game
+  /**
+   * Peter: I suppose when you click create game, the button will bring you to game room page.
+   */
   static async createGame(id) {
       let { id: gameId } = await db.one(`
         INSERT INTO games(current_player, clockwise, started) 
