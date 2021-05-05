@@ -136,8 +136,6 @@ class Game_users extends ActiveRecord {
 
     let {id : topDeckCard} = await db.one(sql)
 
-
-
     // Grabs the current player
     sql = `SELECT current_player FROM games
            WHERE id = ${gameId};`
@@ -188,9 +186,6 @@ class Game_users extends ActiveRecord {
     await db.none(sql)
   }
 
-
-
-
   // helper function to do card effect
   static async activateCardEffect(gameCardId, gameId) {
     // get card effect if any
@@ -217,8 +212,6 @@ class Game_users extends ActiveRecord {
       // skip next player
       await Games.nextPlayer(gameId)
 
-
-
     } else if (type == 'draw 4') {
       // draw four
       await Game_users.drawCardNextPlayer(gameId)
@@ -243,13 +236,6 @@ class Game_users extends ActiveRecord {
                        WHERE id = ${gameId}`
       
       await db.none(updateSQL)
-
-      //MAKE THE CARD TABLE NOT STATIC.
-      //ADD INTO GAMES TABLE COLUMNS LAST_COLOR, LAST_NUMBER.
-      //ADD COLOR column in games
-
-
-
     }
   }
 }
