@@ -147,7 +147,7 @@ class Game_users extends ActiveRecord {
                       WHERE 
                           game_id = ${gameId} AND
                           id = ${topDeckCard}`
-    
+
     await db.none(sql)
     
 
@@ -202,7 +202,8 @@ class Game_users extends ActiveRecord {
     } else if (type == 'reverse') {
       let reverseSQL = `UPDATE games
             SET clockwise = clockwise * (-1)
-            WHERE gameId =${gameId}`
+            WHERE id = ${gameId}`
+      console.log(reverseSQL);
       
       await db.none(reverseSQL)
 
@@ -231,8 +232,9 @@ class Game_users extends ActiveRecord {
       // TODO let color = pusher.getColorFromUser()
       let color = 'yellow'
       let updateSQL = `UPDATE GAMES
-                       SET last_color = ${color}
+                       SET last_color = '${color}'
                        WHERE id = ${gameId}`
+      console.log(updateSQL);
       
       await db.none(updateSQL)
     }

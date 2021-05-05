@@ -20,6 +20,13 @@ router.post('/:gameId/playCard', async (req, res) => {
   res.status(200).json({ msg: 'Playing a card' });
 });
 
+router.post('/:gameId/drawCard', async (req, res) => {
+  let gameId = req.params.gameId;
+  await GU.drawCard(gameId);
+  console.log('drawing a card');
+  res.status(200).json({ msg: 'game_user drew a card' });
+});
+
 router.get('/', (req, res) => {
   db.any(`INSERT INTO test_table ("testString") VALUES ('Hello at`
          + `${Date.now()}')`)
