@@ -141,7 +141,6 @@ class Game_users extends ActiveRecord {
            WHERE id = ${gameId};`
     let {current_player : currPlayer} = await db.one(sql)
 
-
     // update card status
     sql = `UPDATE game_cards 
                       SET card_status = ${currPlayer}
