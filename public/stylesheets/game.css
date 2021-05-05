@@ -1,0 +1,104 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    width: 100vw;
+}
+
+* {
+    box-sizing:border-box;
+}
+
+.grid-container{
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr;
+    grid-template-rows: 1fr 3fr 1fr;
+    grid-gap: 0px;
+
+    height: 100%;
+    width: 100%;
+
+    background: #444444;
+}
+
+.grid-container > div {
+    background: #666677;
+
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+}
+
+#hand{
+  background: #aa8888;
+}
+
+#p2, #p3, #p4{
+  background: #8888aa;
+}
+
+#board{
+  background: #88aa88;
+}
+
+.card{
+    color: #ececec;
+    border: 5px #ececec;
+    border-style: solid;
+
+    display: grid;
+    grid-template-rows: 1fr 3fr 1fr;
+
+    width: 70px;
+    height: 120px;
+    
+    margin: 10px;
+}
+
+.grow { 
+transition: all .05s ease-in-out; 
+}
+
+.grow:hover { 
+transform: scale(1.1); 
+}
+
+.card-txt{
+    display: flex;
+    /*align-items: center; 
+    justify-content: center;*/
+    user-select: none;
+    pointer-events: none;
+}
+
+.card-symbol{
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    font-size: 25px;
+    user-select: none;
+    pointer-events: none;
+}
+
+.card-red{
+    background: #d82626;
+}
+
+.card-green{
+    background: #32b149;
+}
+
+.card-blue{
+    background: #3e70d0;
+}
+
+.card-yellow{
+    background: #d2b440;
+}
+
+.card-black{
+    background: #404040;
+}
