@@ -13,7 +13,6 @@ const passport     = require('passport');
 const flash        = require('express-flash');
 const session      = require('express-session');
 const sessionStore = new session.MemoryStore();
-//console.log(sessionStore);
 
 /* Routes */
 var authRouter      = require('./routes/authentication');
