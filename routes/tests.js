@@ -11,6 +11,12 @@ router.post('/:gameId/startGame', async (req, res) => {
   res.status(200).json({ msg: 'Starting game' });
 });
 
+router.post('/:gameId/reshuffle', async (req, res) => {
+  let gameId = req.params.gameId;
+  await Game.reshuffle(gameId);
+  res.status(200).json({ msg: 'Starting game' });
+});
+
 router.post('/:gameId/playCard', async (req, res) => {
   let gameId = req.params.gameId;
   let { gameCardId } = req.body;

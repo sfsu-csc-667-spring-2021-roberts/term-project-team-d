@@ -136,7 +136,61 @@ class Games extends ActiveRecord {
 
     
   }
-  reShuffleDeck(){
+  static async reshuffle(gameId){
+
+
+    // first, take all the cards from the played pile.
+    let selectSQL = `SELECT id from game_cards
+                  WHERE card_status = -1 AND game_id=${gameId}
+                  AND id != (SELECT last_card FROM GAMES
+                    WHERE id = ${gameId})`
+    
+    let pileCards = await db.any(selectSQL)
+    // then, change their card_status to 0, before it was -1
+    console.log(pileCards)
+    for(let key in pileCards){
+      console.log(pileCards[key])
+      let updateSQL = `UPDATE game_cards
+      SET card_status = 0
+      WHERE game_id = ${gameId}
+      AND id = ${pileCards[key].id}`
+
+      await db.none(updateSQL)
+    }
+
+    // then, count how many cards we have in the deck now.
+
+    let numberOfCardsInDeck = pileCards.length;
+
+    // then do the same thing we did in shuffleDeck, but instead of creating an array of 60
+    // numbers, we create an array of size(deck)
+    // create the array cardsOrder in order from 1 to 60:
+    let array = [];
+    for (let i = 1; i <= numberOfCardsInDeck; i++){
+      array.push(i)
+    }
+
+
+
+    // shuffle the numbers
+    // assign them as order to the deck cards.
+
+         /* Randomize array in-place using Durstenfeld shuffle algorithm */
+         for (var i = array.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var temp = array[i];
+          array[i] = array[j];
+          array[j] = temp;
+      }
+      //console.log (array)
+    
+  
+      for (let i = 0; i <= array.length - 1; i++){
+        let gameCardId = pileCards[i].id
+        let updateQuery = `UPDATE game_cards 
+        SET card_order = ${array[i]} WHERE id = ${gameCardId}`;
+        await db.none(updateQuery)
+      }
 
   }
 
