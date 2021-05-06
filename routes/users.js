@@ -27,17 +27,14 @@ router.post('/joinGame/:gameId', async (req, res) => {
   let userId = req.user.id;
   await GU.joinGame(gameId, userId);
 
-  renderGameLobby(req, res, gameId);
-
  /* start game logic */
- // if (Games.getNumPlayers() == 4) {
- //   // start game
- //   Games.startGame(gameId);
- // } else {
- //   res.send();
- // }
-
-  //res.send();
+  if (Games.getNumPlayers(gameId) == 4) {
+    // start game
+    await Games.startGame(gameId);
+    renderGame(req, res, game);
+  } else {
+    renderGameLobby(req, res, gameId);
+  }
 });
 
 /* ======= resume game ========= */
@@ -83,6 +80,12 @@ async function renderGameLobby(req, res, gameId) {
     gameId: gameId,
     numPlayers: numPlayers,
     usernames: usernames
+  });
+}
+
+async function renderGame(req, res, gameId) {
+  res.render('authenticated/game', {
+    title: 'Game Room'
   });
 }
 module.exports = router;
