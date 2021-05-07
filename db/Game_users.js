@@ -127,6 +127,13 @@ class Game_users extends ActiveRecord {
   }
 
   static async drawCard(gameId) {
+    
+    let count = Games.countDeck(gameId);
+    if (count == 0) {
+      Games.reshuffle(gameId);
+    }
+
+
     // will get a card from the deck with the lowest order
     let sql =`SELECT id FROM game_cards
     WHERE card_status = 0
@@ -153,6 +160,10 @@ class Game_users extends ActiveRecord {
 
   }
   static async drawCardNextPlayer(gameId) {
+    let count = Games.countDeck(gameId);
+    if (count == 0) {
+      Games.reshuffle(gameId);
+    }
     // will get a card from the deck with the lowest order
     let sql =`SELECT id FROM game_cards
     WHERE card_status = 0

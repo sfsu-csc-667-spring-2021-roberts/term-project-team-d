@@ -193,6 +193,15 @@ class Games extends ActiveRecord {
       }
 
   }
+  static async countDeck(gameId){
+    sql = `SELECT COUNT (*) FROM game_cards
+          WHERE card_status = 0
+          AND game_id = ${gameId}`
+    let {count} = await db.one(sql)
+
+    return count;
+
+  }
 
   static async isValidCard(gameCardId, gameId) {
     // select color and number
