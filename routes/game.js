@@ -12,6 +12,15 @@ router.post('/:gameId/getPlayerHand', async (req, res) => {
   res.status(200).json(playerCards);
 });
 
+router.post('/:gameId/getLastCard', async (req, res) => {
+  //let message = req.body;
+  //console.log(message);
+  //let userId = req.user.id;
+  let gameId = req.params.gameId;
+  let lastCard = await Games.getLastCard(gameId);
+  res.status(200).json(lastCard);
+});
+
 router.post('/:gameId/playCard', async (req, res) => {
   let { cardId } = req.body;
   let userId = req.user.id;
