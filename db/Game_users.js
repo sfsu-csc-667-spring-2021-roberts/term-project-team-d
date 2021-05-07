@@ -27,9 +27,13 @@ class Game_users extends ActiveRecord {
       console.log('AFTER next player');
       await Games.updateLastCard(gameCardId, gameId)
       console.log('AFTER update last card');
+
+      // last card
+      let cardObject = await Games.getCard(gameCardId);
+      return cardObject;
     } else {
       // not valid, do nothing
-      return
+      return 'invalid card';
     }
   }
 
@@ -65,17 +69,19 @@ class Game_users extends ActiveRecord {
 
   // userId, gameId -> void
   static async leaveGame(gameId, userId) {
+    console.log('INSIDE LEAVE GAME ORM');
     let started = await Games.isStarted(gameId);
+    console.log('started:', started);
 
     if (!started) {
-      let {count } = await Games.getNumPlayers(gameId)
-      //console.log("===========>",count)
+      let count  = await Games.getNumPlayers(gameId)
+      console.log("===========>", count)
       let query = `DELETE FROM game_users
         WHERE user_id = ${userId} AND game_id = ${gameId}
         RETURNING player_num`;
       let playerNum = await db.one(query);
 
-      //console.log("playerNum Object ===>",playerNum)
+      console.log("playerNum Object ===>",playerNum)
       // DECREMENT game_users that are > user we deleted
       // query = `UPDATE game_users SET
 
@@ -100,18 +106,15 @@ class Game_users extends ActiveRecord {
   
   static async getCardsInHand(gameId, userId) {
 
-    let playerNum = Game_users.getPlayerNumber(gameId, userId);
+    let playerNum = await Game_users.getPlayerNumber(gameId, userId);
 
     let query = `SELECT * FROM game_cards
     JOIN cards ON game_cards.card_id = cards.id
-    WHERE game_cards.card_status = ${player_num} AND
-    game_cards.game_id = ${game_id}`;
+    WHERE game_cards.card_status = ${playerNum} AND
+    game_cards.game_id = ${gameId}`;
 
-
-
-    let card_ids = await db.any(query)
-
-    //console.log(card_ids);
+    let playerCards = await db.any(query)
+    return playerCards;
   }
 
   static async getPlayerNumber(gameId,userId) {

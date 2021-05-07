@@ -296,6 +296,24 @@ class Games extends ActiveRecord {
     return count;
   }
 
+  static async getCurrentPlayer(gameId) {
+    let sql = `SELECT current_player
+      FROM games
+      WHERE id = ${gameId}`;
+
+    let { current_player } = await db.one(sql);
+    return current_player;
+  }
+
+  static async getCard(gameCardId) {
+    let sql = `SELECT game_cards.id, cards.color, cards.number, cards.type
+      FROM game_cards
+      JOIN cards ON game_cards.card_id = cards.id
+      WHERE game_cards.id = ${gameCardId}`;
+
+    return await db.one(sql);
+  }
+
 
 
 } // end of Games class

@@ -3,7 +3,6 @@ var router = express.Router();
 let Users = require('../db/Users');
 let Games = require('../db/Games');
 let GU = require('../db/Game_users');
-//let { io } = require('../socketAPI');
 const {renderLobby} = require('../routes/lobby');
 
 /* GET users listing. */
@@ -26,12 +25,15 @@ router.post('/joinGame/:gameId', async (req, res) => {
   let gameId  = req.params.gameId;
   let userId = req.user.id;
   await GU.joinGame(gameId, userId);
+  console.log('Joined a game');
+  let numPlayers = await Games.getNumPlayers(gameId)
+  console.log(numPlayers);
 
  /* start game logic */
-  if (Games.getNumPlayers(gameId) == 4) {
+  if (numPlayers == 4) {
     // start game
     await Games.startGame(gameId);
-    renderGame(req, res, game);
+    renderGame(req, res, gameId);
   } else {
     renderGameLobby(req, res, gameId);
   }
@@ -44,9 +46,11 @@ router.get('/resume/:gameId', async (req, res) => {
 
   // CHECK IF GAME STARTED
   let started = await Games.isStarted(gameId);
+  console.log(started);
+
   // IF GAME STARTED JOIN GAME ROOM
   if (started) {
-    console.log('join fake game room');
+    renderGame(req, res, gameId);
   } else {
     renderGameLobby(req, res, gameId);
   }
