@@ -18,11 +18,11 @@ const sessionStore = new session.MemoryStore();
 var authRouter      = require('./routes/authentication');
 var indexRouter     = require('./routes/index');
 var usersRouter     = require('./routes/users');
-var {router: lobbyRouter}     = require('./routes/lobby');
 var gameLobbyRouter = require('./routes/gameLobby');
 var testsRouter     = require('./routes/tests');
 var gameRouter      = require('./routes/game');
 var chatroomRouter  = require('./routes/chatroom');
+var {router: lobbyRouter}     = require('./routes/lobby');
 
 // create express server
 const app = express();
@@ -68,7 +68,7 @@ app.use('/lobby', lobbyRouter);
 app.use('/chatroom', chatroomRouter);
 app.use('/users', usersRouter);
 app.use('/gameLobby', gameLobbyRouter);
-app.use('/:gameId', gameRouter);
+app.use('/game', gameRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

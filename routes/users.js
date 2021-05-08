@@ -25,18 +25,17 @@ router.post('/joinGame/:gameId', async (req, res) => {
   let gameId  = req.params.gameId;
   let userId = req.user.id;
   await GU.joinGame(gameId, userId);
-
-  renderGameLobby(req, res, gameId);
+  let numPlayers = await Games.getNumPlayers(gameId)
 
  /* start game logic */
- // if (Games.getNumPlayers() == 4) {
- //   // start game
- //   Games.startGame(gameId);
- // } else {
- //   res.send();
- // }
+  if (numPlayers == 4) {
+    // start game
+    await Games.startGame(gameId);
+    renderGame(req, res, gameId);
 
-  //res.send();
+  } else {
+    renderGameLobby(req, res, gameId);
+  }
 });
 
 /* ======= resume game ========= */
@@ -49,8 +48,7 @@ router.get('/resume/:gameId', async (req, res) => {
 
   // IF GAME STARTED JOIN GAME ROOM
   if (started) {
-    console.log('join fake game room');
-    res.send();
+    renderGame(req, res, gameId);
   } else {
     renderGameLobby(req, res, gameId);
   }
@@ -86,6 +84,47 @@ async function renderGameLobby(req, res, gameId) {
     gameId: gameId,
     numPlayers: numPlayers,
     usernames: usernames
+  });
+}
+
+async function renderGame(req, res, gameId) {
+
+  let userId = req.user.id;
+  let playerNum = await GU.getPlayerNumber(gameId, userId);
+  let currentPlayer = await Games.getCurrentPlayer(gameId);
+  let rotation = await Games.getRotation(gameId);
+  let numPlayersCards = await GU.getNumCardsInHand(gameId, userId);
+  console.log('we goooood here')
+  let neighbors = []
+  console.log(numPlayersCards[0]);
+
+  if (playerNum == 1) {
+    neighbors.push(numPlayersCards[1])
+    neighbors.push(numPlayersCards[2])
+    neighbors.push(numPlayersCards[3])
+
+  } else if (playerNum == 2) {
+    neighbors.push(numPlayersCards[2])
+    neighbors.push(numPlayersCards[3])
+    neighbors.push(numPlayersCards[0])
+  } else if (playerNum == 3) {
+    neighbors.push(numPlayersCards[3])
+    neighbors.push(numPlayersCards[0])
+    neighbors.push(numPlayersCards[1])
+  } else {
+    neighbors.push(numPlayersCards[0])
+    neighbors.push(numPlayersCards[1])
+    neighbors.push(numPlayersCards[2])
+  }
+  
+  let direction = rotation == 1 ? 'clockwise' : 'counterclockwise';
+
+  res.render('authenticated/game', {
+    title: 'Game Room',
+    playerNum: playerNum,
+    currentPlayer: currentPlayer,
+    rotation: direction,
+    neighbors: neighbors
   });
 }
 module.exports = router;

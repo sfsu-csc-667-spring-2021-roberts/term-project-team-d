@@ -7,6 +7,15 @@ var pileDiv = null;
 
 var handRef = {}
 
+/* URL for fetches */
+const baseUrl = 'http://localhost:3000/';
+
+/* get gameId from URL */
+let url = window.location.href;
+url = url.split('/');
+let gameId = url[5].charAt(0);
+//console.log('gameId:', gameId);
+
 /*
  * Create default Deck and Pile cards, start event listeners 
  */
@@ -27,7 +36,6 @@ function setPile(cardData){
     var cardElem = createCardElement(cardData, false);
     pileDiv.replaceWith(cardElem);
 }
-
 
 /* 
  * Add a new card to your hand
@@ -83,12 +91,9 @@ function playCard(event){
 
     console.log("Playing " + cardData);
 
-    var request = {
-        "card" : cardData,
-        "player" : null
-    }
-
     // TODO: send server request here
+    console.log(cardData);
+    fetchPlayCard(cardData);
 }
 
 /*
@@ -106,50 +111,94 @@ function drawCard(event){
     // TODO: send server request here
 }
 
-initBoard();
+async function getPlayerCards(gameId) {
+  let getPlayerHandUrl = baseUrl + 'game/' + gameId + '/getPlayerHand';
+
+  const response = await fetch(getPlayerHandUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // body data type must match "Content-Type" header
+    body: JSON.stringify({ msg: 'From client get Player Hand' }) 
+  });
+  // parses JSON response into native JavaScript objects
+  let playerCards = await response.json(); 
+  //console.log(playerCards);
+  return playerCards
+}
+
+function addCards(playerCards) {
+  //console.log(playerCards);
+  for (let i = 0; i < playerCards.length; i++) {
+    addCard({ 
+      id: playerCards[i].id,
+      number: playerCards[i].number,
+      color: playerCards[i].color,
+      type: playerCards[i].type
+    });
+  }
+}
+
+async function fetchPlayCard(cardData) {
+  let playCardUrl = baseUrl + 'game/' + gameId + '/playCard';
+
+  const response = await fetch(playCardUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // body data type must match "Content-Type" header
+    body: JSON.stringify({ cardId: cardData })
+  });
+  let result = await response.json(); 
+  let { playedCard } = result;
+  console.log('playedCard:', playedCard);
+  console.log('result', result);
+  if (playedCard) {
+    setPile({
+      number: playedCard.number,
+      color: playedCard.color,
+      type: playedCard.type
+    });
+  }
+}
+
+async function handleLastCard(gameId) {
+  let fetchLastCardUrl = '/game/' + gameId + '/getLastCard';
+
+  const response = await fetch(fetchLastCardUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // body data type must match "Content-Type" header
+    body: JSON.stringify({ gameId: gameId })
+  });
+  let lastCard = await response.json(); 
+
+  setPile({
+    number: lastCard.number,
+    color: lastCard.color,
+    type: lastCard.type
+  });
+}
+
+/* =================================*/
+/* ============== MAIN =============*/
+/* =================================*/
+
+async function main(gameId) {
+  initBoard();
+  let playerCards = await getPlayerCards(gameId);
+  addCards(playerCards);
+  handleLastCard(gameId);
+}
+
+main(gameId);
 
 // TODO: replace with server init pile card
-setPile({
-    number: 2,
-    color: 'blue',
-    type: 'skip'
-});
-
-// TODO: replace with server draw 7 cards
-addCard({
-    id: 1,
-    number: 1,
-    color: 'red',
-    type: 'normal'
-});
-
-addCard({
-    id: 3,
-    number: -1,
-    color: 'black',
-    type: 'draw4'
-});
-
-addCard({
-    id: 4,
-    number: 8,
-    color: 'yellow',
-    type: 'skip'
-});
-
-addCard({
-    id: 5,
-    number: 2,
-    color: 'green',
-    type: 'normal'
-});
-
-addCard({
-    id: 6,
-    number: 2,
-    color: 'blue',
-    type: 'normal'
-});
-
+//
+//// TODO: replace with server draw 7 cards
 // TODO: establish socket connection
 // TODO: get initial hand 

@@ -57,7 +57,7 @@ socket.on('createGame', (gameId, numPlayers) => {
 /* ========= Event Listeners ==========*/
 /* ====================================*/
 
-/* ========= Chat Room ==============*/
+/* === Chat Room (Pressing enter) ======*/
 const chatForm = $('#chat-form');
 chatForm.submit( async e => {
   e.preventDefault();
@@ -90,7 +90,7 @@ $('#createGame').on("click", async () => {
   let { gameId } = await response.json();
 
   // send gameId to socket
-  socket.emit('createGame', gameId);
+  //socket.emit('createGame', gameId);
 
 });
 

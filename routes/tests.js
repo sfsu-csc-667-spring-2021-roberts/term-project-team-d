@@ -26,6 +26,17 @@ router.post('/:gameId/playCard', async (req, res) => {
   res.status(200).json({ msg: 'Playing a card' });
 });
 
+
+router.get('/:gameId/getLastCard', async (req, res) => {
+  //let message = req.body;
+  //console.log(message);
+  //let userId = req.user.id;
+  console.log('HEREEEEEEEEEEEE')
+  let gameId = req.params.gameId;
+  let lastCard = await Game.getLastCard(gameId);
+  res.status(200).json(lastCard);
+});
+
 router.post('/:gameId/drawCard', async (req, res) => {
   let gameId = req.params.gameId;
   await GU.drawCard(gameId);
@@ -43,6 +54,15 @@ router.get('/', (req, res) => {
     res.json({error})
   })
 });
+
+router.post('/:gameId/getPlayerNum', async (req, res) => {
+  let gameId = req.params.gameId;
+  let userId = req.user.id;
+  let playerNum = await GU.getPlayerNumber(gameId, userId);
+
+  res.status(200).json({ playerNum: playerNum });
+});
+
 /**
  * test isValid
  * test 
