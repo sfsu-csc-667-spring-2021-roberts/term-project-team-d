@@ -12,16 +12,12 @@ let gameId = parseInt(urlArr[3]);
 /* ============= socketio =============*/
 /* ====================================*/
 
-const socket = io(window.location.origin);
-
-// executed once always
-socket.emit('joinGame', gameId);
-
 /* ======== ON gameLobby Join ======== */
+/*
 socket.on('gameUserJoin', username => {
   console.log('a user joined a game!', username);
   let div = document.createElement('div');
   div.innerHTML = '<h3>user: ' + username + ' joined!</h3>';
   $('#gameUsers').append(div);
 });
-
+*/
