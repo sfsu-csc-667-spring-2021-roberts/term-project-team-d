@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Pusher = require('pusher');
 const moment = require('moment');
-
 const pusher = new Pusher({
   appId: "1198857",
   key: "fe16d9c5190cef68646f",

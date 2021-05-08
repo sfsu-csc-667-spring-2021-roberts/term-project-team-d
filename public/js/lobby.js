@@ -28,7 +28,7 @@ channel.bind('chat-msg', function(data) {
 /* ======== Create Game Button =========*/
 channel.bind('create-game', data => {
   let { gameId, numPlayers } = data;
-  const gameList = $('#gameList');
+  const gameList = document.getElementById('gameList');
   const div = document.createElement('div');
 
   div.classList.add('gameli');
@@ -44,7 +44,7 @@ channel.bind('create-game', data => {
   let submit = document.createElement('input');
   submit.setAttribute('data-gameId', gameId);
   submit.setAttribute('type', 'submit');
-  submit.setAttribute('value', 'join just Created');
+  submit.setAttribute('value', 'join - just Created');
   submit.setAttribute('class', 'joinGameButton');
 
   form.append(submit);
@@ -90,9 +90,6 @@ createGameButton.addEventListener('click', async () => {
     method: 'POST',
   });
   let { gameId } = await response.json();
-
-  // send gameId to socket
-  //socket.emit('createGame', gameId);
 });
 
 //$('#logout').on('click', async () => {
