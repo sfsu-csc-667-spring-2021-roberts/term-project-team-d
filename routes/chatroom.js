@@ -16,7 +16,7 @@ router.post('/chatMessage', (req, res) => {
   let { msg } = req.body;
 
   console.log('ERROR REPORT', username, msg);
-  pusher.trigger("lobby-chatroom", "chat-msg", {
+  pusher.trigger("lobby", "chat-msg", {
     message:  msg,
     username: username,
     timestamp: moment().format('h:mm a')

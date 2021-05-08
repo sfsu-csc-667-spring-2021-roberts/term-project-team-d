@@ -7,13 +7,13 @@
 let pusher = new Pusher('fe16d9c5190cef68646f', {
   cluster: 'us3'
 });
-let channel = pusher.subscribe('lobby-chatroom');
+let channel = pusher.subscribe('lobby');
 
 /* ======= Chat Room ======== */
 channel.bind('chat-msg', function(data) {
   let { username, message, timestamp } = data;
 
-  const chatBox = $('#chat-box');
+  const chatBox = document.getElementById('chat-box');
   const div = document.createElement('div');
 
   div.classList.add('message');
@@ -22,12 +22,12 @@ channel.bind('chat-msg', function(data) {
   chatBox.append(div);
 
   // scrolldown automatically
-  chatBox.scrollTop(chatBox[0].scrollHeight);
+  chatBox.scrollTop = chatBox.scrollHeight;
 });
 
 /* ======== Create Game Button =========*/
-/*
-socket.on('createGame', (gameId, numPlayers) => {
+channel.bind('create-game', data => {
+  let { gameId, numPlayers } = data;
   const gameList = $('#gameList');
   const div = document.createElement('div');
 
@@ -51,15 +51,16 @@ socket.on('createGame', (gameId, numPlayers) => {
   div.append(form);
   gameList.append(div);
 });
-*/
 
 /* ====================================*/
 /* ========= Event Listeners ==========*/
 /* ====================================*/
 
 /* === Chat Room (Pressing enter) ======*/
-const chatForm = $('#chat-form');
-chatForm.submit( async e => {
+//const chatForm = $('#chat-form');
+//chatForm.submit( async e => {
+const chatForm = document.getElementById('chat-form');
+chatForm.addEventListener('submit', async e => {
   e.preventDefault();
   const msg = e.target.elements.msg.value;
 
@@ -82,7 +83,8 @@ chatForm.submit( async e => {
 
 /* ============ Buttons ================ */
 
-$('#createGame').on("click", async () => {
+let createGameButton = document.getElementById("createGame");
+createGameButton.addEventListener('click', async () => {
   // returns gameId
   let response = await fetch('/users/createGame', {
     method: 'POST',
@@ -91,10 +93,11 @@ $('#createGame').on("click", async () => {
 
   // send gameId to socket
   //socket.emit('createGame', gameId);
-
 });
 
-$('#logout').on('click', async () => {
+//$('#logout').on('click', async () => {
+let logoutButton = document.getElementById('logout');
+logoutButton.addEventListener('click', async () => {
   await fetch('/auth/logout', {
     method: 'POST'
   });

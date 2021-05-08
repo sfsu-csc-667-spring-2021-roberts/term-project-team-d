@@ -14,6 +14,12 @@ router.get('/', (req, res, next) => {
 router.post('/createGame', async (req, res) => {
   let gameId = await Users.createGame(req.user.id);
   let numPlayers = await Games.getNumPlayers(gameId);
+
+  pusher.trigger("lobby", "create-game", {
+    gameId: gameId,
+    numPlayers: numPlayers,
+  });
+
   res.send({
     gameId: gameId,
     numPlayers: numPlayers
