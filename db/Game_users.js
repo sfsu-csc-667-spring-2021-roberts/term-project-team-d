@@ -242,6 +242,17 @@ class Game_users extends ActiveRecord {
       await db.none(updateSQL)
     }
   }
+
+  static async getNumCardsInHand(gameId, userId) {
+    let playerNum = await Game_users.getPlayerNumber(gameId, userId);
+
+    let sql = `SELECT COUNT(*) FROM game_cards
+      WHERE gameId = ${gameId} AND
+      card_status = ${playerNum}`;
+
+    let { count: numCards } = await db.one(slq);
+    return numCards;
+  }
 }
 
 module.exports = Game_users;

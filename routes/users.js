@@ -91,6 +91,13 @@ async function renderGame(req, res, gameId) {
   let playerNum = await GU.getPlayerNumber(gameId, userId);
   let currentPlayer = await Games.getCurrentPlayer(gameId);
   let rotation = await Games.getRotation(gameId);
+  //let numPlayersCards = await 
+  
+  if (playerNum == 1) {
+  } else if (playerNum == 2) {
+  } else if (playerNum == 3) {
+  } else {
+  }
 
   let direction = rotation == 1 ? 'clockwise' : 'counterclockwise';
 
