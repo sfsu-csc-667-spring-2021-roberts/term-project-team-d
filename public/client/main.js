@@ -14,7 +14,7 @@ const baseUrl = 'http://localhost:3000/';
 let url = window.location.href;
 url = url.split('/');
 let gameId = url[5].charAt(0);
-console.log('gameId:', gameId);
+//console.log('gameId:', gameId);
 
 /*
  * Create default Deck and Pile cards, start event listeners 
@@ -164,6 +164,26 @@ async function fetchPlayCard(cardData) {
   }
 }
 
+async function handleLastCard(gameId) {
+  let fetchLastCardUrl = '/game/' + gameId + '/getLastCard';
+
+  const response = await fetch(fetchLastCardUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // body data type must match "Content-Type" header
+    body: JSON.stringify({ gameId: gameId })
+  });
+  let lastCard = await response.json(); 
+
+  setPile({
+    number: lastCard.number,
+    color: lastCard.color,
+    type: lastCard.type
+  });
+}
+
 /* =================================*/
 /* ============== MAIN =============*/
 /* =================================*/
@@ -172,16 +192,12 @@ async function main(gameId) {
   initBoard();
   let playerCards = await getPlayerCards(gameId);
   addCards(playerCards);
+  handleLastCard(gameId);
 }
 
 main(gameId);
 
 // TODO: replace with server init pile card
-//setPile({
-//    number: 2,
-//    color: 'blue',
-//    type: 'skip'
-//});
 //
 //// TODO: replace with server draw 7 cards
 // TODO: establish socket connection

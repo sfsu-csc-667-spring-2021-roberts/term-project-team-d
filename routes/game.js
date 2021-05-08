@@ -5,7 +5,7 @@ let Games = require('../db/Games');
 
 router.post('/:gameId/getPlayerHand', async (req, res) => {
   let message = req.body;
-  console.log(message);
+  //console.log(message);
   let userId = req.user.id;
   let gameId = req.params.gameId;
   let playerCards = await GU.getCardsInHand(gameId, userId);
@@ -13,9 +13,6 @@ router.post('/:gameId/getPlayerHand', async (req, res) => {
 });
 
 router.post('/:gameId/getLastCard', async (req, res) => {
-  //let message = req.body;
-  //console.log(message);
-  //let userId = req.user.id;
   let gameId = req.params.gameId;
   let lastCard = await Games.getLastCard(gameId);
   res.status(200).json(lastCard);
@@ -50,9 +47,17 @@ router.post('/:gameId/playCard', async (req, res) => {
   }
 });
 
-/* TODO route that gets last_card */
+router.post('/:gameId/getPlayerNum', async (req, res) => {
+  let gameId = req.params.gameId;
+  let userId = req.user.id;
 
-/* GET home page. */
+  let playerNum = await GU.getPlayerNumber(gameId, userId);
+
+  res.status(200).json({ playerNum: playerNum });
+
+});
+
+/* GET home page.
 router.get('/', function(req, res, next) {
   var dummy_data = { 
     id: 0
@@ -60,5 +65,6 @@ router.get('/', function(req, res, next) {
 
   res.render('game', dummy_data);
 });
+ */
 
 module.exports = router;

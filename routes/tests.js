@@ -27,7 +27,7 @@ router.post('/:gameId/playCard', async (req, res) => {
 });
 
 
-router.post('/:gameId/getLastCard', async (req, res) => {
+router.get('/:gameId/getLastCard', async (req, res) => {
   //let message = req.body;
   //console.log(message);
   //let userId = req.user.id;
@@ -54,6 +54,15 @@ router.get('/', (req, res) => {
     res.json({error})
   })
 });
+
+router.post('/:gameId/getPlayerNum', async (req, res) => {
+  let gameId = req.params.gameId;
+  let userId = req.user.id;
+  let playerNum = await GU.getPlayerNumber(gameId, userId);
+
+  res.status(200).json({ playerNum: playerNum });
+});
+
 /**
  * test isValid
  * test 

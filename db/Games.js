@@ -323,7 +323,7 @@ class Games extends ActiveRecord {
     JOIN cards ON game_cards.card_id = cards.id
     WHERE game_cards.id = ${last_card}`
 
-    let lastCardObject = await db.any(selectSQL)
+    let lastCardObject = await db.one(selectSQL)
 
     return lastCardObject;
   }

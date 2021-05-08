@@ -117,7 +117,7 @@ class Game_users extends ActiveRecord {
     return playerCards;
   }
 
-  static async getPlayerNumber(gameId,userId) {
+  static async getPlayerNumber(gameId, userId) {
     let query = `SELECT player_num FROM game_users
     WHERE game_id = ${gameId}
     AND user_id = ${userId}`
