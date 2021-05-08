@@ -93,15 +93,27 @@ async function renderGame(req, res, gameId) {
   let currentPlayer = await Games.getCurrentPlayer(gameId);
   let rotation = await Games.getRotation(gameId);
   let numPlayersCards = await GU.getNumCardsInHand(gameId, userId);
+  console.log('we goooood here')
   let neighbors = []
-  console.log(numPlayersCards);
+  console.log(numPlayersCards[0]);
 
   if (playerNum == 1) {
-
+    neighbors.push(numPlayersCards[1])
+    neighbors.push(numPlayersCards[2])
+    neighbors.push(numPlayersCards[3])
 
   } else if (playerNum == 2) {
+    neighbors.push(numPlayersCards[2])
+    neighbors.push(numPlayersCards[3])
+    neighbors.push(numPlayersCards[0])
   } else if (playerNum == 3) {
+    neighbors.push(numPlayersCards[3])
+    neighbors.push(numPlayersCards[0])
+    neighbors.push(numPlayersCards[1])
   } else {
+    neighbors.push(numPlayersCards[0])
+    neighbors.push(numPlayersCards[1])
+    neighbors.push(numPlayersCards[2])
   }
   
   let direction = rotation == 1 ? 'clockwise' : 'counterclockwise';
@@ -110,7 +122,8 @@ async function renderGame(req, res, gameId) {
     title: 'Game Room',
     playerNum: playerNum,
     currentPlayer: currentPlayer,
-    rotation: direction
+    rotation: direction,
+    neighbors: neighbors
   });
 }
 module.exports = router;

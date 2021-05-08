@@ -8,12 +8,12 @@ html(lang='en')
   body
     div.grid-container
       div -
-      div#p2 P2
+      div#p2 player number: #{neighbors[1].card_status} number of cards: #{neighbors[1].count}
       div -
 
-      div#p3 P3
+      div#p3 player number: #{neighbors[0].card_status} number of cards: #{neighbors[0].count}
       div#board Current Player: #{currentPlayer} Rotation: #{rotation}
-      div#p4 P4
+      div#p4 player number: #{neighbors[2].card_status} number of cards: #{neighbors[2].count}
 
       div You are player: #{playerNum}
       div#hand

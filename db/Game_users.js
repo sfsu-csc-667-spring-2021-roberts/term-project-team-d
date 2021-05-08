@@ -122,7 +122,7 @@ class Game_users extends ActiveRecord {
     WHERE game_id = ${gameId}
     AND user_id = ${userId}`
 
-    let { player_num : playerNum } = await db.one(query);
+    let { player_num : playerNum } = await db.oneOrNone(query);
 
     //console.log(playerNum)
 
