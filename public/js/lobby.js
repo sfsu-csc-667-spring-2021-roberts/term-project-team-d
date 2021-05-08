@@ -1,46 +1,26 @@
-/* ====== Getting Cookie for User Object (Perhaps unecessary) ========*/
-/* Parsing cookies to get connect.sid for passport.sockio */
-//let cookies = document.cookie;
-//let cookiesArr = cookies.split(',');
-//let cookieKeyValue = "";
-//let cookieValue = "";
-//for (let cookie of cookiesArr) {
-//  cookieKeyValue = cookie
-//  cookie = cookie.split('=');
-//  if (cookie[0] == 'connect.sid') {
-//    cookieValue = cookie[1];
-//    break;
-//  }
-//}
-////console.log(cookieKeyValue);
-//console.log(cookieValue);
-//console.log(window.location.host);
-
-//const socket = io.connect('//' + window.location.host, {
-//  query: 'connect.sid=' + cookieValue
-//});
-
 /* ====================================*/
-/* ============  socketio =============*/
+/* ============ pusher ================*/
 /* ====================================*/
+// Enable pusher logging - don't include this in production
+//Pusher.logToConsole = true;
 
-const socket = io(window.location.origin);
-
-/*
-socket.on('connection', user => {
-  socket.user = user;
-}
-*/
-
+let pusher = new Pusher('fe16d9c5190cef68646f', {
+  cluster: 'us3'
+});
+let channel = pusher.subscribe('lobby-chatroom');
 
 /* ======= Chat Room ======== */
-socket.on('message', message => {
+channel.bind('chat-msg', function(data) {
+  data = JSON.stringify(data);
+  let { username, message, timestamp} = data;
+
+
   const chatBox = $('#chat-box');
   const div = document.createElement('div');
 
   div.classList.add('message');
-  div.innerHTML = `<p class="chat-messages"><span> [${message.timestamp}]</span>
-    <strong>${message.user}:</strong> ${message.text}</p>`;
+  div.innerHTML = `<p class="chat-messages"><span> [${timestamp}]</span>
+    <strong>${username}:</strong> ${message}</p>`;
   chatBox.append(div);
 
   // scrolldown automatically
@@ -48,6 +28,7 @@ socket.on('message', message => {
 });
 
 /* ======== Create Game Button =========*/
+/*
 socket.on('createGame', (gameId, numPlayers) => {
   const gameList = $('#gameList');
   const div = document.createElement('div');
@@ -72,17 +53,29 @@ socket.on('createGame', (gameId, numPlayers) => {
   div.append(form);
   gameList.append(div);
 });
+*/
 
 /* ====================================*/
-/* ========= Event Listeners ========== */
+/* ========= Event Listeners ==========*/
 /* ====================================*/
 
 /* ========= Chat Room ==============*/
 const chatForm = $('#chat-form');
-chatForm.submit( e => {
+chatForm.submit( async e => {
   e.preventDefault();
   const msg = e.target.elements.msg.value;
-  socket.emit('chatMessage', msg);
+
+  let response = await fetch('/chatroom/test', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      msg: msg,
+    }),
+  });
+
+  response = await response.json();
 
   // Clear text input field for user
   e.target.elements.msg.value = '';

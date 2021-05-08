@@ -3,7 +3,6 @@ var router = express.Router();
 let Users = require('../db/Users');
 let Games = require('../db/Games');
 let GU = require('../db/Game_users');
-//let { io } = require('../socketAPI');
 const {renderLobby} = require('../routes/lobby');
 
 /* GET users listing. */
