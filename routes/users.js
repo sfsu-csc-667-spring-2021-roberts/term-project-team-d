@@ -3,7 +3,14 @@ var router = express.Router();
 let Users = require('../db/Users');
 let Games = require('../db/Games');
 let GU = require('../db/Game_users');
+const Pusher = require('pusher');
 const {renderLobby} = require('../routes/lobby');
+const pusher = new Pusher({
+  appId: "1198857",
+  key: "fe16d9c5190cef68646f",
+  secret: "9f10efb58aa9704c64e0",
+  cluster: "us3"
+});
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
@@ -14,6 +21,12 @@ router.get('/', (req, res, next) => {
 router.post('/createGame', async (req, res) => {
   let gameId = await Users.createGame(req.user.id);
   let numPlayers = await Games.getNumPlayers(gameId);
+
+  pusher.trigger("lobby", "create-game", {
+    gameId: gameId,
+    numPlayers: numPlayers,
+  });
+
   res.send({
     gameId: gameId,
     numPlayers: numPlayers
