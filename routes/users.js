@@ -87,18 +87,23 @@ async function renderGameLobby(req, res, gameId) {
 }
 
 async function renderGame(req, res, gameId) {
+
   let userId = req.user.id;
   let playerNum = await GU.getPlayerNumber(gameId, userId);
   let currentPlayer = await Games.getCurrentPlayer(gameId);
   let rotation = await Games.getRotation(gameId);
-  //let numPlayersCards = await 
-  
+  let numPlayersCards = await GU.getNumCardsInHand(gameId, userId);
+  let neighbors = []
+  console.log(numPlayersCards);
+
   if (playerNum == 1) {
+
+
   } else if (playerNum == 2) {
   } else if (playerNum == 3) {
   } else {
   }
-
+  
   let direction = rotation == 1 ? 'clockwise' : 'counterclockwise';
 
   res.render('authenticated/game', {

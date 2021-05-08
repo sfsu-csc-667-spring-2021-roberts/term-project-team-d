@@ -246,11 +246,14 @@ class Game_users extends ActiveRecord {
   static async getNumCardsInHand(gameId, userId) {
     let playerNum = await Game_users.getPlayerNumber(gameId, userId);
 
-    let sql = `SELECT COUNT(*) FROM game_cards
-      WHERE gameId = ${gameId} AND
-      card_status = ${playerNum}`;
+    let sql = `SELECT card_status,COUNT(*) FROM game_cards
+               WHERE game_id = ${gameId} AND
+               card_status > 0
+               GROUP BY card_status
+               ORDER BY card_status`;
 
-    let { count: numCards } = await db.one(slq);
+    let numCards = await db.any(sql);
+    console.log(numCards)
     return numCards;
   }
 }

@@ -317,7 +317,7 @@ class Games extends ActiveRecord {
   static async getLastCard(gameId){
     let selectGameCardIdSql = `SELECT last_card FROM games
                                WHERE id = ${gameId}`
-    let {last_card} = await db.one(selectGameCardIdSql);
+    let {last_card} = await db.oneOrNone(selectGameCardIdSql);
     let selectSQL = `SELECT game_cards.id, cards.color, cards.number, cards.type
     FROM game_cards
     JOIN cards ON game_cards.card_id = cards.id
