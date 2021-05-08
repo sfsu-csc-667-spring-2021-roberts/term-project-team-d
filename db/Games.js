@@ -328,6 +328,14 @@ class Games extends ActiveRecord {
     return lastCardObject;
   }
 
+  static async getRotation(gameId) {
+    let clockwiseSQL = `SELECT clockwise FROM games
+                          WHERE id = ${gameId};`
+              
+    let {clockwise : rotation} = await db.one(clockwiseSQL)
+    return rotation;
+  }
+
 } // end of Games class
 
 module.exports = Games;

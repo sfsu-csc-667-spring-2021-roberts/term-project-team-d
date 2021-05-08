@@ -25,15 +25,14 @@ router.post('/joinGame/:gameId', async (req, res) => {
   let gameId  = req.params.gameId;
   let userId = req.user.id;
   await GU.joinGame(gameId, userId);
-  console.log('Joined a game');
   let numPlayers = await Games.getNumPlayers(gameId)
-  console.log(numPlayers);
 
  /* start game logic */
   if (numPlayers == 4) {
     // start game
     await Games.startGame(gameId);
     renderGame(req, res, gameId);
+
   } else {
     renderGameLobby(req, res, gameId);
   }
@@ -88,8 +87,18 @@ async function renderGameLobby(req, res, gameId) {
 }
 
 async function renderGame(req, res, gameId) {
+  let userId = req.user.id;
+  let playerNum = await GU.getPlayerNumber(gameId, userId);
+  let currentPlayer = await Games.getCurrentPlayer(gameId);
+  let rotation = await Games.getRotation(gameId);
+
+  let direction = rotation == 1 ? 'clockwise' : 'counterclockwise';
+
   res.render('authenticated/game', {
-    title: 'Game Room'
+    title: 'Game Room',
+    playerNum: playerNum,
+    currentPlayer: currentPlayer,
+    rotation: direction
   });
 }
 module.exports = router;

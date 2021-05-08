@@ -47,13 +47,12 @@ router.post('/:gameId/playCard', async (req, res) => {
   }
 });
 
-router.post('/:gameId/getPlayerNum', async (req, res) => {
+router.post('/:gameId/getGameState', async (req, res) => {
   let gameId = req.params.gameId;
-  let userId = req.user.id;
 
-  let playerNum = await GU.getPlayerNumber(gameId, userId);
-
-  res.status(200).json({ playerNum: playerNum });
+  res.status(200).json({ 
+    playerNum: playerNum 
+  });
 
 });
 
