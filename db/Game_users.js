@@ -27,9 +27,13 @@ class Game_users extends ActiveRecord {
       console.log('AFTER next player');
       await Games.updateLastCard(gameCardId, gameId)
       console.log('AFTER update last card');
+
+      // last card
+      let cardObject = await Games.getCard(gameCardId);
+      return cardObject;
     } else {
       // not valid, do nothing
-      return
+      return 'invalid card';
     }
   }
 
@@ -65,17 +69,19 @@ class Game_users extends ActiveRecord {
 
   // userId, gameId -> void
   static async leaveGame(gameId, userId) {
+    console.log('INSIDE LEAVE GAME ORM');
     let started = await Games.isStarted(gameId);
+    console.log('started:', started);
 
     if (!started) {
-      let {count } = await Games.getNumPlayers(gameId)
-      //console.log("===========>",count)
+      let count  = await Games.getNumPlayers(gameId)
+      console.log("===========>", count)
       let query = `DELETE FROM game_users
         WHERE user_id = ${userId} AND game_id = ${gameId}
         RETURNING player_num`;
       let playerNum = await db.one(query);
 
-      //console.log("playerNum Object ===>",playerNum)
+      console.log("playerNum Object ===>",playerNum)
       // DECREMENT game_users that are > user we deleted
       // query = `UPDATE game_users SET
 
@@ -100,26 +106,23 @@ class Game_users extends ActiveRecord {
   
   static async getCardsInHand(gameId, userId) {
 
-    let playerNum = Game_users.getPlayerNumber(gameId, userId);
+    let playerNum = await Game_users.getPlayerNumber(gameId, userId);
 
     let query = `SELECT * FROM game_cards
     JOIN cards ON game_cards.card_id = cards.id
-    WHERE game_cards.card_status = ${player_num} AND
-    game_cards.game_id = ${game_id}`;
+    WHERE game_cards.card_status = ${playerNum} AND
+    game_cards.game_id = ${gameId}`;
 
-
-
-    let card_ids = await db.any(query)
-
-    //console.log(card_ids);
+    let playerCards = await db.any(query)
+    return playerCards;
   }
 
-  static async getPlayerNumber(gameId,userId) {
+  static async getPlayerNumber(gameId, userId) {
     let query = `SELECT player_num FROM game_users
     WHERE game_id = ${gameId}
     AND user_id = ${userId}`
 
-    let { player_num : playerNum } = await db.one(query);
+    let { player_num : playerNum } = await db.oneOrNone(query);
 
     //console.log(playerNum)
 
@@ -249,6 +252,20 @@ class Game_users extends ActiveRecord {
       
       await db.none(updateSQL)
     }
+  }
+
+  static async getNumCardsInHand(gameId, userId) {
+    let playerNum = await Game_users.getPlayerNumber(gameId, userId);
+
+    let sql = `SELECT card_status,COUNT(*) FROM game_cards
+               WHERE game_id = ${gameId} AND
+               card_status > 0
+               GROUP BY card_status
+               ORDER BY card_status`;
+
+    let numCards = await db.any(sql);
+    console.log(numCards)
+    return numCards;
   }
 }
 

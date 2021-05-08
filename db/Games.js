@@ -305,7 +305,45 @@ class Games extends ActiveRecord {
     return count;
   }
 
+  static async getCurrentPlayer(gameId) {
+    let sql = `SELECT current_player
+      FROM games
+      WHERE id = ${gameId}`;
 
+    let { current_player } = await db.one(sql);
+    return current_player;
+  }
+
+  static async getCard(gameCardId) {
+    let sql = `SELECT game_cards.id, cards.color, cards.number, cards.type
+      FROM game_cards
+      JOIN cards ON game_cards.card_id = cards.id
+      WHERE game_cards.id = ${gameCardId}`;
+
+    return await db.one(sql);
+  }
+
+  static async getLastCard(gameId){
+    let selectGameCardIdSql = `SELECT last_card FROM games
+                               WHERE id = ${gameId}`
+    let {last_card} = await db.oneOrNone(selectGameCardIdSql);
+    let selectSQL = `SELECT game_cards.id, cards.color, cards.number, cards.type
+    FROM game_cards
+    JOIN cards ON game_cards.card_id = cards.id
+    WHERE game_cards.id = ${last_card}`
+
+    let lastCardObject = await db.one(selectSQL)
+
+    return lastCardObject;
+  }
+
+  static async getRotation(gameId) {
+    let clockwiseSQL = `SELECT clockwise FROM games
+                          WHERE id = ${gameId};`
+              
+    let {clockwise : rotation} = await db.one(clockwiseSQL)
+    return rotation;
+  }
 
 } // end of Games class
 
