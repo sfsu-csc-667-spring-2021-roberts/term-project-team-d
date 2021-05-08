@@ -45,7 +45,6 @@ router.get('/resume/:gameId', async (req, res) => {
 
   // CHECK IF GAME STARTED
   let started = await Games.isStarted(gameId);
-  console.log(started);
 
   // IF GAME STARTED JOIN GAME ROOM
   if (started) {
@@ -77,7 +76,9 @@ router.get('/:name', (req, res, next) => {
 /* ======= Helper functions ======== */
 async function renderGameLobby(req, res, gameId) {
   let numPlayers = await Games.getNumPlayers(gameId);
+  console.log('render gameLobby');
   let usernames = await Games.getUsernames(gameId);
+  console.log('render gameLobby');
   res.render('authenticated/gameLobby', {
     title: 'Game Room',
     gameId: gameId,

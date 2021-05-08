@@ -1,20 +1,29 @@
 /* ====================================*/
-/* ============  socketio =============*/
+/* ============ pusher ================*/
 /* ====================================*/
+// Enable pusher logging - don't include this in production
+//Pusher.logToConsole = true;
+
+let pusher = new Pusher('fe16d9c5190cef68646f', {
+  cluster: 'us3'
+});
+let channel = pusher.subscribe('lobby-chatroom');
 
 /* ======= Chat Room ======== */
-//socket.on('message', message => {
-//  const chatBox = $('#chat-box');
-//  const div = document.createElement('div');
-//
-//  div.classList.add('message');
-//  div.innerHTML = `<p class="chat-messages"><span> [${message.timestamp}]</span>
-//    <strong>${message.user}:</strong> ${message.text}</p>`;
-//  chatBox.append(div);
-//
-//  // scrolldown automatically
-//  chatBox.scrollTop(chatBox[0].scrollHeight);
-//});
+channel.bind('chat-msg', function(data) {
+  let { username, message, timestamp } = data;
+
+  const chatBox = $('#chat-box');
+  const div = document.createElement('div');
+
+  div.classList.add('message');
+  div.innerHTML = `<p class="chat-messages"><span> [${timestamp}]</span>
+    <strong>${username}:</strong> ${message}</p>`;
+  chatBox.append(div);
+
+  // scrolldown automatically
+  chatBox.scrollTop(chatBox[0].scrollHeight);
+});
 
 /* ======== Create Game Button =========*/
 /*
@@ -42,17 +51,29 @@ socket.on('createGame', (gameId, numPlayers) => {
   div.append(form);
   gameList.append(div);
 });
+*/
 
 /* ====================================*/
-/* ========= Event Listeners ========== */
+/* ========= Event Listeners ==========*/
 /* ====================================*/
 
-/* ========= Chat Room ==============*/
+/* === Chat Room (Pressing enter) ======*/
 const chatForm = $('#chat-form');
-chatForm.submit( e => {
+chatForm.submit( async e => {
   e.preventDefault();
   const msg = e.target.elements.msg.value;
- // socket.emit('chatMessage', msg);
+
+  let response = await fetch('/chatroom/chatMessage', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      msg: msg,
+    }),
+  });
+
+  response = await response.json();
 
   // Clear text input field for user
   e.target.elements.msg.value = '';

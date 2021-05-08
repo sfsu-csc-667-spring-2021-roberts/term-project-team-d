@@ -21,6 +21,7 @@ var usersRouter     = require('./routes/users');
 var gameLobbyRouter = require('./routes/gameLobby');
 var testsRouter     = require('./routes/tests');
 var gameRouter      = require('./routes/game');
+var chatroomRouter  = require('./routes/chatroom');
 var {router: lobbyRouter}     = require('./routes/lobby');
 
 // create express server
@@ -64,6 +65,7 @@ app.use('/auth', authRouter);
 app.use('/tests', testsRouter);
 app.use(loggedIn);
 app.use('/lobby', lobbyRouter);
+app.use('/chatroom', chatroomRouter);
 app.use('/users', usersRouter);
 app.use('/gameLobby', gameLobbyRouter);
 app.use('/game', gameRouter);
