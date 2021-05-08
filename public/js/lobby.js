@@ -11,9 +11,7 @@ let channel = pusher.subscribe('lobby-chatroom');
 
 /* ======= Chat Room ======== */
 channel.bind('chat-msg', function(data) {
-  data = JSON.stringify(data);
-  let { username, message, timestamp} = data;
-
+  let { username, message, timestamp } = data;
 
   const chatBox = $('#chat-box');
   const div = document.createElement('div');
@@ -65,7 +63,7 @@ chatForm.submit( async e => {
   e.preventDefault();
   const msg = e.target.elements.msg.value;
 
-  let response = await fetch('/chatroom/test', {
+  let response = await fetch('/chatroom/chatMessage', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

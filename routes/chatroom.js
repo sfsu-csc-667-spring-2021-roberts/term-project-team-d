@@ -11,12 +11,14 @@ const pusher = new Pusher({
 });
 
 /* CHAT MESSAGE ROUTE */
-router.post('/test', (req, res) => {
-  let username = req.body.user.name;
+router.post('/chatMessage', (req, res) => {
+  let username = req.user.username;
   let { msg } = req.body;
 
+  console.log('ERROR REPORT', username, msg);
   pusher.trigger("lobby-chatroom", "chat-msg", {
     message:  msg,
+    username: username,
     timestamp: moment().format('h:mm a')
   });
 
