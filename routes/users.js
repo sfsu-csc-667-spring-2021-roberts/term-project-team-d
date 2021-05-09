@@ -37,8 +37,15 @@ router.post('/createGame', async (req, res) => {
 router.post('/joinGame/:gameId', async (req, res) => {
   let gameId  = req.params.gameId;
   let userId = req.user.id;
+  let username = req.user.name;
   await GU.joinGame(gameId, userId);
   let numPlayers = await Games.getNumPlayers(gameId)
+
+  /* Pusher broadcast */
+  pusher.trigger('game-lobby' + gameId, 'on-join', {
+    username: username
+  });
+
 
  /* start game logic */
   if (numPlayers == 4) {

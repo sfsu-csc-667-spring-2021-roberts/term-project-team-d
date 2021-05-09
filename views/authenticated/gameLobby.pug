@@ -20,6 +20,15 @@ block content
   a(href='/lobby')
     button(type="button" class="lobby") lobby
 
+  // CHAT ROOM
+  div(id='chat-box')
+  // chat text input field
+  form(id='chat-form')
+    label(for='chatTextInput') Message:
+    input(type='text' name='chatTextInput' id='msg' 
+    placeholder='type message')
+    input(type='submit' style='display: none')
+
   // ======== Imported Libraries ==========
-  script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js')
+  script(src='https://js.pusher.com/7.0/pusher.min.js')
   script(type='module' src='/js/gameLobby.js')
