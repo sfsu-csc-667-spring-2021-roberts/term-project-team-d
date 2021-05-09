@@ -57,14 +57,12 @@ channel.bind('create-game', data => {
 /* ====================================*/
 
 /* === Chat Room (Pressing enter) ======*/
-//const chatForm = $('#chat-form');
-//chatForm.submit( async e => {
 const chatForm = document.getElementById('chat-form');
 chatForm.addEventListener('submit', async e => {
   e.preventDefault();
   const msg = e.target.elements.msg.value;
 
-  let response = await fetch('/chatroom/chatMessage', {
+  let response = await fetch('/lobby/chatMessage', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
