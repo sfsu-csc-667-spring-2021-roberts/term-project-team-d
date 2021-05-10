@@ -8,13 +8,16 @@ html(lang='en')
   body
     div.grid-container
       div -
-      div#p2 player number: #{neighbors[1].card_status} 
-        div#IDK number of cards: #{neighbors[1].count}
+      div#p2 TOPPPPP player number: #{neighbors[1].card_status} 
+        div#p2Cards number of cards: #{neighbors[1].count}
       div -
 
-      div#p3 player number: #{neighbors[0].card_status} number of cards: #{neighbors[0].count}
-      div#board Current Player: #{currentPlayer} Rotation: #{rotation}
-      div#p4 player number: #{neighbors[2].card_status} number of cards: #{neighbors[2].count}
+      div#p3 LEFTTTTT player number: #{neighbors[0].card_status} 
+        div#p3Cards number of cards: #{neighbors[0].count}
+      div#board 
+        div#boardStatus Current Player: #{currentPlayer} Rotation: #{rotation}
+      div#p4 RIGHTTTTT player number: #{neighbors[2].card_status} 
+        div#p4Cards number of cards: #{neighbors[2].count}
 
       div You are player: #{playerNum}
       div#hand

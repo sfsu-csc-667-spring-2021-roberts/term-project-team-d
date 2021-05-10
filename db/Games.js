@@ -1,6 +1,5 @@
 let db = require('./connection');
 let ActiveRecord = require('./ActiveRecord');
-let GU      = require('./Game_users');
 
 class Games extends ActiveRecord {
   GAME_ENDED = -1;
@@ -300,6 +299,7 @@ class Games extends ActiveRecord {
       WHERE game_id = ${gameId} AND 
       card_status = -1`;
 
+     console.log('inside the getNumPileCards ORM')
     let { count } = await db.one(sql);
     //console.log(count);
     return count;
@@ -347,13 +347,7 @@ class Games extends ActiveRecord {
     return rotation;
   }
 
-  static async getGameState(gameId) {
-    let gameState = {};
-    gameState.currentPlayer = await Games.getCurrentPlayer(gameId);
-    gameState.rotation = await Games.getRotation(gameId);
-    gameState.numCards = await GU.getNumCardsInHand(gameId, userId);
-    return gameState;
-  }
+
 } // end of Games class
 
 module.exports = Games;

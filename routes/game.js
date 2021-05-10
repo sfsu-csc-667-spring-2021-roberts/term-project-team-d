@@ -73,14 +73,20 @@ router.post('/:gameId/playCard', async (req, res) => {
     /* ===================================== */
     /* Played Successfully */
     } else {
-      let gameState = await Games.getGameState(gameId);
+      
+      currentPlayer = await Games.getCurrentPlayer(gameId);
+      let rotation = await Games.getRotation(gameId);
+      let neighbors = await GU.getNumCardsInHand(gameId, userId);
+      
 
+      console.log('inside the else statement')
       pusher.trigger("game" + gameId, "play-card", {
-        currentPlayer: gameState.currentPlayer,
+        currentPlayer: currentPlayer,
         playedCard: playedCard,
-        rotation: gameState.rotation,
-        numCards: gameState.numCards
+        rotation: rotation,
+        numPlayersCards: neighbors
       });
+      
 
       res.status(200).json({ 
         msg: 'successfully played card',
@@ -92,13 +98,19 @@ router.post('/:gameId/playCard', async (req, res) => {
   }
 });
 
-router.post('/:gameId/getGameState', async (req, res) => {
+router.post('/:gameId/getPlayerNum', async (req, res) => {
   let gameId = req.params.gameId;
+  let userId = req.user.id;
+
+  let playerNum = await GU.getPlayerNumber(gameId, userId);
+  console.log('playerNum: ', playerNum)
 
   res.status(200).json({ 
     playerNum: playerNum 
   });
 
 });
+
+
 
 module.exports = router;
