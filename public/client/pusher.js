@@ -21,6 +21,36 @@ let channel = pusher.subscribe('game' + gameId);
 /* ====================================*/
 
 /* ======= PlayCard ======== */
+channel.bind('draw-card', async data =>  {
+  console.log('inside the draw-card bind')
+  //fetch the player num.
+  let url = '/game/'+gameId+'/getPlayerNum';
+  let response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+  let { playerNum } = await response.json();
+  //console.log('playerNum object: '+ playerNum);
+
+
+  //re-arange the array neighbors.
+  let numPlayersCards = data.numPlayersCards
+  
+  let neighbors = getarrangement(playerNum, numPlayersCards);
+
+  //console.log(neighbors)
+  let topPlayer = document.getElementById('p2Cards');
+  topPlayer.innerHTML =  'number of cards: '+ neighbors[1].count
+  //update left div
+  let leftPlayer = document.getElementById('p3Cards');
+  leftPlayer.innerHTML =  'number of cards: '+ neighbors[0].count
+  //update left div
+  let rightPlayer = document.getElementById('p4Cards');
+  rightPlayer.innerHTML =  'number of cards: '+ neighbors[2].count
+
+})
 channel.bind('play-card', async data =>  {
   /* rotation logic */
 

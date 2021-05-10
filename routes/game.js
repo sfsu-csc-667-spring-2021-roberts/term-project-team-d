@@ -22,6 +22,17 @@ router.post('/:gameId/drawCard', async (req, res) => {
   /* Correct Players Turn */
   if (currentPlayer == playerNum) {
     let playedCard = await GU.drawCard(gameId);
+
+    //broadcasting number of cards of each player 
+    let neighbors = await GU.getNumCardsInHand(gameId, userId);
+    console.log('just before the draw card trigger')
+    pusher.trigger("game" + gameId, "draw-card", {
+      numPlayersCards: neighbors
+    });
+    console.log('just after the draw card trigger')
+
+
+
     res.status(200).json({ 
       msg: 'game_user drew a card',
       playedCard: playedCard
