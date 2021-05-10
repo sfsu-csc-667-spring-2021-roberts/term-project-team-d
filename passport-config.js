@@ -1,5 +1,5 @@
 const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt-nodejs');
 let Users = require('./db/Users');
 
 function initialize(passport) {
@@ -11,7 +11,7 @@ function initialize(passport) {
       return done(null, false, { message: 'No user with email'});
     }
     try {
-      if (await bcrypt.compare(password, user.password)) {
+      if (bcrypt.compareSync(password, user.password)) {
         //console.log('passwords match!');
         return done(null, user);
       } else {
