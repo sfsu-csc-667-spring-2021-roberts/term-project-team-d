@@ -6,7 +6,8 @@ block content
   p This is the game room for game #{gameId}
   // Heading
   h1
-    = "Game id: " + gameId + " | Number of players: " + numPlayers
+    = 'Game id: ' + gameId
+  h1#numPlayers= 'Number of Players: ' + numPlayers
 
   div#gameUsers
     // list all users

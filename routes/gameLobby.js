@@ -21,8 +21,6 @@ router.post('/:gameId/chatMessage', async (req, res) => {
   let gameId = req.params.gameId;
   let username = req.user.username;
   let { msg } = req.body;
-
-  console.log('ERROR REPORT', username, msg);
   
   pusher.trigger('game-lobby' + gameId, 'chat-msg', {
     message:  msg,

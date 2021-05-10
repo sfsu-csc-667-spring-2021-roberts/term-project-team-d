@@ -34,8 +34,7 @@ channel.bind('chat-msg', data => {
   chatBox.scrollTop = chatBox.scrollHeight;
 });
 
-/* ======== ON gameLobby Join ======== */
-//socket.on('gameUserJoin', username => {
+/* ============ ON JOIN ============ */
 channel.bind('on-join', data => {
   let username = data.username;
   console.log('a user joined a game!', username);
@@ -43,6 +42,24 @@ channel.bind('on-join', data => {
   div.innerHTML = '<h3>user: ' + username + ' joined!</h3>';
   let gameUsers = document.getElementById('gameUsers');
   gameUsers.append(div);
+
+  /* update numPlayers */
+  let numPlayersHeading = document.getElementById('numPlayers');
+  numPlayersHeading.innerHTML = 'Number of Players: ' + data.numPlayers; 
+});
+
+/* ======== ON LEAVE ======== */
+channel.bind('on-leave', data => {
+  let username = data.username;
+  console.log('a user left the game!', username);
+  let div = document.createElement('div');
+  div.innerHTML = '<h3>user: ' + username + ' left!</h3>';
+  let gameUsers = document.getElementById('gameUsers');
+  gameUsers.append(div);
+
+  /* update numPlayers */
+  let numPlayersHeading = document.getElementById('numPlayers');
+  numPlayersHeading.innerHTML = 'Number of Players: ' + data.numPlayers; 
 });
 /* ====================================*/
 /* ======== event listeners ===========*/

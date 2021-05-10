@@ -43,7 +43,8 @@ router.post('/joinGame/:gameId', async (req, res) => {
 
   /* Pusher broadcast */
   pusher.trigger('game-lobby' + gameId, 'on-join', {
-    username: username
+    username: username,
+    numPlayers: numPlayers
   });
 
  /* start game logic */
@@ -77,8 +78,16 @@ router.get('/resume/:gameId', async (req, res) => {
 router.post('/leaveGame/:gameId', async (req, res) => {
   let userId = req.user.id;
   let gameId = req.params.gameId;
+  let username = req.user.username;
   await GU.leaveGame(gameId, userId);
-  
+  let numPlayers = await Games.getNumPlayers(gameId)
+
+  /* broadcast */
+  pusher.trigger("game-lobby" + gameId, "on-leave", {
+    username: username,
+    numPlayers: numPlayers
+  });
+
   renderLobby(req, res);
 });
 
