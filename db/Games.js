@@ -25,7 +25,6 @@ class Games extends ActiveRecord {
     await db.none(sql);
   }
 
-
   // TODO Make sure game has not ended
   static getGameList() {
     let query = `SELECT game_users.game_id, COUNT(game_users.id) FROM game_users
@@ -194,7 +193,7 @@ class Games extends ActiveRecord {
 
   }
   static async countDeck(gameId){
-    sql = `SELECT COUNT (*) FROM game_cards
+    let sql = `SELECT COUNT (*) FROM game_cards
           WHERE card_status = 0
           AND game_id = ${gameId}`
     let {count} = await db.one(sql)
@@ -300,6 +299,7 @@ class Games extends ActiveRecord {
       WHERE game_id = ${gameId} AND 
       card_status = -1`;
 
+     console.log('inside the getNumPileCards ORM')
     let { count } = await db.one(sql);
     //console.log(count);
     return count;
@@ -330,9 +330,11 @@ class Games extends ActiveRecord {
     let selectSQL = `SELECT game_cards.id, cards.color, cards.number, cards.type
     FROM game_cards
     JOIN cards ON game_cards.card_id = cards.id
-    WHERE game_cards.id = ${last_card}`
+    WHERE game_cards.id = ${last_card}`;
 
+    //console.log('beforeLastCardObject in Games orm');
     let lastCardObject = await db.one(selectSQL)
+    //console.log('after lastcard in Games orm');
 
     return lastCardObject;
   }
@@ -344,6 +346,7 @@ class Games extends ActiveRecord {
     let {clockwise : rotation} = await db.one(clockwiseSQL)
     return rotation;
   }
+
 
 } // end of Games class
 
