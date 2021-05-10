@@ -35,6 +35,7 @@ function initBoard(){
 function setPile(cardData){
     var cardElem = createCardElement(cardData, false);
     pileDiv.replaceWith(cardElem);
+    pileDiv = cardElem;
 }
 
 /* 
@@ -51,13 +52,19 @@ function addCard(cardData){
 
     cardElem.addEventListener("click", playCard);
 }
+/*
+ * REMOVE ALL CARDS
+ */
+function removeAllCards(){
+  // STEP 1 - remove all elements
+  // STEP 2 - clear the handref
+}
 
 /*
  * Remove a card (virtually and graphically) based on server message
  * PARAM - cardData - A card json receieved from server
  */
-function removeCard(cardData){
-    var id = cardData.id;
+function removeCard(id){
 
     // Check if card exists!
     if(!handRef.has(id)){
@@ -89,10 +96,7 @@ function playCard(event){
         return;
     }
 
-    console.log("Playing " + cardData);
-
-    // TODO: send server request here
-    console.log(cardData);
+    //console.log("Playing " + cardData);
     fetchPlayCard(cardData);
 }
 
@@ -101,14 +105,23 @@ function playCard(event){
  * If OK response, add new card to hand.
  * If fail or no response, display failed msg
  */
-function drawCard(event){
+async function drawCard(event){
     console.log("Drawing x1 card");
 
     var request = {
         "player" : null
     }
 
-    // TODO: send server request here
+  let drawCardUrl = '/game/' + gameId + '/drawCard';
+  const response = await fetch(drawCardUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // body data type must match "Content-Type" header
+    body: JSON.stringify({ msg: 'drawing a card' }) 
+  });
+
 }
 
 async function getPlayerCards(gameId) {
@@ -153,8 +166,8 @@ async function fetchPlayCard(cardData) {
   });
   let result = await response.json(); 
   let { playedCard } = result;
-  console.log('playedCard:', playedCard);
-  console.log('result', result);
+  //console.log('result', result);
+  //console.log('playedCard:', playedCard);
   if (playedCard) {
     setPile({
       number: playedCard.number,
@@ -172,7 +185,6 @@ async function handleLastCard(gameId) {
     headers: {
       'Content-Type': 'application/json'
     },
-    // body data type must match "Content-Type" header
     body: JSON.stringify({ gameId: gameId })
   });
   let lastCard = await response.json(); 
@@ -198,7 +210,6 @@ async function main(gameId) {
 main(gameId);
 
 // TODO: replace with server init pile card
-//
 //// TODO: replace with server draw 7 cards
 // TODO: establish socket connection
 // TODO: get initial hand 

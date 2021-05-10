@@ -131,11 +131,11 @@ class Game_users extends ActiveRecord {
 
   static async drawCard(gameId) {
     
-    let count = Games.countDeck(gameId);
+    let count = await Games.countDeck(gameId);
+    console.log('count', count);
     if (count == 0) {
-      Games.reshuffle(gameId);
+      await Games.reshuffle(gameId);
     }
-
 
     // will get a card from the deck with the lowest order
     let sql =`SELECT id FROM game_cards
@@ -144,11 +144,13 @@ class Game_users extends ActiveRecord {
     ORDER BY card_order
     LIMIT 1;`
 
+    //console.log('what happend here before topdeckcard');
     let {id : topDeckCard} = await db.one(sql)
 
     // Grabs the current player
     sql = `SELECT current_player FROM games
            WHERE id = ${gameId};`
+    //console.log('what happend here before get currentPlayer');
     let {current_player : currPlayer} = await db.one(sql)
 
     // update card status
@@ -264,8 +266,18 @@ class Game_users extends ActiveRecord {
                ORDER BY card_status`;
 
     let numCards = await db.any(sql);
-    console.log(numCards)
+    //console.log(numCards)
     return numCards;
+  }
+  static async countCurrentPlayerCards(gameId, currentPlayer) {
+    let sql = `SELECT COUNT(*) FROM game_cards
+               WHERE game_id = ${gameId} AND
+               card_status = ${currentPlayer}`;
+
+    let numCardsObj = await db.one(sql);
+    //console.log('inside countCurrentPlayerCards ORM', numCardsObj);
+    let { count } = numCardsObj;
+    return count;
   }
 }
 

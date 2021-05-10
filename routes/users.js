@@ -113,9 +113,8 @@ async function renderGame(req, res, gameId) {
   let currentPlayer = await Games.getCurrentPlayer(gameId);
   let rotation = await Games.getRotation(gameId);
   let numPlayersCards = await GU.getNumCardsInHand(gameId, userId);
-  console.log('we goooood here')
   let neighbors = []
-  console.log(numPlayersCards[0]);
+  //console.log(numPlayersCards[0]);
 
   if (playerNum == 1) {
     neighbors.push(numPlayersCards[1])

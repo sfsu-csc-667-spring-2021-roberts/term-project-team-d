@@ -8,7 +8,8 @@ html(lang='en')
   body
     div.grid-container
       div -
-      div#p2 player number: #{neighbors[1].card_status} number of cards: #{neighbors[1].count}
+      div#p2 player number: #{neighbors[1].card_status} 
+        div#IDK number of cards: #{neighbors[1].count}
       div -
 
       div#p3 player number: #{neighbors[0].card_status} number of cards: #{neighbors[0].count}
@@ -18,3 +19,7 @@ html(lang='en')
       div You are player: #{playerNum}
       div#hand
       div -
+
+  // ======== Imported Libraries ==========
+  script(src='https://js.pusher.com/7.0/pusher.min.js')
+  script(src='/client/pusher.js')

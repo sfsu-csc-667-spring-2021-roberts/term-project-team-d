@@ -1,5 +1,6 @@
 let db = require('./connection');
 let ActiveRecord = require('./ActiveRecord');
+let GU      = require('./Game_users');
 
 class Games extends ActiveRecord {
   GAME_ENDED = -1;
@@ -24,7 +25,6 @@ class Games extends ActiveRecord {
 
     await db.none(sql);
   }
-
 
   // TODO Make sure game has not ended
   static getGameList() {
@@ -194,7 +194,7 @@ class Games extends ActiveRecord {
 
   }
   static async countDeck(gameId){
-    sql = `SELECT COUNT (*) FROM game_cards
+    let sql = `SELECT COUNT (*) FROM game_cards
           WHERE card_status = 0
           AND game_id = ${gameId}`
     let {count} = await db.one(sql)
@@ -330,9 +330,11 @@ class Games extends ActiveRecord {
     let selectSQL = `SELECT game_cards.id, cards.color, cards.number, cards.type
     FROM game_cards
     JOIN cards ON game_cards.card_id = cards.id
-    WHERE game_cards.id = ${last_card}`
+    WHERE game_cards.id = ${last_card}`;
 
+    //console.log('beforeLastCardObject in Games orm');
     let lastCardObject = await db.one(selectSQL)
+    //console.log('after lastcard in Games orm');
 
     return lastCardObject;
   }
@@ -345,6 +347,13 @@ class Games extends ActiveRecord {
     return rotation;
   }
 
+  static async getGameState(gameId) {
+    let gameState = {};
+    gameState.currentPlayer = await Games.getCurrentPlayer(gameId);
+    gameState.rotation = await Games.getRotation(gameId);
+    gameState.numCards = await GU.getNumCardsInHand(gameId, userId);
+    return gameState;
+  }
 } // end of Games class
 
 module.exports = Games;
