@@ -66,11 +66,7 @@ function removeAllCards(){
  */
 function removeCard(id){
 
-    // Check if card exists!
-    if(!handRef.has(id)){
-        console.log("Card " + cardData + " not found!");
-        return;
-    }
+    //console.log('handRef', handRef);
 
     // Remove visual element
     var elem = handRef[id];
@@ -106,7 +102,7 @@ function playCard(event){
  * If fail or no response, display failed msg
  */
 async function drawCard(event){
-    console.log("Drawing x1 card");
+    //console.log("Drawing x1 card");
 
     var request = {
         "player" : null
@@ -121,6 +117,16 @@ async function drawCard(event){
     // body data type must match "Content-Type" header
     body: JSON.stringify({ msg: 'drawing a card' }) 
   });
+
+  let { playedCard } = await response.json();
+  //console.log('playedCard:', playedCard);
+
+  addCard({ 
+      id: playedCard.id,
+      number: playedCard.number,
+      color: playedCard.color,
+      type: playedCard.type
+    });
 
 }
 
@@ -156,7 +162,7 @@ function addCards(playerCards) {
 async function fetchPlayCard(cardData) {
   let playCardUrl = baseUrl + 'game/' + gameId + '/playCard';
 
-  const response = await fetch(playCardUrl, {
+  let response = await fetch(playCardUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -164,8 +170,8 @@ async function fetchPlayCard(cardData) {
     // body data type must match "Content-Type" header
     body: JSON.stringify({ cardId: cardData })
   });
-  let result = await response.json(); 
-  let { playedCard } = result;
+  response = await response.json(); 
+  let { playedCard } = response;
   //console.log('result', result);
   //console.log('playedCard:', playedCard);
   if (playedCard) {
@@ -174,6 +180,8 @@ async function fetchPlayCard(cardData) {
       color: playedCard.color,
       type: playedCard.type
     });
+
+    removeCard(playedCard.id);
   }
 }
 

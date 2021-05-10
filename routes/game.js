@@ -18,11 +18,14 @@ router.post('/:gameId/drawCard', async (req, res) => {
   let currentPlayer = await Games.getCurrentPlayer(gameId);
   //console.log('playerNum', playerNum);
   //console.log('currentPlayer', currentPlayer);
-
+  
   /* Correct Players Turn */
   if (currentPlayer == playerNum) {
-    await GU.drawCard(gameId);
-    res.status(200).json({ msg: 'game_user drew a card' });
+    let playedCard = await GU.drawCard(gameId);
+    res.status(200).json({ 
+      msg: 'game_user drew a card',
+      playedCard: playedCard
+    });
   } else {
     res.status(403).json({ msg: 'Cant draw, not your turn, forbidden' });
   }

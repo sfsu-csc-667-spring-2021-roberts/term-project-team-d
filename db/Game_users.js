@@ -161,9 +161,20 @@ class Game_users extends ActiveRecord {
                           id = ${topDeckCard}`
 
     await db.none(sql)
-    
 
+    let cardObj = await Game_users.getCardObj(topDeckCard);
+    return cardObj;
   }
+
+  static async getCardObj(gameCardId) {
+    let sql = `SELECT game_cards.id, cards.color, cards.number, cards.type
+      FROM game_cards
+      JOIN cards ON game_cards.card_id = cards.id
+      WHERE game_cards.id = ${gameCardId}`;
+
+    return await db.one(sql);
+    }
+
   static async drawCardNextPlayer(gameId) {
     let count = Games.countDeck(gameId);
     if (count == 0) {
