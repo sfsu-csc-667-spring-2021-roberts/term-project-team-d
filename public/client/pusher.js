@@ -46,6 +46,7 @@ channel.bind('play-card', async data =>  {
   //re-arange the array neighbors.
   let numPlayersCards = data.numPlayersCards
   
+  let neighbors = getarrangement(playerNum, numPlayersCards);
 
   //console.log(neighbors)
   let topPlayer = document.getElementById('p2Cards');
@@ -59,7 +60,7 @@ channel.bind('play-card', async data =>  {
 
 });
 
-function getarrangement(playerNum, numPlayerCards) {
+function getarrangement(playerNum, numPlayersCards) {
   let neighbors = [];
 
   if (playerNum == '1') {
@@ -80,6 +81,7 @@ function getarrangement(playerNum, numPlayerCards) {
     neighbors.push(numPlayersCards[1])
     neighbors.push(numPlayersCards[2])
   }
+  return neighbors;
 
 }
 
