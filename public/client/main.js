@@ -32,7 +32,7 @@ function initBoard(){
 /*
  * Set pile card (graphic) based on card data
  */
-function setPile(cardData){
+export function setPile(cardData){
     var cardElem = createCardElement(cardData, false);
     pileDiv.replaceWith(cardElem);
     pileDiv = cardElem;

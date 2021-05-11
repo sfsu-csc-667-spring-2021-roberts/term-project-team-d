@@ -1,3 +1,5 @@
+import {setPile} from './main.js';
+
 /* ====================================*/
 /* ==== Pusher Subscription ===========*/
 /* ====================================*/
@@ -72,7 +74,14 @@ channel.bind('play-card', async data =>  {
   let { playerNum } = await response.json();
   //console.log('playerNum object: '+ playerNum);
 
+  /* ===== BROADCAST DISCARD PILE ======= */
+  setPile({
+      number: data.playedCard.number,
+      color: data.playedCard.color,
+      type: data.playedCard.type
+    });
 
+  /* ===== BROADCAST NUMBER OF CARDS FOR EACH PLAYER ======= */
   //re-arange the array neighbors.
   let numPlayersCards = data.numPlayersCards
   
