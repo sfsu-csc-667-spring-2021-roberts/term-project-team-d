@@ -22,7 +22,7 @@ let channel = pusher.subscribe('game' + gameId);
 /* ======== Pusher Bindings ===========*/
 /* ====================================*/
 
-/* ======= PlayCard ======== */
+/* ======= drawCard ======== */
 channel.bind('draw-card', async data =>  {
   console.log('inside the draw-card bind')
   //fetch the player num.
@@ -61,7 +61,7 @@ channel.bind('play-card', async data =>  {
   //console.log('inside play-card binding', data.currentPlayer);
   let middleBoard = document.getElementById('boardStatus');
   middleBoard.innerHTML =  'Current Player: ' + data.currentPlayer +  
-  '  Rotation: ' + rotation + ' last color: ' + data.lastColor;
+  '  Rotation: ' + rotation;
   //update top div
   //fetch the player num.
   let url = '/game/'+gameId+'/getPlayerNum';

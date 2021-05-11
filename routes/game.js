@@ -92,8 +92,6 @@ router.post('/:gameId/playCard', async (req, res) => {
       currentPlayer = await Games.getCurrentPlayer(gameId);
       let rotation = await Games.getRotation(gameId);
       let neighbors = await GU.getNumCardsInHand(gameId, userId);
-      let lastCardObj = await Games.getLastCard(gameId);
-      let lastColor = lastCardObj.color;
       
 
       console.log('inside the else statement')
@@ -101,8 +99,7 @@ router.post('/:gameId/playCard', async (req, res) => {
         currentPlayer: currentPlayer,
         playedCard: playedCard,
         rotation: rotation,
-        numPlayersCards: neighbors,
-        lastColor: lastColor
+        numPlayersCards: neighbors
       });
       
 
