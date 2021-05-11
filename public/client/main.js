@@ -32,7 +32,7 @@ function initBoard(){
 /*
  * Set pile card (graphic) based on card data
  */
-function setPile(cardData){
+export function setPile(cardData){
     var cardElem = createCardElement(cardData, false);
     pileDiv.replaceWith(cardElem);
     pileDiv = cardElem;
@@ -131,7 +131,7 @@ async function drawCard(event){
 }
 
 async function getPlayerCards(gameId) {
-  let getPlayerHandUrl = baseUrl + 'game/' + gameId + '/getPlayerHand';
+  let getPlayerHandUrl = '/game/' + gameId + '/getPlayerHand';
 
   const response = await fetch(getPlayerHandUrl, {
     method: 'POST',
@@ -160,7 +160,7 @@ function addCards(playerCards) {
 }
 
 async function fetchPlayCard(cardData) {
-  let playCardUrl = baseUrl + 'game/' + gameId + '/playCard';
+  let playCardUrl = '/game/' + gameId + '/playCard';
 
   let response = await fetch(playCardUrl, {
     method: 'POST',
@@ -197,11 +197,13 @@ async function handleLastCard(gameId) {
   });
   let lastCard = await response.json(); 
 
-  setPile({
-    number: lastCard.number,
-    color: lastCard.color,
-    type: lastCard.type
-  });
+  if (lastCard) {
+    setPile({
+      number: lastCard.number,
+      color: lastCard.color,
+      type: lastCard.type
+    });
+  }
 }
 
 /* =================================*/

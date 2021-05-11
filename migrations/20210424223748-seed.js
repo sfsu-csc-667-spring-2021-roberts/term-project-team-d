@@ -53,7 +53,6 @@ module.exports = {
       user_id: 4,
       player_num: 4
   }]);
-
 },
 
   down: async (queryInterface, Sequelize) => {
