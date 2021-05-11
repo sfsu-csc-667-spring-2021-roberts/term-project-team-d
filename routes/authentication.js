@@ -2,12 +2,12 @@ var express    = require('express');
 var router     = express.Router();
 let Users      = require('../db/Users');
 const passport = require('passport');
-const bcrypt   = require('bcrypt');
+const bcrypt   = require('bcrypt-nodejs');
 
 /* Register */
 router.post('/register', async (req, res, next) => {
   let credentials = req.body;
-  const hashedPassword = await bcrypt.hash(credentials.password, 10)
+  const hashedPassword = bcrypt.hashSync(credentials.password)
   credentials.password = hashedPassword;
 
   let err = await Users.register(credentials);
