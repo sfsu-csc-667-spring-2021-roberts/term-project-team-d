@@ -332,8 +332,9 @@ class Games extends ActiveRecord {
     JOIN cards ON game_cards.card_id = cards.id
     WHERE game_cards.id = ${last_card}`;
 
+
     //console.log('beforeLastCardObject in Games orm');
-    let lastCardObject = await db.one(selectSQL)
+    let lastCardObject = await db.oneOrNone(selectSQL)
     //console.log('after lastcard in Games orm');
 
     return lastCardObject;

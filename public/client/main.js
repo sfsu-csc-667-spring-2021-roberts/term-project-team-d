@@ -197,11 +197,13 @@ async function handleLastCard(gameId) {
   });
   let lastCard = await response.json(); 
 
-  setPile({
-    number: lastCard.number,
-    color: lastCard.color,
-    type: lastCard.type
-  });
+  if (lastCard) {
+    setPile({
+      number: lastCard.number,
+      color: lastCard.color,
+      type: lastCard.type
+    });
+  }
 }
 
 /* =================================*/
