@@ -6,9 +6,10 @@ var deckDiv = null;
 var pileDiv = null;
 
 var handRef = {}
+var dataRef = {}
 
 /* URL for fetches */
-const baseUrl = 'http://localhost:3000/';
+//const baseUrl = 'http://localhost:3000/';
 
 /* get gameId from URL */
 let url = window.location.href;
@@ -27,6 +28,23 @@ function initBoard(){
     boardDiv.append(pileDiv);
 
     deckDiv.addEventListener("click", drawCard);
+
+    /* change color button */
+    let colorChooserDiv = document.getElementById('colorChooser');
+    for (let child of Array.from(colorChooserDiv.children)) {
+        console.log('child:', child);
+        console.log(child.tagName);
+      if (child.tagName == 'BUTTON') {
+        //console.log('child:', child);
+        child.addEventListener('click', setChosenColor);
+      }
+    }
+}
+
+/* changeColor function */
+function setChosenColor(e) {
+  let currentColorDiv = document.getElementById('currentColor');
+  currentColorDiv.innerText = e.target.innerText; 
 }
 
 /*
@@ -49,15 +67,9 @@ function addCard(cardData){
 
     // generate link between visual element and cardData
     handRef[cardData.id] = cardElem;
+    dataRef[cardElem] = cardData;
 
     cardElem.addEventListener("click", playCard);
-}
-/*
- * REMOVE ALL CARDS
- */
-function removeAllCards(){
-  // STEP 1 - remove all elements
-  // STEP 2 - clear the handref
 }
 
 /*
@@ -67,10 +79,13 @@ function removeAllCards(){
 function removeCard(id){
 
     //console.log('handRef', handRef);
+    
 
     // Remove visual element
     var elem = handRef[id];
+    delete dataRef[elem];
     elem.remove();
+    
 
     // Remove virtual data
     delete handRef[id];
@@ -82,20 +97,62 @@ function removeCard(id){
  * If fail or no response, display failed msg
  * PARAM - cardElem - Element on page which refers to card being played
  */
-function playCard(event){
+async function playCard(event){
     //var cardElem = event.srcElement.parentElement;
     var cardElem = event.target;
-    var cardData = Object.keys(handRef).find(key => handRef[key] === cardElem);
+    //var cardData = Object.keys(handRef).find(key => handRef[key] === cardElem);
+    var cardData = dataRef[cardElem];
+    let cardId = cardData.id;
     
     if(cardData == null){
         console.log("Card " + cardElem + " has no reference!");
         return;
     }
 
-    //console.log("Playing " + cardData);
-    fetchPlayCard(cardData);
+    //console.log('cardData:', cardData);
+
+    let color, colorDiv;
+    if (cardData.type == 'changeColor' || cardData.type == 'draw 4') {
+      colorDiv = document.getElementById('currentColor');
+      color = colorDiv.innerText;
+    }
+    console.log('cardId and color', cardId, color);
+    let playedCard = await fetchPlayCard(cardId, color);
+
+  /* re-render discard pile */
+  if (playedCard) {
+    setPile({
+      number: playedCard.number,
+      color: playedCard.color,
+      type: playedCard.type
+    });
+
+    /* remove card from hand */
+    removeCard(playedCard.id);
+  }
 }
 
+async function fetchPlayCard(cardData, color) {
+  let playCardUrl = '/game/' + gameId + '/playCard';
+
+  let response = await fetch(playCardUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ 
+      cardId: cardData,
+      chosenColor: color
+    })
+  });
+  response = await response.json(); 
+  let { playedCard } = response;
+  //console.log('result', result);
+  console.log('After fetch playedCard:', playedCard);
+
+  return playedCard;
+  
+}
 /*
  * Request the server for a new card.
  * If OK response, add new card to hand.
@@ -159,31 +216,7 @@ function addCards(playerCards) {
   }
 }
 
-async function fetchPlayCard(cardData) {
-  let playCardUrl = '/game/' + gameId + '/playCard';
 
-  let response = await fetch(playCardUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    // body data type must match "Content-Type" header
-    body: JSON.stringify({ cardId: cardData })
-  });
-  response = await response.json(); 
-  let { playedCard } = response;
-  //console.log('result', result);
-  //console.log('playedCard:', playedCard);
-  if (playedCard) {
-    setPile({
-      number: playedCard.number,
-      color: playedCard.color,
-      type: playedCard.type
-    });
-
-    removeCard(playedCard.id);
-  }
-}
 
 async function handleLastCard(gameId) {
   let fetchLastCardUrl = '/game/' + gameId + '/getLastCard';
@@ -204,6 +237,23 @@ async function handleLastCard(gameId) {
       type: lastCard.type
     });
   }
+}
+
+async function changeColor() {
+
+
+  let changeColor = '/game/' + gameId + '/getLastCard';
+
+  const response = await fetch(fetchLastCardUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ gameId: gameId })
+  });
+  let lastCard = await response.json(); 
+
+
 }
 
 /* =================================*/

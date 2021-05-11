@@ -1,13 +1,22 @@
 const db = require('./connection');
 const ActiveRecord = require('./ActiveRecord');
 const Games = require('./Games');
+const Pusher = require('pusher');
+const pusher = new Pusher({
+  appId: "1198857",
+  key: "fe16d9c5190cef68646f",
+  secret: "9f10efb58aa9704c64e0",
+  cluster: "us3"
+});
+
+
 
 class Game_users extends ActiveRecord {
   id = -1;
   game = -1;
   username = '';
 
-  static async playCard(gameCardId, gameId) {
+  static async playCard(gameCardId, gameId, chosenColor) {
     // First check if card is able to be played (color, number)
     let isValidCard;
     if (await Games.getNumPileCards(gameId) == 0) {
@@ -19,7 +28,7 @@ class Game_users extends ActiveRecord {
     console.log('AFTER CARD VALIDATION', isValidCard);
 
     if (isValidCard) {
-      await Game_users.activateCardEffect(gameCardId, gameId);
+      await Game_users.activateCardEffect(gameCardId, gameId, chosenColor);
       console.log('AFTER activate card effect');
       await Games.updateCardStatus(gameCardId);
       console.log('AFTER update card status');
@@ -213,7 +222,7 @@ class Game_users extends ActiveRecord {
   }
 
   // helper function to do card effect
-  static async activateCardEffect(gameCardId, gameId) {
+  static async activateCardEffect(gameCardId, gameId, chosenColor) {
     // get card effect if any
     let sql = `SELECT type FROM game_cards
       JOIN cards ON game_cards.card_id = cards.id
@@ -246,20 +255,17 @@ class Game_users extends ActiveRecord {
       await Game_users.drawCardNextPlayer(gameId)
       await Game_users.drawCardNextPlayer(gameId)
 
-      // TODO let color = pusher.getColorFromUser()
-      let color = 'yellow'
       let updateSQL = `UPDATE GAMES
-                       SET last_color = '${color}'
+                       SET last_color = '${chosenColor}'
                        WHERE id = ${gameId}`
       
       await db.none(updateSQL)
       await Games.nextPlayer(gameId);
 
     } else if (type == 'changeColor') {
-      // TODO let color = pusher.getColorFromUser()
-      let color = 'yellow'
+        
       let updateSQL = `UPDATE GAMES
-                       SET last_color = '${color}'
+                       SET last_color = '${chosenColor}'
                        WHERE id = ${gameId}`
       console.log(updateSQL);
       

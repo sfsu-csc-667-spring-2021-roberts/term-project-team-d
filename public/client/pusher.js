@@ -61,7 +61,7 @@ channel.bind('play-card', async data =>  {
   //console.log('inside play-card binding', data.currentPlayer);
   let middleBoard = document.getElementById('boardStatus');
   middleBoard.innerHTML =  'Current Player: ' + data.currentPlayer +  
-  '  Rotation: ' + rotation;
+  '  Rotation: ' + rotation + ' last color: ' + data.lastColor;
   //update top div
   //fetch the player num.
   let url = '/game/'+gameId+'/getPlayerNum';
