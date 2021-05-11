@@ -99,7 +99,8 @@ router.post('/:gameId/playCard', async (req, res) => {
         currentPlayer: currentPlayer,
         playedCard: playedCard,
         rotation: rotation,
-        numPlayersCards: neighbors
+        numPlayersCards: neighbors,
+        chosenColor: chosenColor
       });
       
 

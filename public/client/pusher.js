@@ -53,6 +53,7 @@ channel.bind('draw-card', async data =>  {
   rightPlayer.innerHTML =  'number of cards: '+ neighbors[2].count
 
 })
+/* ======= playCard ======== */
 channel.bind('play-card', async data =>  {
   /* rotation logic */
 
@@ -74,12 +75,21 @@ channel.bind('play-card', async data =>  {
   let { playerNum } = await response.json();
   //console.log('playerNum object: '+ playerNum);
 
+  // if draw 4 or changeColor, then set color to chosen color and not playedCard.Color
+  if (data.playedCard.type == 'draw 4' || data.playedCard.type == 'changeColor'){
+    setPile({
+      number: data.playedCard.number,
+      color: data.chosenColor,
+      type: data.playedCard.type
+    });
+  } else {
   /* ===== BROADCAST DISCARD PILE ======= */
   setPile({
       number: data.playedCard.number,
       color: data.playedCard.color,
       type: data.playedCard.type
     });
+  }
 
   /* ===== BROADCAST NUMBER OF CARDS FOR EACH PLAYER ======= */
   //re-arange the array neighbors.
