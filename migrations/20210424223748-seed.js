@@ -8,7 +8,6 @@ module.exports = {
      *
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
 
     const hashedPassword = bcrypt.hashSync('password');
 
@@ -54,6 +53,7 @@ module.exports = {
       player_num: 4
   }]);
 
+     */
 },
 
   down: async (queryInterface, Sequelize) => {
