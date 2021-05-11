@@ -65,6 +65,7 @@ function addCard(cardData){
     var cardElem = createCardElement(cardData);
     handDiv.append(cardElem);
 
+    //console.log('cardData in add', cardData);
     // generate link between visual element and cardData
     handRef[cardData.id] = cardElem;
     dataRef[cardElem] = cardData;
@@ -103,6 +104,7 @@ async function playCard(event){
     //var cardData = Object.keys(handRef).find(key => handRef[key] === cardElem);
     var cardData = dataRef[cardElem];
     let cardId = cardData.id;
+    console.log('cardData', cardData);
     
     if(cardData == null){
         console.log("Card " + cardElem + " has no reference!");
