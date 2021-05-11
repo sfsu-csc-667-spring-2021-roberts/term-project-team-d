@@ -131,7 +131,7 @@ async function drawCard(event){
 }
 
 async function getPlayerCards(gameId) {
-  let getPlayerHandUrl = baseUrl + 'game/' + gameId + '/getPlayerHand';
+  let getPlayerHandUrl = '/game/' + gameId + '/getPlayerHand';
 
   const response = await fetch(getPlayerHandUrl, {
     method: 'POST',
@@ -160,7 +160,7 @@ function addCards(playerCards) {
 }
 
 async function fetchPlayCard(cardData) {
-  let playCardUrl = baseUrl + 'game/' + gameId + '/playCard';
+  let playCardUrl = '/game/' + gameId + '/playCard';
 
   let response = await fetch(playCardUrl, {
     method: 'POST',
