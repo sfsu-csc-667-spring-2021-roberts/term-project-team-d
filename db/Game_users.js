@@ -240,6 +240,7 @@ class Game_users extends ActiveRecord {
     } else if (type == 'draw 2') {
       await Game_users.drawCardNextPlayer(gameId)
       await Game_users.drawCardNextPlayer(gameId)
+      await Games.nextPlayer(gameId);
 
     } else if (type == 'reverse') {
       let reverseSQL = `UPDATE games
