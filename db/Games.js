@@ -29,6 +29,7 @@ class Games extends ActiveRecord {
   static getGameList() {
     let query = `SELECT game_users.game_id, COUNT(game_users.id) FROM game_users
       JOIN games ON games.id = game_users.game_id 
+      WHERE games.started != -1
       GROUP BY game_users.game_id
       ORDER BY game_users.game_id ASC`;
     //let query = `SELECT id FROM games`
@@ -61,7 +62,20 @@ class Games extends ActiveRecord {
     return started
   }
  
-  endGame() {
+  static async endGame(gameId, playerNum) {
+    let sql = `UPDATE games SET started = -1
+    WHERE id = ${gameId}`;
+    console.log('FIRST SQL', sql);
+
+    await db.none(sql);
+
+    sql = `UPDATE game_users SET winner = 1
+    WHERE game_id = ${gameId} AND 
+    player_num = ${playerNum}`;
+
+    console.log('SECOND SQL', sql);
+
+    await db.none(sql);
     
   }
 

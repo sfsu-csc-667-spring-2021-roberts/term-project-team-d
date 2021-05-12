@@ -139,14 +139,8 @@ channel.bind('special-draw', async data =>  {
 });
 
 channel.bind('end-game', async data =>  {
-let url = '/game/'+gameId+'/endGame';
-    let response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-          winner: data.winner
-        }),
-    });
+  let endGameForm = document.getElementById('endGameForm');
+  endGameForm.submit();
 });
 
   /* ========= Helper Functions =========*/

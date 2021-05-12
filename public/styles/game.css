@@ -38,10 +38,12 @@ body {
 
 #p2, #p3, #p4{
   background: #8888aa;
+  font-size: 24px;
 }
 
 #board{
   background: #88aa88;
+  font-size: 30px;
 }
 
 .card{

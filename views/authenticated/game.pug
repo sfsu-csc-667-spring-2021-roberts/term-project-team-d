@@ -6,6 +6,9 @@ html(lang='en')
     link(rel='stylesheet', href='/styles/game.css')
     script(type="module", src='/client/main.js')
   body
+    - let url = '/game/'+gameId+'/endGame';
+    form(id='endGameForm' action=url method='POST')
+
     div.grid-container
       div -
       div#p2 player number: #{neighbors[1].card_status} 
