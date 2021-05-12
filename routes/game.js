@@ -61,22 +61,23 @@ router.post('/:gameId/getLastCard', async (req, res) => {
 });
 
 router.post('/:gameId/playCard', async (req, res) => {
-  let { cardId } = req.body;
+  let { cardId, chosenColor } = req.body;
   let userId = req.user.id;
   let gameId = req.params.gameId;
+  console.log('chosenColor', chosenColor);
 
-  console.log('inside route, card data:', cardId);
+  //console.log('inside route, card data:', cardId);
 
   let playerNum = await GU.getPlayerNumber(gameId, userId);
   let currentPlayer = await Games.getCurrentPlayer(gameId);
-  console.log('playerNum', playerNum);
-  console.log('currentPlayer', currentPlayer);
+  //console.log('playerNum', playerNum);
+  //console.log('currentPlayer', currentPlayer);
 
   /* Correct Players Turn */
   if (currentPlayer == playerNum) {
-    console.log('cardId in Route', cardId);
-    let playedCard = await GU.playCard(cardId, gameId);
-    console.log('playedCard', playedCard);
+    //console.log('cardId in Route', cardId);
+    let playedCard = await GU.playCard(cardId, gameId, chosenColor);
+    //console.log('playedCard', playedCard);
 
     /* Invalid Card */
     if (playedCard == 'invalid card') {
@@ -98,7 +99,8 @@ router.post('/:gameId/playCard', async (req, res) => {
         currentPlayer: currentPlayer,
         playedCard: playedCard,
         rotation: rotation,
-        numPlayersCards: neighbors
+        numPlayersCards: neighbors,
+        chosenColor: chosenColor
       });
       
 

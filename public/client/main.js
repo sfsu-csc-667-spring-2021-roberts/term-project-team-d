@@ -4,6 +4,7 @@ var handDiv = document.getElementById("hand");
 var boardDiv = document.getElementById("board");
 var deckDiv = null;
 var pileDiv = null;
+let chosenColor = 'yellow';
 
 var handRef = {}
 
@@ -27,6 +28,24 @@ function initBoard(){
     boardDiv.append(pileDiv);
 
     deckDiv.addEventListener("click", drawCard);
+
+    /* change color button */
+    let colorChooserDiv = document.getElementById('colorChooser');
+    for (let child of Array.from(colorChooserDiv.children)) {
+        console.log('child:', child);
+        console.log(child.tagName);
+      if (child.tagName == 'BUTTON') {
+        //console.log('child:', child);
+        child.addEventListener('click', setChosenColor);
+      }
+    }
+}
+
+/* changeColor function */
+function setChosenColor(e) {
+  let currentColorDiv = document.getElementById('currentColor');
+  currentColorDiv.innerText = e.target.innerText; 
+  chosenColor = e.target.innerText;
 }
 
 /*
@@ -168,7 +187,10 @@ async function fetchPlayCard(cardData) {
       'Content-Type': 'application/json'
     },
     // body data type must match "Content-Type" header
-    body: JSON.stringify({ cardId: cardData })
+    body: JSON.stringify({
+      cardId: cardData,
+      chosenColor: chosenColor
+    })
   });
   response = await response.json(); 
   let { playedCard } = response;
