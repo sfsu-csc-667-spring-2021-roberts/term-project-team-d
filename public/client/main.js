@@ -61,7 +61,7 @@ export function setPile(cardData){
  * Add a new card to your hand
  * PARAM cardData - A card json received from server
  */
-function addCard(cardData){
+export function addCard(cardData){
     // generate visual element
     var cardElem = createCardElement(cardData);
     handDiv.append(cardElem);

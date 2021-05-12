@@ -1,4 +1,4 @@
-import {setPile} from './main.js';
+import { setPile, addCard } from './main.js';
 
 /* ====================================*/
 /* ==== Pusher Subscription ===========*/
@@ -109,6 +109,11 @@ channel.bind('play-card', async data =>  {
 
 });
 
+/* draw special card */
+channel.bind('special-draw', async data =>  {
+});
+
+  /* ========= Helper Functions =========*/
 function getarrangement(playerNum, numPlayersCards) {
   let neighbors = [];
 

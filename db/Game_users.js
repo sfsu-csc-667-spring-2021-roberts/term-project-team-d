@@ -187,12 +187,12 @@ class Game_users extends ActiveRecord {
   static async drawCardNextPlayer(gameId) {
     
     let count = await Games.countDeck(gameId);
-    console.log('inside draw 2 step 1 ==================================', count)
+    //console.log('inside draw 2 step 1 ==================================', count)
     if (count == 0) {
       
       await Games.reshuffle(gameId);
     }
-    console.log('inside draw 2 step 2 ==================================')
+    //console.log('inside draw 2 step 2 ==================================')
     // will get a card from the deck with the lowest order
     let sql =`SELECT id FROM game_cards
     WHERE card_status = 0
@@ -203,18 +203,18 @@ class Game_users extends ActiveRecord {
     let {id : topDeckCard} = await db.one(sql)
 
     // Grabs the next player
-    console.log('inside draw 2 step 3 ==================================')
+    //console.log('inside draw 2 step 3 ==================================')
     sql = `SELECT clockwise FROM games
            WHERE id = ${gameId};`
     
     let {clockwise : rotation} = await db.one(sql)
-    console.log('inside draw 2 step 5 ==================================')
+    //console.log('inside draw 2 step 5 ==================================')
     sql = `SELECT current_player FROM games
            WHERE id = ${gameId};`
 
     let {current_player : currPlayer} = await db.one(sql)
 
-    console.log('inside draw 2 step 6 ==================================')
+    //console.log('inside draw 2 step 6 ==================================')
     let playerToDraw = currPlayer + rotation
     if (playerToDraw == 0) {
       playerToDraw = 4
@@ -222,9 +222,9 @@ class Game_users extends ActiveRecord {
     if (playerToDraw == 5) {
       playerToDraw = 1
     }
-    console.log('inside draw 2 step 7 ==================================')
-    console.log('type of playerToDraw is int',playerToDraw == 0)
-    console.log('value of playertodraw',playerToDraw)
+    //console.log('inside draw 2 step 7 ==================================')
+    //console.log('type of playerToDraw is int',playerToDraw == 0)
+    //console.log('value of playertodraw',playerToDraw)
     // update card status
     sql = `UPDATE game_cards 
                       SET card_status = ${playerToDraw}
