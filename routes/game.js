@@ -56,8 +56,9 @@ router.post('/:gameId/getPlayerHand', async (req, res) => {
 router.post('/:gameId/getLastCard', async (req, res) => {
   let gameId = req.params.gameId;
   let lastCard = await Games.getLastCard(gameId);
+  let { last_color: chosenColor } = await Games.getLastColor(gameId);
   //console.log('in game.js route, lastcard', lastCard);
-  res.status(200).json(lastCard);
+  res.status(200).json({ lastCard, chosenColor });
 });
 
 router.post('/:gameId/playCard', async (req, res) => {

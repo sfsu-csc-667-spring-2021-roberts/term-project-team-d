@@ -348,6 +348,13 @@ class Games extends ActiveRecord {
     return rotation;
   }
 
+  static async getLastColor(gameId) {
+    let sql = `SELECT last_color from games
+      WHERE id = ${gameId}`;
+
+      return await db.one(sql);
+  }
+
 
 } // end of Games class
 

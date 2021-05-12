@@ -217,15 +217,24 @@ async function handleLastCard(gameId) {
     },
     body: JSON.stringify({ gameId: gameId })
   });
-  let lastCard = await response.json(); 
+  let { lastCard, chosenColor } = await response.json(); 
 
   if (lastCard) {
+    if (lastCard.type == 'draw 4' ||
+    lastCard.type == 'changeColor') {
+      setPile({
+        number: lastCard.number,
+        color: chosenColor,
+        type: lastCard.type
+      });
+  } else {
     setPile({
       number: lastCard.number,
       color: lastCard.color,
       type: lastCard.type
     });
   }
+}
 }
 
 /* =================================*/
