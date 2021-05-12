@@ -185,40 +185,55 @@ class Game_users extends ActiveRecord {
     }
 
   static async drawCardNextPlayer(gameId) {
-    let count = Games.countDeck(gameId);
+    
+    let count = await Games.countDeck(gameId);
+    console.log('inside draw 2 step 1 ==================================', count)
     if (count == 0) {
-      Games.reshuffle(gameId);
+      
+      await Games.reshuffle(gameId);
     }
+    console.log('inside draw 2 step 2 ==================================')
     // will get a card from the deck with the lowest order
     let sql =`SELECT id FROM game_cards
     WHERE card_status = 0
     AND game_id = ${gameId}
     ORDER BY card_order
     LIMIT 1;`
-
+    console.log(sql);
     let {id : topDeckCard} = await db.one(sql)
 
     // Grabs the next player
-    
+    console.log('inside draw 2 step 3 ==================================')
     sql = `SELECT clockwise FROM games
            WHERE id = ${gameId};`
     
     let {clockwise : rotation} = await db.one(sql)
-
+    console.log('inside draw 2 step 5 ==================================')
     sql = `SELECT current_player FROM games
            WHERE id = ${gameId};`
 
     let {current_player : currPlayer} = await db.one(sql)
 
-
+    console.log('inside draw 2 step 6 ==================================')
+    let playerToDraw = currPlayer + rotation
+    if (playerToDraw == 0) {
+      playerToDraw = 4
+    }
+    if (playerToDraw == 5) {
+      playerToDraw = 1
+    }
+    console.log('inside draw 2 step 7 ==================================')
+    console.log('type of playerToDraw is int',playerToDraw == 0)
+    console.log('value of playertodraw',playerToDraw)
     // update card status
     sql = `UPDATE game_cards 
-                      SET card_status = ${currPlayer + rotation}
+                      SET card_status = ${playerToDraw}
                       WHERE 
                           game_id = ${gameId} AND
                           id = ${topDeckCard}`
     
     await db.none(sql)
+    console.log('inside draw 2 step 888 ==================================')
   }
 
   // helper function to do card effect
@@ -234,6 +249,7 @@ class Game_users extends ActiveRecord {
     } else if (type == 'draw 2') {
       await Game_users.drawCardNextPlayer(gameId)
       await Game_users.drawCardNextPlayer(gameId)
+      await Games.nextPlayer(gameId);
 
     } else if (type == 'reverse') {
       let reverseSQL = `UPDATE games
