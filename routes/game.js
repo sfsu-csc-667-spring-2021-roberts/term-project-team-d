@@ -103,8 +103,16 @@ router.post('/:gameId/playCard', async (req, res) => {
         numPlayersCards: neighbors,
         chosenColor: chosenColor
       });
-      
 
+      let count = await countCurrentPlayerCards(gameId, playerNum);
+      if (count == 0) {
+        Games.endGame(gameId);
+        let username = req.user.username;
+        pusher.trigger("game" + gameId, "end-game", {
+          winner: username
+        });
+        res.status(200).json({ msg: 'game ended' });
+      } 
       res.status(200).json({ 
         msg: 'successfully played card',
         playedCard: playedCard
@@ -128,6 +136,9 @@ router.post('/:gameId/getPlayerNum', async (req, res) => {
 
 });
 
-
+router.post('/:gameId/endGame', async (req, res) => {
+  let { winner } = req.body;
+  res.render('authenticated/endGame.pug', { winner: winner });
+});
 
 module.exports = router;
