@@ -204,12 +204,12 @@ class Games extends ActiveRecord {
 
   static async isValidCard(gameCardId, gameId) {
     // select color and number
-    let sql = `SELECT number, color FROM game_cards
+    let sql = `SELECT number, color, type FROM game_cards
     JOIN cards ON game_cards.card_id = cards.id 
     WHERE game_cards.id = ${gameCardId}`;
 
-    let result = await db.any(sql);
-    const { number, color } = result[0];
+    let result = await db.one(sql);
+    const { number, color, type } = result;
 
     // get last played card
     sql = `SELECT last_card,last_color FROM games 
@@ -245,7 +245,7 @@ class Games extends ActiveRecord {
 
     // this means that the last played card is a color special card
     if (number == -1) {
-      return color == pileColor
+      return color == pileColor || pileType == type
     }
     console.log('number == -1');
 
