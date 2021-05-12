@@ -234,6 +234,16 @@ class Game_users extends ActiveRecord {
     
     await db.none(sql)
     console.log('inside draw 2 step 888 ==================================')
+
+
+    //Pusher code:
+
+    //first, get the card played
+    let cardObject = await Games.getCard(topDeckCard);
+    pusher.trigger("game" + gameId, "special-draw", {
+      drawnCard: cardObject,
+      playerToDraw: playerToDraw
+    });
   }
 
   // helper function to do card effect

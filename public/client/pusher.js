@@ -110,7 +110,32 @@ channel.bind('play-card', async data =>  {
 });
 
 /* draw special card */
+/*
+pusher.trigger("game" + gameId, "special-draw", {
+  drawnCard: cardObject,
+  playerToDraw: playerToDraw
+});
+*/
 channel.bind('special-draw', async data =>  {
+    //fetch the player num.
+    let url = '/game/'+gameId+'/getPlayerNum';
+    let response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    let { playerNum } = await response.json();
+
+    if (playerNum == data.playerToDraw) {
+      addCard({ 
+        id: data.drawnCard.id,
+        number: data.drawnCard.number,
+        color: data.drawnCard.color,
+        type: data.drawnCard.type
+      });
+    }
+
 });
 
   /* ========= Helper Functions =========*/
