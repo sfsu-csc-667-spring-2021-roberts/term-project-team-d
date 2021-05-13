@@ -25,11 +25,12 @@ router.post('/:gameId/drawCard', async (req, res) => {
 
     //broadcasting number of cards of each player 
     let neighbors = await GU.getNumCardsInHand(gameId, userId);
-    console.log('just before the draw card trigger')
+    //console.log('just before the draw card trigger')
     pusher.trigger("game" + gameId, "draw-card", {
       numPlayersCards: neighbors
     });
-    console.log('just after the draw card trigger')
+    //console.log('just after the draw card trigger')
+    //console.log('PlayedCard Object in drawCard route', playedCard);
 
 
 
@@ -89,7 +90,19 @@ router.post('/:gameId/playCard', async (req, res) => {
     /* ===================================== */
     /* Played Successfully */
     } else {
-      
+      let count = await GU.countCurrentPlayerCards(gameId, playerNum);
+      console.log('count inside game route', count);
+      if (count == 0) {
+        console.log('INSIDE END GAME IF ROUTE', gameId);
+        await Games.endGame(gameId, playerNum);
+        console.log('AFTER ENDGAME ORM in ROUTE');
+        let username = req.user.username;
+        pusher.trigger("game" + gameId, "end-game", {
+          winner: username
+        });
+        return res.status(200).json({ msg: 'game ended' });
+      }
+
       currentPlayer = await Games.getCurrentPlayer(gameId);
       let rotation = await Games.getRotation(gameId);
       let neighbors = await GU.getNumCardsInHand(gameId, userId);
@@ -103,13 +116,14 @@ router.post('/:gameId/playCard', async (req, res) => {
         numPlayersCards: neighbors,
         chosenColor: chosenColor
       });
-      
 
+       
       res.status(200).json({ 
         msg: 'successfully played card',
         playedCard: playedCard
       });
     }
+    /* HUGE OUTER ELSE - valid card but not your turn */
   } else {
     res.status(403).json({ msg: 'forbidden' });
   }
@@ -128,6 +142,11 @@ router.post('/:gameId/getPlayerNum', async (req, res) => {
 
 });
 
-
+router.post('/:gameId/endGame', async (req, res) => {
+  console.log('INSIDE ENDGAME ROUT');
+  let { winner } = req.body;
+  //res.render('authenticated/endGame.pug', { winner: winner });
+  res.render('authenticated/endGame.pug');
+});
 
 module.exports = router;

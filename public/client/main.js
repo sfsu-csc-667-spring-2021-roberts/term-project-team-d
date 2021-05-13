@@ -32,8 +32,8 @@ function initBoard(){
     /* change color button */
     let colorChooserDiv = document.getElementById('colorChooser');
     for (let child of Array.from(colorChooserDiv.children)) {
-        console.log('child:', child);
-        console.log(child.tagName);
+        //console.log('child:', child);
+        //console.log(child.tagName);
       if (child.tagName == 'BUTTON') {
         //console.log('child:', child);
         child.addEventListener('click', setChosenColor);

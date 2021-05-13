@@ -138,6 +138,11 @@ channel.bind('special-draw', async data =>  {
 
 });
 
+channel.bind('end-game', async data =>  {
+  let endGameForm = document.getElementById('endGameForm');
+  endGameForm.submit();
+});
+
   /* ========= Helper Functions =========*/
 function getarrangement(playerNum, numPlayersCards) {
   let neighbors = [];
