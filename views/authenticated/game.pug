@@ -10,15 +10,25 @@ html(lang='en')
     form(id='endGameForm' action=url method='POST')
 
     div.grid-container
-      div -
+      div - 
       div#p2 player number: #{neighbors[1].card_status} 
         div#p2Cards number of cards: #{neighbors[1].count}
       div -
 
       div#p3 player number: #{neighbors[0].card_status} 
         div#p3Cards number of cards: #{neighbors[0].count}
-      div#board 
-        div#boardStatus Current Player: #{currentPlayer} Rotation: #{rotation}
+      div#board
+        div#gameChat  
+          // chat text input field
+        form(id='chat-form') 
+          label(for='chatTextInput') Message:
+          input(type='text' name='chatTextInput' id='msg' 
+          placeholder='type message')
+          input(type='submit' style='display: none')
+        
+        div#boardStatus  Current Player: #{currentPlayer} 
+          br
+          | Rotation: #{rotation}
       div#p4 player number: #{neighbors[2].card_status} 
         div#p4Cards number of cards: #{neighbors[2].count}
 

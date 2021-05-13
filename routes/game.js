@@ -3,6 +3,7 @@ let router  = express.Router();
 let GU      = require('../db/Game_users');
 let Games   = require('../db/Games');
 const Pusher = require('pusher');
+const moment = require('moment');
 const pusher = new Pusher({
   appId: "1198857",
   key: "fe16d9c5190cef68646f",
@@ -147,6 +148,21 @@ router.post('/:gameId/endGame', async (req, res) => {
   let { winner } = req.body;
   //res.render('authenticated/endGame.pug', { winner: winner });
   res.render('authenticated/endGame.pug');
+});
+
+router.post('/:gameId/chatMessage', async (req, res) => {
+  let gameId = req.params.gameId;
+  let username = req.user.username;
+  let { msg } = req.body;
+  
+  pusher.trigger('game' + gameId, 'chat-msg', {
+    message:  msg,
+    username: username,
+    timestamp: moment().format('h:mm a')
+  });
+
+  res.status(200).json({ msg: 'sent game lobby message' });
+
 });
 
 module.exports = router;
