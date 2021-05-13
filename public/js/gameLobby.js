@@ -19,6 +19,12 @@ let channel = pusher.subscribe('game-lobby' + gameId);
 /* ====================================*/
 
 /* ======= Chat Room ======== */
+channel.bind('start-game', data => {
+  let startGameForm = document.getElementById('startGameForm');
+  startGameForm.submit();
+});
+
+/* ======= Chat Room ======== */
 channel.bind('chat-msg', data => {
   let { username, message, timestamp } = data;
 

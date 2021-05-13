@@ -47,12 +47,19 @@ router.post('/joinGame/:gameId', async (req, res) => {
     numPlayers: numPlayers
   });
 
+    console.log('before four player check');
  /* start game logic */
   if (numPlayers == 4) {
-    // start game
+    console.log('inside start game route');
     await Games.startGame(gameId);
+
+    pusher.trigger('game-lobby' + gameId, 'start-game', {
+    });
+
+    // start game
     renderGame(req, res, gameId);
 
+    
   } else {
     renderGameLobby(req, res, gameId);
   }
@@ -114,6 +121,12 @@ async function renderGameLobby(req, res, gameId) {
     usernames: usernames
   });
 }
+
+router.get('/startGame/:gameId', async (req, res) => {
+  let gameId = req.params.gameId;
+
+  renderGame(req, res, gameId);
+});
 
 async function renderGame(req, res, gameId) {
 

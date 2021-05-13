@@ -30,6 +30,10 @@ block content
     placeholder='type message')
     input(type='submit' style='display: none')
 
+  // invisible startgame form
+  - let startUrl = '/users/startGame/' + gameId
+  form(id='startGameForm' action=startUrl method='GET')
+
   // ======== Imported Libraries ==========
   script(src='https://js.pusher.com/7.0/pusher.min.js')
   script(type='module' src='/js/gameLobby.js')
