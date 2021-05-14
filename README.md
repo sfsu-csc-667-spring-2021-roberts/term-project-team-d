@@ -28,7 +28,7 @@ Heroku link: https://fast-beyond-10302.herokuapp.com/
 8. [Challenges and Future Work](#challenges-and-future-work)
 
 
-### Overview
+## Overview
 This was a group effort to recreate the game of Uno in real-time multiplayer
 online. Our web app allows users to register and create and join multiple games.
 A user can join many games and play multiple games concurrently. We store the 
