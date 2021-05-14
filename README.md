@@ -66,8 +66,9 @@ script is reserved for use by Heroku.
 
 ## Migrations
 
-To run the server, first you need to run the migrations to create the tables
-in the database. To run the migrations, run the command:
+To run the server, first you need to have an empty database created and that it 
+matches the specificed database in the DATABASE\_URL environment variable.
+Then to run the migrations to create the tables, run the command:
 
 `npx sequelize db:migrate`
 
@@ -142,10 +143,11 @@ on the same feature.
 *Github:* Each team member was required to utitilize branching
 and pull requests to reduce merge conflicts.
 
-*Migrations On Heroku*
+*Migrations On Heroku*: We had to learn how to run migrations on Heroku.
 
-*using socketio then using pusher*
+*using socketio then using pusher*: We had trouble implementing sockets using 
+socketio, then we switched to pusher.
 
-*implementing change color card*
-
-*rendering pages dynamically for everyone*
+*implementing change color card*: This card was challenging to implement because 
+it required user input. To solve this we created four buttons in the UI that 
+allowed a player to choose the color they want to use.
