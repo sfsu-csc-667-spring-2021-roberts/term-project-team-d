@@ -1,27 +1,19 @@
+/* File: routes/index.js
+ * Purpose:
+ * This will handle all the immediate authentication
+ * and validation that must occur to authorize users
+ */
 var express = require('express');
-var path = require('path');
-let router = express.Router();
-let Game = require('../db/game');
-const db = require('../db/connection');
+let router  = express.Router();
 
-/* GET home pae. */
-router.get('/', async function(req, res, next) {
-  let games = await Game.getGameList();
-  res.render('index', { 
-    title: 'Uno Project!!',
-    games: games
-  });
-});
-
-router.post('/register', async (req, res, next) => {
-  console.log("registering user");
-  console.log(req.body);
-  res.send();
-});
-
-router.post('/createGame', async (req, res, next) => {
-  Game.createGame();
-  res.send();
+/* GET home page. 
+  check if authenticated or unathenticated */
+router.get('/', (req, res, next) => {
+  if (req.user) {
+    res.redirect('/lobby');
+  } else {
+    next()
+  }
 });
 
 module.exports = router;

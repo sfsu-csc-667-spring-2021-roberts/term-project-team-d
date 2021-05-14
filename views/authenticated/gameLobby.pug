@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title} 
+  p This is the game room for game #{gameId}
+  // Heading
+  h1
+    = 'Game id: ' + gameId
+  h1#numPlayers= 'Number of Players: ' + numPlayers
+
+  div#gameUsers
+    // list all users
+    each username in usernames
+      h3= "User: " + username.username
+
+  // Buttons
+  - let url = '/users/leaveGame/' + gameId
+  form(id='leaveGameForm' action=url method='POST')
+    input(type='submit' value='leave game')
+  a(href='/lobby')
+    button(type="button" class="lobby") lobby
+
+  // CHAT ROOM
+  div(id='chat-box')
+  // chat text input field
+  form(id='chat-form')
+    label(for='chatTextInput') Message:
+    input(type='text' name='chatTextInput' id='msg' 
+    placeholder='type message')
+    input(type='submit' style='display: none')
+
+  // invisible startgame form
+  - let startUrl = '/users/startGame/' + gameId
+  form(id='startGameForm' action=startUrl method='GET')
+
+  // ======== Imported Libraries ==========
+  script(src='https://js.pusher.com/7.0/pusher.min.js')
+  script(type='module' src='/js/gameLobby.js')

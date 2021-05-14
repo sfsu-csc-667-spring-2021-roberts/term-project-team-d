@@ -3,9 +3,9 @@ const Type = {
     normal : {rank : "", symbol : ""},
     skip : {rank : "🚫", symbol : "🚫"},
     reverse : {rank : "⇄", symbol : "⇄"},
-    draw2 : {rank : "+2", symbol : "⧉"},
-    draw4 : {rank : "+4", symbol : "⧉"},
-    chooseColor : {rank : "⨁", symbol : "⨁"}
+    'draw 2' : {rank : "+2", symbol : "⧉"},
+    'draw 4' : {rank : "+4", symbol : "⧉"},
+    changeColor : {rank : "⨁", symbol : "⨁"}
 }
 
 /* 
@@ -20,7 +20,10 @@ export function createCardElement(cardData, selectable=true){
     // Create base card element
     var card = document.createElement("div");
     card.classList.add("card");
-    card.classList.add("card-" + cardData.color);
+    if (cardData.color == 'none') {
+      cardData.color = 'black';
+    }
+      card.classList.add("card-" + cardData.color);
 
     if(selectable){
         card.classList.add("grow");

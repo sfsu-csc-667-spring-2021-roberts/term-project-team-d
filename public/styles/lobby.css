@@ -1,0 +1,10 @@
+body {
+  margin: 20;
+}
+
+#chat-box {
+  max-height: 300px;
+  height: 200px;
+  overflow: scroll;
+  width: 450px;
+}

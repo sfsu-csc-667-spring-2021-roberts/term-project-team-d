@@ -5,7 +5,7 @@ module.exports = {
     /* ============================
      * == card reference table ====
      * ============================ */
-    await queryInterface.createTable('card_reference', {
+    await queryInterface.createTable('cards', {
       id: {
         autoIncrement: true,
         type: Sequelize.INTEGER,
@@ -23,13 +23,9 @@ module.exports = {
       type: {
         type: Sequelize.STRING,
         allowNull: true
-      }, 
-      effect: {
-        type: Sequelize.STRING,
-        allowNull: true
       }
     });
-    queryInterface.bulkInsert('card_reference', [{
+    queryInterface.bulkInsert('cards', [{
       number: 0,
       color: 'red',
       type: 'normal'
@@ -297,6 +293,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('card_reference');
+    await queryInterface.dropTable('card');
   }
 };

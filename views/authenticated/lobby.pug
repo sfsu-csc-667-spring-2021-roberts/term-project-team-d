@@ -1,0 +1,42 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  p These are the game rooms
+  button(type="button" id="logout") logout
+  button(type="button" id="createGame") Create Game
+  ul#gameList
+    if games
+      each game in games
+        li= "Game id: " + game.game_id
+        // ===== isJoined RESUME BUTTON ============
+        if game.isJoined
+          - let resumeUrl = '/users/resume/' + game.game_id
+          form(class='resumeGameForm' action=resumeUrl method='GET')
+            label resume game
+            input(type='submit' class='resumeGameButton' name='resumeGame'
+            value='resume')
+          // ====== JOIN GAME BUTTON ==========
+        else
+          - let url = '/users/joinGame/' + game.game_id
+          form(class='joinGameForm' action=url method='POST')
+            label join game
+            input(type='submit' class='joinGameButton' id=game.game_id
+            name='joinGame' value='join game' data-gameid=game.game_id)
+    else
+      strong No Game rooms! Create a game
+
+  // CHAT ROOM
+  div(id='chat-box')
+
+  // user text input field
+  form(id='chat-form')
+    label(for='chatTextInput') Message:
+    input(type='text' name='chatTextInput' id='msg' 
+    placeholder='type message')
+    input(type='submit' style='display: none')
+  
+  // ======== Imported Libraries ==========
+  script(src='https://js.pusher.com/7.0/pusher.min.js')
+  script(type='module' src='/js/lobby.js')

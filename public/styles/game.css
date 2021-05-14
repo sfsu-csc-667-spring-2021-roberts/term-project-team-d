@@ -38,10 +38,12 @@ body {
 
 #p2, #p3, #p4{
   background: #8888aa;
+  font-size: 24px;
 }
 
 #board{
   background: #88aa88;
+  font-size: 30px;
 }
 
 .card{
@@ -101,4 +103,10 @@ transform: scale(1.1);
 
 .card-black{
     background: #404040;
+}
+
+#colorChooser {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 0px;
 }
