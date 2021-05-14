@@ -94,34 +94,42 @@ then
 
 `heroku run sequelize db:migrate`
 
+<div style="page-break-after: always;"></div>
+
 ## Database Structure
 
 ![database](readmePhotos/ERDwithTahar.png)
 
+<div style="page-break-after: always;"></div>
+
 ## Requirements
 
-| Category     | Requirement                                                        | Completed
-| -----------  | -----------                                                        | ---------
-| Registration | Users can create an account                                        | X
-|               | One account can be created with one email                          | X
-|              | Passwords are hashed                                               | X
-| Login        | Registered users can login                                         | X
-|              | Login requires email and hashed password                           | X
-| Lobby        | Users can create a game                                            | X
-|              | Users can join a game                                              | X
-|              | Users can resume a game                                            | X
-|              | Pusher handles game list in real time                              | X
-| Game Lobby   | Users see number of players in game lobby                          | X
-|              | Users can leave game                                               | X
-|              | Users can go back to the lobby                                     | X
-|              | Users are updated on who joins or leaves the game lobby            | X
-|              | game starts automatically for everybody when fourth player joins   | X
-| Chat         | Users can chat globally in the lobby                               | X
-|              | Users can chat privately within the game lobby and game to players | X
-| Game Logic   | Player can draw a card on their turn                               | X
-|              | Player can play a card if it is valid and their turn               | X
-|              | Implemented special card effects eg. Draw 2, skip, reverse         | X
-|              | Game ends when a player has zero cards                             | X
+| Category      | Requirement                                                         | Completed
+| -----------   | -----------                                                         | ---------
+| Registration  | Users can create an account                                         | X
+|               | One account can be created with one email                           | X
+|               | Passwords are hashed                                                | X
+| Login         | Registered users can login                                          | X
+|               | Login requires email and hashed password                            | X
+| Lobby         | Users can create a game                                             | X
+|               | Users can join a game                                               | X
+|               | Users can resume a game                                             | X
+|               | Pusher handles game list in real time                               | X
+| Game Lobby    | Users see number of players in game lobby                           | X
+|               | Users can leave game                                                | X
+|               | Users can go back to the lobby                                      | X
+|               | Users are updated on who joins or leaves the game lobby             | X
+|               | game starts automatically for everybody when fourth player joins    | X
+| Chat          | Users can chat globally in the lobby                                | X
+|               | Users can chat privately within the game lobby and game to players  | X
+| Game Logic    | Player can draw a card on their turn                                | X
+|               | Player can play a card if it is valid and their turn                | X
+|               | Implemented special card effects eg. Draw 2, skip, reverse          | X
+|               | Game ends when a player has zero cards                              | X
+| Misc          | Uni Directional Data Flow                                           | X
+| Code Quality  | Organized Routes                                                    | X
+|               | Database Separated By Tables                                        | X
+|               | Built and maintained high performance, reusable, and reliable code  | X
 
 ## Challenges
 ##### Non-Technical Challenges
