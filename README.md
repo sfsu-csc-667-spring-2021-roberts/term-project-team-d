@@ -25,7 +25,7 @@ Heroku link: https://fast-beyond-10302.herokuapp.com/
 
 7. [Requirements](#requirements)
 
-8. [Challenges and Future Work](#challenges-and-future-work)
+8. [Challenges](#challenges)
 
 
 ## Overview
@@ -93,11 +93,11 @@ then
 
 `heroku run sequelize db:migrate`
 
-### Database Structure
+## Database Structure
 
 ![database](readmePhotos/ERDwithTahar.png)
 
-### Requirements
+## Requirements
 
 | Category     | Requirement                                                        | Completed
 | -----------  | -----------                                                        | ---------
@@ -122,3 +122,30 @@ then
 |              | Implemented special card effects eg. Draw 2, skip, reverse         | X
 |              | Game ends when a player has zero cards                             | X
 
+## Challenges
+##### Non-Technical Challenges
+*Colloborating efficiently*: What was challenging for us was figuring out 
+how to collaborate and split up work between the team. We had to learn each 
+others technical background and also coordinate depending on how each team member 
+wanted to contribute to the project. This was challenging because nobody on the team
+was an expert on creating a web server using this technology stack.
+
+*Communication (Trello)*: To coordinate tasks we used Trello. Trello helped us 
+overcome task distribution so that our team members were aware of what other team 
+members were contributing and also prevent two team members from incorrectly working
+on the same feature.
+
+![trello](readmePhotos/trelloss.jpg)
+
+##### Technical Challenges
+
+*Github:* Each team member was required to utitilize branching
+and pull requests to reduce merge conflicts.
+
+*Migrations On Heroku*
+
+*using socketio then using pusher*
+
+*implementing change color card*
+
+*rendering pages dynamically for everyone*
