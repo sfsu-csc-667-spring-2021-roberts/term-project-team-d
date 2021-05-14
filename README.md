@@ -64,7 +64,7 @@ The server listens on port 3000. We cannot use the `npm run`
 command locally as it will break. This 
 script is reserved for use by Heroku.
 
-### Migrations
+## Migrations
 
 To run the server, first you need to run the migrations to create the tables
 in the database. To run the migrations, run the command:
