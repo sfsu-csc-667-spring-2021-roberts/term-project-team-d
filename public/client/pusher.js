@@ -143,6 +143,22 @@ channel.bind('end-game', async data =>  {
   endGameForm.submit();
 });
 
+/* ======= Chat Room ======== */
+channel.bind('chat-msg', data => {
+  let { username, message, timestamp } = data;
+
+  const chatBox = document.getElementById('gameChat');
+  const div = document.createElement('div');
+
+  div.classList.add('message');
+  div.innerHTML = `<p class="chat-messages"><span> [${timestamp}]</span>
+    <strong>${username}:</strong> ${message}</p>`;
+  chatBox.append(div);
+
+  // scrolldown automatically
+  chatBox.scrollTop = chatBox.scrollHeight;
+});
+
   /* ========= Helper Functions =========*/
 function getarrangement(playerNum, numPlayersCards) {
   let neighbors = [];
