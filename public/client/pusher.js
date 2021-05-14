@@ -151,8 +151,8 @@ channel.bind('chat-msg', data => {
   const div = document.createElement('div');
 
   div.classList.add('message');
-  div.innerHTML = `<p class="chat-messages"><span> [${timestamp}]</span>
-    <strong>${username}:</strong> ${message}</p>`;
+  div.innerHTML = `<span> [${timestamp}]</span>
+    <strong>${username}:</strong> ${message}`;
   chatBox.append(div);
 
   // scrolldown automatically
