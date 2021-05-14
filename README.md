@@ -11,21 +11,21 @@ Heroku link: https://fast-beyond-10302.herokuapp.com/
 
 ## Table of Contents
 
-1. [Overview](#-this-is-a-heading)
+1. [Overview](#overview)
 
-2. [Technology Stack](#)
+2. [Technology Stack](#technology-stack)
 
-3. [Starting the development server](#)
+3. [Starting the development server](#starting-the-development-server)
 
-4. [Migrations](#)
+4. [Migrations](#migrations)
 
-5. [Database Structure](#)
+5. [Database Structure](#database-structure)
 
-6. [Deploying to Heroku] (#)
+6. [Deploying to Heroku](#deploying-to-heroku)
 
-7. [Requirements](#)
+7. [Requirements](#requirements)
 
-8. [Challenges and Future Work](#)
+8. [Challenges and Future Work](#challenges-and-future-work)
 
 
 ### Overview
