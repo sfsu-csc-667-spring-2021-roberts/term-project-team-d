@@ -147,7 +147,7 @@ channel.bind('end-game', async data =>  {
 channel.bind('chat-msg', data => {
   let { username, message, timestamp } = data;
 
-  const chatBox = document.getElementById('gameChat');
+  const chatBox = document.getElementById('chat-messages');
   const div = document.createElement('div');
 
   div.classList.add('message');

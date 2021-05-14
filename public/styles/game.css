@@ -12,10 +12,9 @@ body {
     box-sizing:border-box;
 }
 
-.grid-container{
+.grid-main{
     display: grid;
-    grid-template-columns: 1fr 3fr 1fr;
-    grid-template-rows: 1fr 3fr 1fr;
+    grid-template-columns: 3fr 1fr;
     grid-gap: 0px;
 
     height: 100%;
@@ -23,98 +22,67 @@ body {
 
     background: #444444;
 }
-#gameChat {
-    max-height: 300px;
-    height: 200px;
-    overflow: scroll;
-    width: 450px;
-    background: #dbdedf;
-    font-size: medium;
-  }
 
-.grid-container > div {
-    background: #666677;
-
-    display: flex;
-    align-items: center; 
-    justify-content: center;
+.grid-game{
+    display: grid;
+    grid-template-rows: 7fr 3fr;
 }
 
-#hand{
-  background: #aa8888;
-}
-
-#p2, #p3, #p4{
-  background: #8888aa;
-  font-size: 24px;
+.grid-info{
+    display: grid;
+    grid-template-rows: 3fr minmax(200px, 4fr) 3fr;
 }
 
 #board{
-  background: #88aa88;
-  font-size: 30px;
+  display:flex; 
+  flex-direction: row; 
+  justify-content: center; 
+  align-items: center;
+
+  background: #5abb5a;
 }
 
-.card{
-    color: #ececec;
-    border: 5px #ececec;
-    border-style: solid;
-
-    display: grid;
-    grid-template-rows: 1fr 3fr 1fr;
-
-    width: 70px;
-    height: 120px;
-    
-    margin: 10px;
+#hand{
+  background: #797780;
+  display:flex; 
+  flex-direction: row; 
+  justify-content: center; 
+  align-items: center
 }
 
-.grow { 
-transition: all .05s ease-in-out; 
+#players{
+  background: #8888aa;
 }
 
-.grow:hover { 
-transform: scale(1.1); 
-}
-
-.card-txt{
-    display: flex;
-    /*align-items: center; 
-    justify-content: center;*/
-    user-select: none;
-    pointer-events: none;
-}
-
-.card-symbol{
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    font-size: 25px;
-    user-select: none;
-    pointer-events: none;
-}
-
-.card-red{
-    background: #d82626;
-}
-
-.card-green{
-    background: #32b149;
-}
-
-.card-blue{
-    background: #3e70d0;
-}
-
-.card-yellow{
-    background: #d2b440;
-}
-
-.card-black{
-    background: #404040;
-}
-
-#colorChooser {
+#choose-colors{
   display: grid;
   grid-template-rows: 1fr 1fr;
   grid-gap: 0px;
+
+  justify-content: center; 
+  align-items: center;
+}
+
+#chat-messages{
+    display: grid ;
+    height: 250px;
+    grid-gap: 0px;
+    align-items: center ;
+    grid-auto-flow: row ;
+    grid-auto-rows: 25% ; 
+    grid-template-columns: unset;
+    grid-template-rows: unset;
+    overflow: scroll;
+}
+
+/*#chat-messages:nth-child(1n) {
+  background: red;
+}*/
+
+.message{
+  background: #aaaabb;
+}
+
+#chat-messages:nth-child(2n) {
+  background: #aabbaa;
 }

@@ -15,11 +15,8 @@ const baseUrl = 'http://localhost:3000/';
 let url = window.location.href;
 url = url.split('/');
 let gameId = url[5].charAt(0);
-//console.log('gameId:', gameId);
 
-/*
- * Create default Deck and Pile cards, start event listeners 
- */
+// Create default Deck and Pile cards, start event listeners 
 function initBoard(){
     deckDiv = createCardElement({"color":"black"});
     pileDiv = createCardElement({"color":"black"});
@@ -30,7 +27,7 @@ function initBoard(){
     deckDiv.addEventListener("click", drawCard);
 
     /* change color button */
-    let colorChooserDiv = document.getElementById('colorChooser');
+    let colorChooserDiv = document.getElementById('choose-colors');
     for (let child of Array.from(colorChooserDiv.children)) {
         //console.log('child:', child);
         //console.log(child.tagName);
@@ -44,8 +41,14 @@ function initBoard(){
 /* changeColor function */
 function setChosenColor(e) {
   let currentColorDiv = document.getElementById('currentColor');
-  currentColorDiv.innerText = e.target.innerText; 
-  chosenColor = e.target.innerText;
+  let colorChooser = document.getElementById('choose-colors');
+  let color = e.target.innerText;
+
+  currentColorDiv.innerText = color; 
+  chosenColor = color;
+
+  colorChooser.classList = '';
+  colorChooser.classList.add("card-" + color);
 }
 
 /*
@@ -267,9 +270,3 @@ async function main(gameId) {
 }
 
 main(gameId);
-
-
-// TODO: replace with server init pile card
-//// TODO: replace with server draw 7 cards
-// TODO: establish socket connection
-// TODO: get initial hand
