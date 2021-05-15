@@ -28,7 +28,6 @@ export function soundsInit(){
 function playSound(sfxGroup){
   let randIndex = Math.floor(Math.random() * sfxGroup.length);
   if(sfxGroup.length == 0) return;
-  console.log(sfxGroup);
   sfxGroup[randIndex].play();
 }
 

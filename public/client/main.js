@@ -76,20 +76,12 @@ export function addCard(cardData){
 
     cardElem.addEventListener("click", playCard);
 }
-/*
- * REMOVE ALL CARDS
- */
-function removeAllCards(){
-  // STEP 1 - remove all elements
-  // STEP 2 - clear the handref
-}
 
 /*
  * Remove a card (virtually and graphically) based on server message
  * PARAM - cardData - A card json receieved from server
  */
 function removeCard(id){
-
     //console.log('handRef', handRef);
 
     // Remove visual element
@@ -145,7 +137,7 @@ async function drawCard(event){
   let { playedCard } = await response.json();
   //console.log('playedCard:', playedCard);
 
-  if(playedCard == null){
+  if(playedCard == undefined){
     notify('err', 'error', ('Error drawing the card'));
   }
 
@@ -174,6 +166,7 @@ chatForm.addEventListener('submit', async e => {
       msg: msg
     }),
   });
+  e.target.elements.msg.value = '';
 });
 
 async function getPlayerCards(gameId) {
