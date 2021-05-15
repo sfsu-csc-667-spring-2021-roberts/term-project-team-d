@@ -104,9 +104,7 @@ router.post('/leaveGame/:gameId', async (req, res) => {
   renderLobby(req, res);
 });
 
-router.get('/startGame', (req, res) => {
-  res.send("<h1> you started a game!</h1>");
-});
+
 
 router.get('/:name', (req, res, next) => {
   res.json({
@@ -143,6 +141,8 @@ async function renderGame(req, res, gameId) {
   let numPlayersCards = await GU.getNumCardsInHand(gameId, userId);
   let neighbors = []
   //console.log(numPlayersCards[0]);
+
+  console.log(numPlayersCards)
 
   if (playerNum == 1) {
     neighbors.push(numPlayersCards[1])
