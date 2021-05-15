@@ -52,6 +52,7 @@ router.post('/:gameId/getPlayerHand', async (req, res) => {
   let userId = req.user.id;
   let gameId = req.params.gameId;
   let playerCards = await GU.getCardsInHand(gameId, userId);
+  console.log('PlayerCards in Route', playerCards);
   res.status(200).json(playerCards);
 });
 
