@@ -117,7 +117,8 @@ class Game_users extends ActiveRecord {
 
     let playerNum = await Game_users.getPlayerNumber(gameId, userId);
 
-    let query = `SELECT * FROM game_cards
+    let query = `SELECT game_cards.id, cards.number, cards.type, cards.color
+    FROM game_cards
     JOIN cards ON game_cards.card_id = cards.id
     WHERE game_cards.card_status = ${playerNum} AND
     game_cards.game_id = ${gameId}`;
