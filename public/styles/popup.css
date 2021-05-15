@@ -1,0 +1,50 @@
+#notify-container {
+    display: block;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor:pointer;
+}
+
+.notify{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-gap: 10px;
+
+    width: 300px;
+
+    background: #adcaa0;
+    /*border-color: #555;
+    border: 2px #4d6f41;
+    border-style: dashed;*/
+
+    padding: 5px;
+
+    border-radius: 5px;
+
+    animation: fadeIn linear 0.5s;
+}
+
+.notify-title{
+    font-weight: bold;
+    background: #6767b0;
+}
+
+.notify > div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notify-err > .notify-title{
+    background: #f94f4f;
+}
+
+@keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@keyframes slide {
+    {from{right:-300px;opacity:0} to{right:0;opacity:1}}
+}

@@ -1,4 +1,5 @@
 import {createCardElement} from './card.js';
+import {notify, notifyInit, soundsInit} from './notifications.js';
 
 var handDiv = document.getElementById("hand");
 var boardDiv = document.getElementById("board");
@@ -49,6 +50,7 @@ function setChosenColor(e) {
 
   colorChooser.classList = '';
   colorChooser.classList.add("card-" + color);
+  notify('ok', 'selected color', 'updated selected color to ' + color);
 }
 
 /*
@@ -143,6 +145,10 @@ async function drawCard(event){
   let { playedCard } = await response.json();
   //console.log('playedCard:', playedCard);
 
+  if(playedCard == null){
+    notify('err', 'error', ('Error drawing the card'));
+  }
+
   addCard({ 
       id: playedCard.id,
       number: playedCard.number,
@@ -181,6 +187,7 @@ async function getPlayerCards(gameId) {
     // body data type must match "Content-Type" header
     body: JSON.stringify({ msg: 'From client get Player Hand' }) 
   });
+  
   // parses JSON response into native JavaScript objects
   let playerCards = await response.json(); 
   //console.log(playerCards);
@@ -214,9 +221,9 @@ async function fetchPlayCard(cardData) {
     })
   });
   response = await response.json(); 
+
   let { playedCard } = response;
-  //console.log('result', result);
-  //console.log('playedCard:', playedCard);
+
   if (playedCard) {
     setPile({
       number: playedCard.number,
@@ -225,7 +232,31 @@ async function fetchPlayCard(cardData) {
     });
 
     removeCard(playedCard.id);
+  }else{
+    notify('err', 'error', 'could not play card: ' + response.msg);
   }
+}
+
+async function getPlayerNum(gameId){
+  let url = '/game/'+gameId+'/getPlayerNum';
+  let response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+  return await response.json();
+}
+
+async function getPlayerName(playerNum){
+  let url = '/users/'+playerNum+'/name';
+  let response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+  return await response.json();
 }
 
 async function handleLastCard(gameId) {
@@ -258,6 +289,11 @@ async function handleLastCard(gameId) {
 }
 }
 
+async function notifyJoinGame(gameId){
+  let playerNum = await getPlayerNum(gameId);
+  notify('ok', 'welcome', ('welcome to the game, player ' + playerNum.playerNum));
+}
+
 /* =================================*/
 /* ============== MAIN =============*/
 /* =================================*/
@@ -265,8 +301,13 @@ async function handleLastCard(gameId) {
 async function main(gameId) {
   initBoard();
   let playerCards = await getPlayerCards(gameId);
+
   addCards(playerCards);
   handleLastCard(gameId);
+
+  notifyInit();
+  soundsInit();
+  await notifyJoinGame(gameId);
 }
 
 main(gameId);

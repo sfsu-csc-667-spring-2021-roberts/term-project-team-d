@@ -5,25 +5,32 @@ html(lang='en')
     title Uno Lobby #{id}
     link(rel='stylesheet', href='/styles/game.css')
     link(rel='stylesheet', href='/styles/card.css')
+    link(rel='stylesheet', href='/styles/popup.css')
     script(type="module", src='/client/main.js')
   body
     - let url = '/game/'+gameId+'/endGame';
     form(id='endGameForm' action=url method='POST')
+
+    div#notify-container
 
     div.grid-main
       div.grid-game
           div#board
           div#hand
       div.grid-info
-          div#players PLAYER LIST HERE
+          div#players
+              div.player player1
+              div.player player2
+              div.player player3
+              div.player player4
           div#chat
-            div#chat-messages
             div#chat-input
                 form(id='chat-form') 
-                  label(for='chatTextInput') Message:
+                  label(for='chatTextInput')
                   input(type='text' name='chatTextInput' id='msg' 
                   placeholder='type message')
                   input(type='submit' style='display: none')
+            div#chat-messages
 
           div#choose-colors.card-yellow Selected Color:
             div#currentColor yellow

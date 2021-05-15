@@ -1,4 +1,5 @@
 import { setPile, addCard } from './main.js';
+import {notify} from './notifications.js';
 
 /* ====================================*/
 /* ==== Pusher Subscription ===========*/
@@ -35,7 +36,6 @@ channel.bind('draw-card', async data =>  {
   });
   let { playerNum } = await response.json();
   //console.log('playerNum object: '+ playerNum);
-
 
   //re-arange the array neighbors.
   let numPlayersCards = data.numPlayersCards
