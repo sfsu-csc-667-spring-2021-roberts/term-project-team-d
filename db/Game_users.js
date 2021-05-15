@@ -303,11 +303,15 @@ class Game_users extends ActiveRecord {
   static async getNumCardsInHand(gameId, userId) {
     let playerNum = await Game_users.getPlayerNumber(gameId, userId);
 
-    let sql = `SELECT card_status,COUNT(*) FROM game_cards
-               WHERE game_id = ${gameId} AND
-               card_status > 0
-               GROUP BY card_status
-               ORDER BY card_status`;
+
+
+    let sql = `SELECT game_cards.card_status,COUNT(*),users.username FROM game_cards
+              JOIN game_users on game_cards.card_status = game_users.player_num
+              JOIN users on game_users.user_id = users.id
+              WHERE game_cards.game_id = ${gameId} AND
+              card_status > 0
+              GROUP BY card_status,username
+              ORDER BY card_status;`;
 
     let numCards = await db.any(sql);
     //console.log(numCards)
