@@ -149,6 +149,24 @@ async function drawCard(event){
 
 }
 
+/* === Chat Room (Pressing enter) ======*/
+const chatForm = document.getElementById('chat-form');
+chatForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  const msg = e.target.elements.msg.value;
+  let chatUrl = '/game/' + gameId + '/chatMessage';
+
+  let response = await fetch(chatUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      msg: msg
+    }),
+  });
+});
+
 async function getPlayerCards(gameId) {
   let getPlayerHandUrl = '/game/' + gameId + '/getPlayerHand';
 
@@ -250,7 +268,8 @@ async function main(gameId) {
 
 main(gameId);
 
+
 // TODO: replace with server init pile card
 //// TODO: replace with server draw 7 cards
 // TODO: establish socket connection
-// TODO: get initial hand 
+// TODO: get initial hand
