@@ -21,10 +21,10 @@ html(lang='en')
           div#players
             div#players-reverse normal
             div#players-list
-              div.player #{neighbors[0].count} P1
-              div.player #{neighbors[1].count} P2
-              div.player #{neighbors[2].count} P4
-              div.player P3
+              div #{neighbors[0].username} P#{neighbors[0].card_status} number of cards: #{neighbors[0].count}
+              div #{neighbors[1].username} P#{neighbors[1].card_status} number of cards: #{neighbors[1].count}
+              div #{neighbors[2].username} P#{neighbors[2].card_status} number of cards: #{neighbors[2].count}
+              div #{neighbors[3].username} P#{neighbors[3].card_status} number of cards: #{neighbors[3].count}
           div#chat
             div#chat-input
                 form(id='chat-form') 
