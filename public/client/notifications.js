@@ -12,8 +12,7 @@ export function soundsInit(){
     new Audio('/sfx/error1.wav'),
     new Audio('/sfx/error2.wav'),
     new Audio('/sfx/error3.wav'),
-    new Audio('/sfx/error4.wav'),
-    new Audio('/sfx/error5.wav')
+    new Audio('/sfx/error4.wav')
   ];
 
   sfx_notifs = [
@@ -25,11 +24,22 @@ export function soundsInit(){
   ];
 }
 
-function playSound(sfxGroup){
+function playSoundGroup(sfxGroup){
   let randIndex = Math.floor(Math.random() * sfxGroup.length);
   if(sfxGroup.length == 0) return;
   sfxGroup[randIndex].play();
 }
+
+export function playSound(type){
+  if(type == 'err'){
+    playSoundGroup(sfx_errors);
+  }else if(type == 'chat'){
+    playSoundGroup(sfx_chat);
+  }else{
+    playSoundGroup(sfx_notifs);
+  }
+}
+ 
 
 /*
  * Note: This code is a modified version of this example:
@@ -56,8 +66,8 @@ export function notifyInit() {
 
     // Hook up 'hide' events
     notifyDiv.addEventListener('click', hide, false);
-    /*notifyDiv.addEventListener('animationend', hide, false);
-    notifyDiv.addEventListener('webkitAnimationEnd', hide, false);*/
+    notifyDiv.addEventListener('animationend', hide, false);
+    notifyDiv.addEventListener('webkitAnimationEnd', hide, false);
 }
 
 /*
@@ -69,7 +79,7 @@ function update(type, title, message) {
     notifyDiv.querySelector('.notify-title').innerHTML = title;
     notifyDiv.querySelector('.notify-message').innerHTML = message;
 }
- 
+
 /*
  * Hide current notification
  */
@@ -88,18 +98,13 @@ function hide() {
  * Trigger the update and set it to be visible.
  */
 export function notify(type, title, message) {
-    if(type == 'err'){
-      playSound(sfx_errors);
-    }else if(type == 'chat'){
-      playSound(sfx_chat);
-    }else{
-      playSound(sfx_notifs);
-    }
+    playSound(type);
 
     if (visible) {
-        update(type, title, message);
+        hide();
+        /*update(type, title, message);
         //queue.push([type, title, message]);
-        return;
+        return;*/
     }
 
     if (!notify) createnotify();

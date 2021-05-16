@@ -127,7 +127,7 @@ router.post('/:gameId/playCard', async (req, res) => {
     }
     /* HUGE OUTER ELSE - valid card but not your turn */
   } else {
-    res.status(403).json({ msg: 'forbidden' });
+    res.status(403).json({ msg: 'Its not your turn' });
   }
 });
 

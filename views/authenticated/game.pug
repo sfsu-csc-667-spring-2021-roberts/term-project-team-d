@@ -1,4 +1,4 @@
-doctype html  
+doctype html
 
 html(lang='en')  
   head
@@ -19,10 +19,12 @@ html(lang='en')
           div#hand
       div.grid-info
           div#players
-              div.player player1
-              div.player player2
-              div.player player3
-              div.player player4
+            div#players-reverse normal
+            div#players-list
+              div.player #{neighbors[0].count} P1
+              div.player #{neighbors[1].count} P2
+              div.player #{neighbors[2].count} P4
+              div.player P3
           div#chat
             div#chat-input
                 form(id='chat-form') 

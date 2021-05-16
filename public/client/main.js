@@ -139,6 +139,7 @@ async function drawCard(event){
 
   if(playedCard == undefined){
     notify('err', 'error', ('Error drawing the card'));
+    return;
   }
 
   addCard({ 
@@ -152,9 +153,11 @@ async function drawCard(event){
 
 /* === Chat Room (Pressing enter) ======*/
 const chatForm = document.getElementById('chat-form');
+chatForm.autocomplete = "off";
 chatForm.addEventListener('submit', async e => {
   e.preventDefault();
   const msg = e.target.elements.msg.value;
+  if(msg.length == 0) return;
   let chatUrl = '/game/' + gameId + '/chatMessage';
 
   let response = await fetch(chatUrl, {

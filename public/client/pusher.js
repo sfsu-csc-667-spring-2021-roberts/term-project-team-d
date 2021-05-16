@@ -1,6 +1,6 @@
 import { setPile, addCard } from './main.js';
-import {notify} from './notifications.js';
-import {getPlayerNum, updateRotation, updateCurrentPlayer, updatePlayers} from './players.js';
+import {notify, playSound} from './notifications.js';
+import {getPlayerNum, updateRotation, updateCurrentPlayer, updatePlayerCount} from './players.js';
 
 /*
  * Pusher subscription
@@ -29,12 +29,7 @@ let channel = pusher.subscribe('game' + gameId);
 channel.bind('draw-card', async data =>  {
   console.log('inside the draw-card bind')
   let playerNum = await getPlayerNum(gameId);
-
-  //console.log('playerNum object: '+ playerNum);
-
-  //update player display
-  let numPlayersCards = data.numPlayersCards;
-  updatePlayers(playerNum, numPlayersCards);
+  updatePlayerCount(playerNum, data.numPlayersCards);
 })
 
 /* ======= playCard ======== */
@@ -59,7 +54,7 @@ channel.bind('play-card', async data =>  {
   let numPlayersCards = data.numPlayersCards;
   let playerNum = await getPlayerNum(gameId);
 
-  updatePlayers(playerNum, numPlayersCards);
+  updatePlayerCount(playerNum, numPlayersCards);
 });
 
 channel.bind('special-draw', async data =>  {
@@ -96,5 +91,7 @@ channel.bind('chat-msg', data => {
 
   // scrolldown automatically
   chatBox.scrollTop = chatBox.scrollHeight;
+
+  playSound('chat');
 });
 
