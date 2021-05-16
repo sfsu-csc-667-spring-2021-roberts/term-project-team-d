@@ -50,16 +50,22 @@ router.post('/joinGame/:gameId', async (req, res) => {
     console.log('before four player check');
  /* start game logic */
   if (numPlayers == 4) {
+    //await renderGameLobby(req, res, gameId);
     console.log('inside start game route');
     await Games.startGame(gameId);
 
-    pusher.trigger('game-lobby' + gameId, 'start-game', {
+    /*
+    setTimeout(function () {
+      pusher.trigger('game-lobby' + gameId, 'start-game', {
+      });
+    }, 1000);
+    */
+    await pusher.trigger('game-lobby' + gameId, 'start-game', {
     });
 
-    // start game
-    renderGame(req, res, gameId);
+    let startGameUrl = '/users/startGame/' + gameId;
+    res.redirect(startGameUrl);    
 
-    
   } else {
     renderGameLobby(req, res, gameId);
   }
@@ -98,9 +104,7 @@ router.post('/leaveGame/:gameId', async (req, res) => {
   renderLobby(req, res);
 });
 
-router.get('/startGame', (req, res) => {
-  res.send("<h1> you started a game!</h1>");
-});
+
 
 router.get('/:name', (req, res, next) => {
   res.json({
@@ -137,6 +141,8 @@ async function renderGame(req, res, gameId) {
   let numPlayersCards = await GU.getNumCardsInHand(gameId, userId);
   let neighbors = []
   //console.log(numPlayersCards[0]);
+
+  console.log(numPlayersCards)
 
   if (playerNum == 1) {
     neighbors.push(numPlayersCards[1])
