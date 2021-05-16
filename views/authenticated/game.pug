@@ -4,42 +4,40 @@ html(lang='en')
   head
     title Uno Lobby #{id}
     link(rel='stylesheet', href='/styles/game.css')
+    link(rel='stylesheet', href='/styles/card.css')
+    link(rel='stylesheet', href='/styles/popup.css')
     script(type="module", src='/client/main.js')
   body
     - let url = '/game/'+gameId+'/endGame';
     form(id='endGameForm' action=url method='POST')
 
-    div.grid-container
-      div - 
-      div#p2 player number: #{neighbors[1].card_status}
-        div#p2Cards number of cards: #{neighbors[1].count}
-      div -
+    div#notify-container
 
-      div#p3 player number: #{neighbors[0].card_status} 
-        div#p3Cards number of cards: #{neighbors[0].count}
-      div#board
-        div#gameChat  
-          // chat text input field
-        form(id='chat-form') 
-          label(for='chatTextInput') Message:
-          input(type='text' name='chatTextInput' id='msg' 
-          placeholder='type message')
-          input(type='submit' style='display: none')
-        
-        div#boardStatus  Current Player: #{currentPlayer} 
-          | Rotation: #{rotation}
-      div#p4 player number: #{neighbors[2].card_status} 
-        div#p4Cards number of cards: #{neighbors[2].count}
+    div.grid-main
+      div.grid-game
+          div#board
+          div#hand
+      div.grid-info
+          div#players
+              div.player player1
+              div.player player2
+              div.player player3
+              div.player player4
+          div#chat
+            div#chat-input
+                form(id='chat-form') 
+                  label(for='chatTextInput')
+                  input(type='text' name='chatTextInput' id='msg' 
+                  placeholder='type message')
+                  input(type='submit' style='display: none')
+            div#chat-messages
 
-      div You are player: #{playerNum}
-      div#hand
-      // choose color button
-      div#colorChooser choose a color:
-        div#currentColor yellow
-        button(id='chooseYellowBtn') yellow
-        button(id='chooseBlueBtn') blue
-        button(id='chooseGreenBtn') green
-        button(id='chooseRedBtn') red
+          div#choose-colors.card-yellow Selected Color:
+            div#currentColor yellow
+            button(id='chooseYellow') yellow
+            button(id='chooseBlue') blue
+            button(id='chooseGreen') green
+            button(id='chooseRed') red
 
   // ======== Imported Libraries ==========
   script(src='https://js.pusher.com/7.0/pusher.min.js')

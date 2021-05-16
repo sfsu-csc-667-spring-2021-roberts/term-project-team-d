@@ -1,4 +1,5 @@
 import {createCardElement} from './card.js';
+import {notify, notifyInit, soundsInit} from './notifications.js';
 
 var handDiv = document.getElementById("hand");
 var boardDiv = document.getElementById("board");
@@ -15,11 +16,8 @@ const baseUrl = 'http://localhost:3000/';
 let url = window.location.href;
 url = url.split('/');
 let gameId = url[5].charAt(0);
-//console.log('gameId:', gameId);
 
-/*
- * Create default Deck and Pile cards, start event listeners 
- */
+// Create default Deck and Pile cards, start event listeners 
 function initBoard(){
     deckDiv = createCardElement({"color":"black"});
     pileDiv = createCardElement({"color":"black"});
@@ -30,7 +28,7 @@ function initBoard(){
     deckDiv.addEventListener("click", drawCard);
 
     /* change color button */
-    let colorChooserDiv = document.getElementById('colorChooser');
+    let colorChooserDiv = document.getElementById('choose-colors');
     for (let child of Array.from(colorChooserDiv.children)) {
         //console.log('child:', child);
         //console.log(child.tagName);
@@ -44,8 +42,15 @@ function initBoard(){
 /* changeColor function */
 function setChosenColor(e) {
   let currentColorDiv = document.getElementById('currentColor');
-  currentColorDiv.innerText = e.target.innerText; 
-  chosenColor = e.target.innerText;
+  let colorChooser = document.getElementById('choose-colors');
+  let color = e.target.innerText;
+
+  currentColorDiv.innerText = color; 
+  chosenColor = color;
+
+  colorChooser.classList = '';
+  colorChooser.classList.add("card-" + color);
+  notify('ok', 'selected color', 'updated selected color to ' + color);
 }
 
 /*
@@ -71,20 +76,12 @@ export function addCard(cardData){
 
     cardElem.addEventListener("click", playCard);
 }
-/*
- * REMOVE ALL CARDS
- */
-function removeAllCards(){
-  // STEP 1 - remove all elements
-  // STEP 2 - clear the handref
-}
 
 /*
  * Remove a card (virtually and graphically) based on server message
  * PARAM - cardData - A card json receieved from server
  */
 function removeCard(id){
-
     //console.log('handRef', handRef);
 
     // Remove visual element
@@ -140,6 +137,10 @@ async function drawCard(event){
   let { playedCard } = await response.json();
   //console.log('playedCard:', playedCard);
 
+  if(playedCard == undefined){
+    notify('err', 'error', ('Error drawing the card'));
+  }
+
   addCard({ 
       id: playedCard.id,
       number: playedCard.number,
@@ -165,6 +166,7 @@ chatForm.addEventListener('submit', async e => {
       msg: msg
     }),
   });
+  e.target.elements.msg.value = '';
 });
 
 async function getPlayerCards(gameId) {
@@ -178,6 +180,7 @@ async function getPlayerCards(gameId) {
     // body data type must match "Content-Type" header
     body: JSON.stringify({ msg: 'From client get Player Hand' }) 
   });
+  
   // parses JSON response into native JavaScript objects
   let playerCards = await response.json(); 
   //console.log(playerCards);
@@ -211,9 +214,9 @@ async function fetchPlayCard(cardData) {
     })
   });
   response = await response.json(); 
+
   let { playedCard } = response;
-  //console.log('result', result);
-  //console.log('playedCard:', playedCard);
+
   if (playedCard) {
     setPile({
       number: playedCard.number,
@@ -222,7 +225,31 @@ async function fetchPlayCard(cardData) {
     });
 
     removeCard(playedCard.id);
+  }else{
+    notify('err', 'error', 'could not play card: ' + response.msg);
   }
+}
+
+async function getPlayerNum(gameId){
+  let url = '/game/'+gameId+'/getPlayerNum';
+  let response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+  return await response.json();
+}
+
+async function getPlayerName(playerNum){
+  let url = '/users/'+playerNum+'/name';
+  let response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+  return await response.json();
 }
 
 async function handleLastCard(gameId) {
@@ -255,6 +282,11 @@ async function handleLastCard(gameId) {
 }
 }
 
+async function notifyJoinGame(gameId){
+  let playerNum = await getPlayerNum(gameId);
+  notify('ok', 'welcome', ('welcome to the game, player ' + playerNum.playerNum));
+}
+
 /* =================================*/
 /* ============== MAIN =============*/
 /* =================================*/
@@ -262,14 +294,13 @@ async function handleLastCard(gameId) {
 async function main(gameId) {
   initBoard();
   let playerCards = await getPlayerCards(gameId);
+
   addCards(playerCards);
   handleLastCard(gameId);
+
+  notifyInit();
+  soundsInit();
+  await notifyJoinGame(gameId);
 }
 
 main(gameId);
-
-
-// TODO: replace with server init pile card
-//// TODO: replace with server draw 7 cards
-// TODO: establish socket connection
-// TODO: get initial hand
