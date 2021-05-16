@@ -31,7 +31,8 @@ export async function getPlayerNum(gameId) {
       'Content-Type': 'application/json',
     }
   });
-  return await response.json();
+  let res = await response.json();
+  return res.playerNum;
 }
 
 export function updateUI(){
@@ -62,7 +63,7 @@ export function updatePlayerCount(id, count){
 }
 
 export function updateNeighbors(neighbors){
-  console.log(neighbors);
+  //console.log(neighbors);
 
   if(neighbors == undefined) return;
 

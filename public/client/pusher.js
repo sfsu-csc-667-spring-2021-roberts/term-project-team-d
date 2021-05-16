@@ -53,6 +53,9 @@ channel.bind('play-card', async data =>  {
 channel.bind('special-draw', async data =>  {
   let playerNum = await getPlayerNum(gameId);
 
+  console.log(playerNum.playerNum);
+  console.log(data.playerToDraw);
+
   if (playerNum != data.playerToDraw) return;
 
   addCard({ 
@@ -63,8 +66,6 @@ channel.bind('special-draw', async data =>  {
   });
 
   updateNeighbors(data.numPlayersCards);
-
-  // TODO: update neighbor card counts
 });
 
 channel.bind('end-game', async data =>  {
