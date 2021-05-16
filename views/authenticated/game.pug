@@ -6,6 +6,7 @@ html(lang='en')
     link(rel='stylesheet', href='/styles/game.css')
     link(rel='stylesheet', href='/styles/card.css')
     link(rel='stylesheet', href='/styles/popup.css')
+    link(rel='stylesheet', href='/styles/player.css')
     script(type="module", src='/client/main.js')
   body
     - let url = '/game/'+gameId+'/endGame';
@@ -19,12 +20,27 @@ html(lang='en')
           div#hand
       div.grid-info
           div#players
-            div#players-reverse normal
+            div#players-reverse Rotation: #{rotation}
+            div#players-you You are player #{playerNum}.
+            div#players-current It's player #{currentPlayer}'s turn. 
             div#players-list
-              div #{neighbors[0].username} P#{neighbors[0].card_status} number of cards: #{neighbors[0].count}
-              div #{neighbors[1].username} P#{neighbors[1].card_status} number of cards: #{neighbors[1].count}
-              div #{neighbors[2].username} P#{neighbors[2].card_status} number of cards: #{neighbors[2].count}
-              div #{neighbors[3].username} P#{neighbors[3].card_status} number of cards: #{neighbors[3].count}
+              div.player
+                div #{neighbors[0].card_status} 
+                div #{neighbors[0].username} 
+                div #{neighbors[0].count}
+              div.player
+                div #{neighbors[1].card_status} 
+                div #{neighbors[1].username} 
+                div #{neighbors[1].count}
+              div.player
+                div #{neighbors[2].card_status} 
+                div #{neighbors[2].username} 
+                div #{neighbors[2].count}
+              div.player
+                div #{neighbors[3].card_status} 
+                div #{neighbors[3].username} 
+                div #{neighbors[3].count}
+
           div#chat
             div#chat-input
                 form(id='chat-form') 

@@ -165,7 +165,7 @@ async function renderGame(req, res, gameId) {
   */
   console.log(numPlayersCards)
   
-  let direction = rotation == 1 ? 'clockwise' : 'counterclockwise';
+  let direction = rotation == 1 ? 'normal' : 'reverse';
 
   res.render('authenticated/game', {
     title: 'Game Room',

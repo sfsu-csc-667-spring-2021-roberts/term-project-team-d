@@ -1,6 +1,6 @@
 import { setPile, addCard } from './main.js';
 import {notify, playSound} from './notifications.js';
-import {getPlayerNum, updateRotation, updateCurrentPlayer, updatePlayerCount} from './players.js';
+import {getPlayerNum, updateRotation, updateCurrentPlayer, updatePlayerCount, updateNeighbors} from './players.js';
 
 /*
  * Pusher subscription
@@ -25,18 +25,13 @@ let channel = pusher.subscribe('game' + gameId);
  * Pusher bindings
  */
 
-/* ======= drawCard ======== */
+// When a player draws a card
 channel.bind('draw-card', async data =>  {
-  console.log('inside the draw-card bind')
-  let playerNum = await getPlayerNum(gameId);
-  updatePlayerCount(playerNum, data.numPlayersCards);
+  updateNeighbors(data.numPlayersCards);
 })
 
-/* ======= playCard ======== */
+// When a player plays a generic card
 channel.bind('play-card', async data =>  {
-  /* rotation logic */
-  updateCurrentPlayer(data.currentPlayer);
-  updateRotation(data.rotation);
 
   // if draw 4 or changeColor, then set color to chosen color and not playedCard.Color
   let updateColor = data.playedCard.color;
@@ -50,13 +45,11 @@ channel.bind('play-card', async data =>  {
     type: data.playedCard.type
   });
 
-  // update player display
-  let numPlayersCards = data.numPlayersCards;
-  let playerNum = await getPlayerNum(gameId);
-
-  updatePlayerCount(playerNum, numPlayersCards);
+  updateNeighbors(data.neighbors);
+  updateCurrentPlayer(data.currentPlayer);
 });
 
+// Force a player to draw cards 
 channel.bind('special-draw', async data =>  {
   let playerNum = await getPlayerNum(gameId);
 
@@ -68,6 +61,10 @@ channel.bind('special-draw', async data =>  {
     color: data.drawnCard.color,
     type: data.drawnCard.type
   });
+
+  updateNeighbors(data.numPlayersCards);
+
+  // TODO: update neighbor card counts
 });
 
 channel.bind('end-game', async data =>  {
