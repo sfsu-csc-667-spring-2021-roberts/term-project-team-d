@@ -306,7 +306,8 @@ class Game_users extends ActiveRecord {
 
 
     let sql = `SELECT game_cards.card_status,COUNT(*),users.username FROM game_cards
-              JOIN game_users on game_cards.card_status = game_users.player_num
+              JOIN game_users on game_cards.card_status = game_users.player_num AND
+              game_cards.game_id = game_users.game_id
               JOIN users on game_users.user_id = users.id
               WHERE game_cards.game_id = ${gameId} AND
               card_status > 0
