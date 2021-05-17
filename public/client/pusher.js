@@ -47,6 +47,7 @@ channel.bind('play-card', async data =>  {
 
   updateNeighbors(data.neighbors);
   updateCurrentPlayer(data.currentPlayer);
+  updateRotation(data.rotation);
 });
 
 // Force a player to draw cards 
@@ -69,6 +70,7 @@ channel.bind('special-draw', async data =>  {
 });
 
 channel.bind('end-game', async data =>  {
+  console.log(data.winner)
   let endGameForm = document.getElementById('endGameForm');
   endGameForm.submit();
 });
