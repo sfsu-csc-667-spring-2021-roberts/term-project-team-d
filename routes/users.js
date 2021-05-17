@@ -104,9 +104,7 @@ router.post('/leaveGame/:gameId', async (req, res) => {
   renderLobby(req, res);
 });
 
-router.get('/startGame', (req, res) => {
-  res.send("<h1> you started a game!</h1>");
-});
+
 
 router.get('/:name', (req, res, next) => {
   res.json({
@@ -141,9 +139,11 @@ async function renderGame(req, res, gameId) {
   let currentPlayer = await Games.getCurrentPlayer(gameId);
   let rotation = await Games.getRotation(gameId);
   let numPlayersCards = await GU.getNumCardsInHand(gameId, userId);
-  let neighbors = []
+  //let neighbors = []
   //console.log(numPlayersCards[0]);
 
+  //console.log(numPlayersCards)
+  /*
   if (playerNum == 1) {
     neighbors.push(numPlayersCards[1])
     neighbors.push(numPlayersCards[2])
@@ -162,15 +162,17 @@ async function renderGame(req, res, gameId) {
     neighbors.push(numPlayersCards[1])
     neighbors.push(numPlayersCards[2])
   }
+  */
+  console.log(numPlayersCards)
   
-  let direction = rotation == 1 ? 'clockwise' : 'counterclockwise';
+  let direction = rotation == 1 ? 'normal' : 'reverse';
 
   res.render('authenticated/game', {
     title: 'Game Room',
     playerNum: playerNum,
     currentPlayer: currentPlayer,
     rotation: direction,
-    neighbors: neighbors
+    neighbors: numPlayersCards
   });
 }
 module.exports = router;
