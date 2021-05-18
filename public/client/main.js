@@ -15,7 +15,13 @@ const baseUrl = 'http://localhost:3000/';
 /* get gameId from URL */
 let url = window.location.href;
 url = url.split('/');
-let gameId = url[5].charAt(0);
+//let gameId = url[5].charAt(0);
+let gameId = url[5];
+
+gameId = gameId.split('?')[0];
+
+console.log('URL', url, ' gameId ', gameId);
+
 
 // Create default Deck and Pile cards, start event listeners 
 function initBoard(){
